@@ -165,7 +165,6 @@ input{
 .tile{
   position:relative;
   height:100px;
-  border:2px solid #00ffff;
   padding:12px;
   display:flex;
   flex-direction:column;
@@ -377,10 +376,56 @@ function checkCode(){
 
 /* LETTER DATA (Add full 24 later) */
 const letters=[
-  {title:"LEVEL UP",sub:"when you're sad",text:"You are stronger than you think."},
-  {title:"GHOST MODE",sub:"when you're overthinking",text:"Breathe. Slow down."},
-  {title:"HP RESTORE",sub:"when you need a hug",text:"Imagine I’m hugging you."},
-  {title:"AFTER DARK",sub:"when you're naughty",text:"This level unlocks secrets."}
+  const letters = [
+
+{title:"LEVEL UP",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
+
+{title:"ACHIEVEMENT UNLOCKED",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
+
+{title:"POWER BOOST",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
+
+{title:"GHOST MODE",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
+
+{title:"HIGH ALERT",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
+
+{title:"PIECES NOT FITTING",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
+
+{title:"LOW BATTERY",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
+
+{title:"FIGHT MODE",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
+
+{title:"HP RESTORE",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
+
+{title:"HEALING CENTER",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
+
+{title:"AFFECTION BOOST",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
+
+{title:"FREE ROAM",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
+
+{title:"AFTER DARK",sub:"when you're feeling naughty",color:"#cc0000",text:"Some levels unlock only after midnight."},
+
+{title:"WEB OF THOUGHTS",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
+
+{title:"FAR FROM HOME",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
+
+{title:"RAINY DAY MODE",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
+
+{title:"BONUS ROUND",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
+
+{title:"MIDNIGHT SERVER",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
+
+{title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
+
+{title:"ANNUAL EVENT",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
+
+{title:"ON MY WAY",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
+
+{title:"LOW SIGNAL",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
+
+{title:"ENERGY RECHARGE",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
+
+{title:"SIDE QUEST",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
+
 ];
 
 const grid=document.getElementById("grid");
@@ -388,8 +433,13 @@ const grid=document.getElementById("grid");
 letters.forEach((l,i)=>{
   const tile=document.createElement("div");
   tile.classList.add("tile");
-  tile.innerHTML=`<div class="tile-title">${l.title}</div>
-                  <div class="tile-sub">${l.sub}</div>`;
+  tile.style.borderColor = l.color;
+
+  tile.innerHTML=`
+    <div class="tile-title">${l.title}</div>
+    <div class="tile-sub">${l.sub}</div>
+  `;
+
   tile.onclick=()=>openLetter(l);
   grid.appendChild(tile);
 });

@@ -82,10 +82,6 @@ canvas {
     <div class="footer">© SillyStarer</div>
 </div>
 
-<audio id="bgMusic" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8a1a0f4b4.mp3?filename=8-bit-arcade-11060.mp3" type="audio/mpeg">
-</audio>
-
 <script>
 // STARFIELD
 const canvas = document.getElementById("starfield");
@@ -131,10 +127,46 @@ if (localStorage.getItem("arcadeUnlocked") === "true") {
 }
 
 // START GAME
+let audioStarted = false;
+let audioCtx;
+
 function startGame() {
     document.getElementById("bootScreen").style.display = "none";
-    document.getElementById("bgMusic").play();
+
+    if (!audioStarted) {
+        startMusic();
+        audioStarted = true;
+    }
+
     showCodeScreen();
+}
+
+function startMusic() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0.05; // volume (soft)
+    gainNode.connect(audioCtx.destination);
+
+    function playTone(freq, time) {
+        const osc = audioCtx.createOscillator();
+        osc.type = "square";
+        osc.frequency.value = freq;
+        osc.connect(gainNode);
+        osc.start(audioCtx.currentTime + time);
+        osc.stop(audioCtx.currentTime + time + 0.2);
+    }
+
+    function loopMelody() {
+        const notes = [220, 330, 440, 330];
+        notes.forEach((note, i) => {
+            playTone(note, i * 0.4);
+        });
+
+        setTimeout(loopMelody, 1600);
+    }
+
+    loopMelody();
 }
 
 // SHOW CODE SCREEN

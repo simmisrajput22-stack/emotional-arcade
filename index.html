@@ -270,7 +270,7 @@ input{
 <!-- BOOT -->
 <div id="bootScreen" class="screen active">
   <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 5.0</div>
+  <div class="subtitle">Version 6.0</div>
   <div class="button white" onclick="startGame()">PRESS START</div>
 </div>
 
@@ -308,9 +308,7 @@ input{
 <!-- ARCADE -->
 <div id="arcadeScreen" class="screen">
   <div class="arcade-header">
-    <div class="title">
-      <span class="pixel-lock"></span>ARCADE GRID
-    </div>
+    <div class="title"><span class="pixel-lock"></span>ARCADE GRID</div>
   </div>
 
   <div class="arcade-grid-wrapper">
@@ -399,12 +397,32 @@ function checkCode(){
   }
 }
 
-/* LETTER DATA */
+/* FULL 24 LETTERS */
 const letters=[
 {title:"LEVEL UP",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
-{title:"AFTER DARK",sub:"when you're feeling naughty",color:"#cc0000",text:"Some levels unlock only after midnight."},
+{title:"ACHIEVEMENT UNLOCKED",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
+{title:"POWER BOOST",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
+{title:"GHOST MODE",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
+{title:"HIGH ALERT",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
+{title:"PIECES NOT FITTING",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
+{title:"LOW BATTERY",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
+{title:"FIGHT MODE",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
 {title:"HP RESTORE",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
-{title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."}
+{title:"HEALING CENTER",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
+{title:"AFFECTION BOOST",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
+{title:"FREE ROAM",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
+{title:"AFTER DARK",sub:"when you're feeling naughty",color:"#cc0000",text:"Some levels unlock only after midnight."},
+{title:"WEB OF THOUGHTS",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
+{title:"FAR FROM HOME",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
+{title:"RAINY DAY MODE",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
+{title:"BONUS ROUND",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
+{title:"MIDNIGHT SERVER",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
+{title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
+{title:"ANNUAL EVENT",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
+{title:"ON MY WAY",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
+{title:"LOW SIGNAL",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
+{title:"ENERGY RECHARGE",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
+{title:"SIDE QUEST",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
 ];
 
 const grid=document.getElementById("grid");
@@ -424,7 +442,7 @@ function enterArcade(){
   showScreen("arcadeScreen");
   const tiles=document.querySelectorAll(".tile");
   tiles.forEach((tile,i)=>{
-    setTimeout(()=>tile.classList.add("show"),i*100);
+    setTimeout(()=>tile.classList.add("show"),i*90);
   });
 }
 

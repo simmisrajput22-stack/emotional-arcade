@@ -258,6 +258,28 @@ input{
   opacity:0.6;
 }
 </style>
+  .pixel-lock{
+  display:inline-block;
+  width:14px;
+  height:10px;
+  background:white;
+  position:relative;
+  margin-right:10px;
+  image-rendering:pixelated;
+}
+
+.pixel-lock:before{
+  content:"";
+  position:absolute;
+  width:10px;
+  height:8px;
+  border:3px solid white;
+  border-bottom:none;
+  border-radius:8px 8px 0 0;
+  top:-9px;
+  left:50%;
+  transform:translateX(-50%);
+}
 </head>
 
 <body>
@@ -308,9 +330,10 @@ input{
 <!-- ARCADE -->
 <div id="arcadeScreen" class="screen">
 
-  <div class="arcade-header">
-    <div class="title">ARCADE GRID</div>
-  </div>
+ <div class="title">
+  <span class="pixel-lock"></span>
+  ARCADE GRID
+</div>
 
   <div class="arcade-grid-wrapper">
     <div class="grid" id="grid"></div>

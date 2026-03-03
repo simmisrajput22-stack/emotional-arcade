@@ -382,12 +382,17 @@ function startMusic(){
 function startGame(){ startMusic(); showScreen("codeScreen"); }
 
 /* HEARTS */
-function createHearts(){
-  for(let i=0;i<30;i++){
+function createHearts(color){
+  for(let i=0;i<25;i++){
     const heart=document.createElement("div");
     heart.classList.add("heart");
+
     heart.style.left=Math.random()*window.innerWidth+"px";
     heart.style.bottom="0px";
+
+    heart.style.background=color;
+    heart.style.boxShadow="0 0 10px "+color;
+
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),2000);
   }
@@ -470,6 +475,7 @@ function openLetter(letter,tile){
   tile.classList.add("opening");
   setTimeout(()=>{
     document.getElementById("letterOverlay").classList.add("active");
+    createHearts(letter.color);
     const content=document.getElementById("letterContent");
     content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
                        <p id="typedText" style="margin-top:15px;"></p>`;

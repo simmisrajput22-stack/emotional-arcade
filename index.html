@@ -7,7 +7,6 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-
 body{
   background:black;
   color:white;
@@ -23,7 +22,7 @@ canvas{
   z-index:-2;
 }
 
-/* SCREEN SYSTEM */
+/* SCREENS */
 .screen{
   position:absolute;
   width:100%;
@@ -35,30 +34,16 @@ canvas{
   text-align:center;
   opacity:0;
   pointer-events:none;
-  transform:translateY(20px);
-  transition:0.4s ease;
+  transition:0.4s;
 }
-
 .screen.active{
   opacity:1;
   pointer-events:auto;
-  transform:translateY(0);
 }
 
-.title{
-  font-size:1.8rem;
-  letter-spacing:3px;
-}
+.title{font-size:1.8rem;letter-spacing:3px;}
+.subtitle{margin-top:20px;font-size:0.9rem;opacity:0.75;max-width:340px;line-height:1.5;}
 
-.subtitle{
-  margin-top:20px;
-  font-size:0.9rem;
-  opacity:0.75;
-  max-width:340px;
-  line-height:1.5;
-}
-
-/* BUTTONS */
 .button{
   margin-top:20px;
   padding:12px 28px;
@@ -70,18 +55,12 @@ canvas{
   transition:0.3s;
   text-transform:uppercase;
 }
-
-.button:hover{
-  background:rgba(255,255,255,0.05);
-  transform:scale(1.05);
-}
-
+.button:hover{transform:scale(1.05);}
 .cyan{border-color:#00ffff;color:#00ffff;box-shadow:0 0 10px #00ffff;}
 .green{border-color:#00ff88;color:#00ff88;box-shadow:0 0 10px #00ff88;}
 .blue{border-color:#0099ff;color:#0099ff;box-shadow:0 0 10px #0099ff;}
-.white{border-color:#ffffff;color:#ffffff;box-shadow:0 0 8px #ffffff;}
+.white{border-color:white;color:white;box-shadow:0 0 8px white;}
 
-/* INPUT */
 input{
   margin-top:20px;
   padding:12px;
@@ -91,10 +70,9 @@ input{
   color:white;
   border:2px solid #00ff88;
   width:180px;
-  outline:none;
 }
 
-/* PASSWORD ANIMATIONS */
+/* PASSWORD SHAKE */
 @keyframes shake{
   0%{transform:translateX(0);}
   25%{transform:translateX(-6px);}
@@ -104,22 +82,6 @@ input{
 }
 .shake{animation:shake 0.3s;}
 
-@keyframes errorGlow{
-  0%{box-shadow:0 0 15px red;border-color:red;}
-  100%{box-shadow:0 0 10px #00ff88;border-color:#00ff88;}
-}
-.errorGlow{animation:errorGlow 0.4s;}
-
-@keyframes flicker{
-  0%{opacity:1;}
-  20%{opacity:0.2;}
-  40%{opacity:1;}
-  60%{opacity:0.3;}
-  80%{opacity:1;}
-  100%{opacity:1;}
-}
-.flicker{animation:flicker 0.3s;}
-
 /* HEARTS */
 .heart{
   position:fixed;
@@ -127,15 +89,15 @@ input{
   height:8px;
   transform:rotate(45deg);
   animation:floatUp 2s linear forwards;
-  z-index:10;
+  z-index:1000;
 }
-.heart:before,
-.heart:after{
+.heart:before,.heart:after{
   content:'';
   position:absolute;
   width:8px;
   height:8px;
   border-radius:50%;
+  background:inherit;
 }
 .heart:before{top:-4px;left:0;}
 .heart:after{left:-4px;top:0;}
@@ -145,66 +107,38 @@ input{
   100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
 }
 
-/* ARCADE LAYOUT */
-#arcadeScreen{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  overflow:hidden;
-}
-
+/* ARCADE */
+#arcadeScreen{display:flex;flex-direction:column;justify-content:flex-start;align-items:center;}
 .arcade-header{
   position:fixed;
   top:0;
-  left:0;
   width:100%;
-  padding:40px 20px 20px 20px;
+  padding:40px 20px 20px;
   background:black;
   z-index:5;
 }
-
 .arcade-grid-wrapper{
   width:100%;
   max-width:500px;
   height:calc(100vh - 120px);
   overflow-y:auto;
-  padding:140px 20px 40px 20px;
+  padding:140px 20px 40px;
 }
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
 
 /* PIXEL LOCK */
 .pixel-lock{
   display:inline-block;
-  width:14px;
-  height:10px;
-  background:white;
-  position:relative;
-  margin-right:10px;
+  width:14px;height:10px;background:white;position:relative;margin-right:10px;
 }
 .pixel-lock:before{
-  content:"";
-  position:absolute;
-  width:10px;
-  height:8px;
-  border:3px solid white;
-  border-bottom:none;
-  border-radius:8px 8px 0 0;
-  top:-9px;
-  left:50%;
-  transform:translateX(-50%);
+  content:"";position:absolute;width:10px;height:8px;border:3px solid white;border-bottom:none;
+  border-radius:8px 8px 0 0;top:-9px;left:50%;transform:translateX(-50%);
 }
 
-/* TILES */
+/* TILE */
 .tile{
-  position:relative;
   height:100px;
-  padding:12px;
   border:2px solid;
   display:flex;
   flex-direction:column;
@@ -215,76 +149,39 @@ input{
   transform:translateY(20px);
   transition:0.4s;
 }
+.tile.show{opacity:1;transform:translateY(0);}
 
-.tile.show{
-  opacity:1;
-  transform:translateY(0);
+@keyframes openPop{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.08);}
+  100%{transform:scale(1);}
 }
+.tile.opening{animation:openPop 0.3s;}
 
-/* Envelope pop */
-@keyframes openPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+@keyframes darkPulse{
+  0%{box-shadow:0 0 6px #cc0000;}
+  50%{box-shadow:0 0 16px #cc0000;}
+  100%{box-shadow:0 0 6px #cc0000;}
 }
-.tile.opening { animation: openPop 0.3s ease; }
+.dark-mode{animation:darkPulse 2s infinite;}
 
-/* After Dark pulse */
-@keyframes darkPulse {
-  0% { box-shadow: 0 0 6px #cc0000; }
-  50% { box-shadow: 0 0 16px #cc0000; }
-  100% { box-shadow: 0 0 6px #cc0000; }
-}
-.tile.dark-mode { animation: darkPulse 2s infinite ease-in-out; }
-
-.tile:before{
-  content:"";
-  position:absolute;
-  top:-2px;
-  left:-2px;
-  right:-2px;
-  height:20px;
-  border:2px solid;
-  border-bottom:none;
-}
-
-.tile-title{font-size:0.75rem;letter-spacing:1px;}
+.tile-title{font-size:0.75rem;}
 .tile-sub{font-size:0.6rem;opacity:0.6;margin-top:4px;}
 
 /* LETTER OVERLAY */
 #letterOverlay{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100vh;
+  top:0;left:0;width:100%;height:100vh;
   background:rgba(0,0,0,0.95);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-  opacity:0;
-  pointer-events:none;
-  transition:0.4s;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:20px;text-align:center;
+  opacity:0;pointer-events:none;transition:0.4s;
 }
-#letterOverlay.active{
-  opacity:1;
-  pointer-events:auto;
-}
+#letterOverlay.active{opacity:1;pointer-events:auto;}
 
-/* Blinking cursor */
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-}
-.cursor {
-  display:inline-block;
-  width:8px;
-  animation: blink 1s infinite;
-}
+@keyframes blink{0%{opacity:1;}50%{opacity:0;}100%{opacity:1;}}
+.cursor{display:inline-block;width:8px;animation:blink 1s infinite;}
 </style>
 </head>
 
@@ -294,7 +191,7 @@ input{
 
 <div id="bootScreen" class="screen active">
   <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 9.0</div>
+  <div class="subtitle">Version 10.0</div>
   <div class="button white" onclick="startGame()">PRESS START</div>
 </div>
 
@@ -302,6 +199,16 @@ input{
   <div class="title">ENTER ACCESS CODE</div>
   <input id="codeInput" type="password" maxlength="6">
   <div class="button green" onclick="checkCode()">CONFIRM</div>
+</div>
+
+<div id="welcomeScreen" class="screen">
+  <div class="title">WELCOME, MY FAVOURITE STARE.</div>
+  <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
+</div>
+
+<div id="rulesScreen" class="screen">
+  <div class="title">GAME RULES</div>
+  <div class="button blue" onclick="enterArcade()">ENTER ARCADE</div>
 </div>
 
 <div id="arcadeScreen" class="screen">
@@ -323,1526 +230,32 @@ input{
 /* SCREEN SWITCH */
 function showScreen(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  setTimeout(()=>{document.getElementById(id).classList.add("active");},100);
+  setTimeout(()=>document.getElementById(id).classList.add("active"),100);
 }
 
-/* MUSIC */
-let audioCtx,gainNode,melodyInterval;
-function startMusic(){
-  if(!audioCtx){
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    gainNode=audioCtx.createGain();
-    gainNode.gain.value=0.08;
-    gainNode.connect(audioCtx.destination);
-  }
-  if(audioCtx.state==="suspended"){audioCtx.resume();}
-  function tone(f,d,delay){
-    const osc=audioCtx.createOscillator();
-    osc.type="square";
-    osc.frequency.value=f;
-    osc.connect(gainNode);
-    osc.start(audioCtx.currentTime+delay);
-    osc.stop(audioCtx.currentTime+delay+d);
-  }
-  function melody(){
-    tone(220,0.2,0);
-    tone(330,0.2,0.3);
-    tone(440,0.2,0.6);
-    tone(330,0.2,0.9);
-  }
-  if(!melodyInterval){
-    melody();
-    melodyInterval=setInterval(melody,1600);
+/* PASSWORD */
+function checkCode(){
+  const input=document.getElementById("codeInput");
+  if(input.value==="280226"){
+    showScreen("welcomeScreen");
+  }else{
+    input.classList.add("shake");
+    setTimeout(()=>input.classList.remove("shake"),300);
+    input.value="";
   }
 }
-function startGame(){ startMusic(); showScreen("codeScreen"); }
+function startGame(){showScreen("codeScreen");}
 
-/* COLORED HEARTS */
+/* HEARTS */
 function createHearts(color){
-  for(let i=0;i<25;i++){
+  for(let i=0;i<20;i++){
     const heart=document.createElement("div");
     heart.classList.add("heart");
     heart.style.left=Math.random()*window.innerWidth+"px";
     heart.style.bottom="0px";
     heart.style.background=color;
     heart.style.boxShadow="0 0 10px "+color;
-
-    heart.style.setProperty("--color",color);
-    heart.style.background=color;
-    heart.style.borderColor=color;
-
-    heart.style.background=color;
     document.body.appendChild(heart);
-
-    heart.style.background=color;
-    heart.querySelectorAll;
-
-    heart.style.background=color;
-    heart.style.setProperty("--color",color);
-
-    heart.style.background=color;
-    heart.style.borderColor=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-    heart.style.borderColor=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-    heart.style.borderColor=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-    heart.style.borderColor=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-    heart.style.borderColor=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background=color;
-
-    heart.style.background color;
-
     setTimeout(()=>heart.remove(),2000);
   }
 }
@@ -1874,6 +287,7 @@ const letters=[
 {title:"ENERGY RECHARGE",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
 {title:"SIDE QUEST",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
 ];
+
 const grid=document.getElementById("grid");
 
 letters.forEach((l,i)=>{
@@ -1881,12 +295,19 @@ letters.forEach((l,i)=>{
   tile.classList.add("tile");
   tile.style.borderColor=l.color;
   tile.style.color=l.color;
-  if(l.title==="AFTER DARK"){ tile.classList.add("dark-mode"); }
+  if(l.title==="AFTER DARK"){tile.classList.add("dark-mode");}
   tile.innerHTML=`<div class="tile-title">${l.title}</div>
                   <div class="tile-sub">${l.sub}</div>`;
   tile.onclick=()=>openLetter(l,tile);
   grid.appendChild(tile);
 });
+
+function enterArcade(){
+  showScreen("arcadeScreen");
+  document.querySelectorAll(".tile").forEach((t,i)=>{
+    setTimeout(()=>t.classList.add("show"),i*80);
+  });
+}
 
 function openLetter(letter,tile){
   tile.classList.add("opening");
@@ -1896,23 +317,22 @@ function openLetter(letter,tile){
 
     const content=document.getElementById("letterContent");
     content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
-                       <p id="typedText" style="margin-top:15px;"></p>`;
+                       <p id="typedText"></p>`;
     const text=letter.text;
-    const typedElement=document.getElementById("typedText");
+    const typed=document.getElementById("typedText");
     let i=0;
-
-    function typeWriter(){
+    function type(){
       if(i<text.length){
-        typedElement.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
+        typed.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
         i++;
-        setTimeout(typeWriter,25);
+        setTimeout(type,25);
       }else{
-        typedElement.innerHTML=text+'<span class="cursor">_</span>';
+        typed.innerHTML=text+'<span class="cursor">_</span>';
       }
     }
-    typeWriter();
+    type();
     tile.classList.remove("opening");
-  },250);
+  },200);
 }
 
 function closeLetter(){
@@ -1925,20 +345,20 @@ const ctx=canvas.getContext("2d");
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
 resize();window.addEventListener("resize",resize);
 let stars=[];
-for(let i=0;i<200;i++){
-  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1+0.3});
+for(let i=0;i<150;i++){
+  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1+0.2});
 }
-function animateStars(){
+function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle="white";
-  stars.forEach(star=>{
-    ctx.fillRect(star.x,star.y,star.size,star.size);
-    star.y+=star.speed;
-    if(star.y>canvas.height){star.y=0;star.x=Math.random()*canvas.width;}
+  stars.forEach(s=>{
+    ctx.fillRect(s.x,s.y,s.size,s.size);
+    s.y+=s.speed;
+    if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;}
   });
-  requestAnimationFrame(animateStars);
+  requestAnimationFrame(animate);
 }
-animateStars();
+animate();
 
 </script>
 </body>

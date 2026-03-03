@@ -1,217 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emotional Arcade</title>
 
 <style>
-/* RESET */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    overflow: hidden;
-    background: black;
-    font-family: 'Courier New', monospace;
-    color: white;
+  overflow: hidden;
+  background: black;
+  color: white;
+  font-family: 'Courier New', monospace;
 }
 
-/* STARFIELD CANVAS */
 canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
-/* CENTER CONTENT */
 .screen {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .title {
-    font-size: 2rem;
-    letter-spacing: 3px;
+  font-size: 2rem;
+  letter-spacing: 3px;
 }
 
 .subtitle {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    opacity: 0.7;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  max-width: 320px;
 }
 
 .press-start {
-    margin-top: 40px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    animation: blink 1.2s infinite;
+  margin-top: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  animation: blink 1.2s infinite;
 }
 
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+  0%,100% {opacity:1;}
+  50% {opacity:0.3;}
 }
 
 .footer {
-    position: absolute;
-    bottom: 10px;
-    font-size: 0.7rem;
-    opacity: 0.6;
+  position: absolute;
+  bottom: 15px;
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+input {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 1.5rem;
+  text-align: center;
+  background: black;
+  color: white;
+  border: 2px solid white;
 }
 </style>
 </head>
+
 <body>
 
 <canvas id="starfield"></canvas>
 
 <div id="bootScreen" class="screen">
-    <div class="title">EMOTIONAL ARCADE</div>
-    <div class="subtitle">Version 1.0</div>
-    <div class="press-start" onclick="startGame()">PRESS START</div>
-    <div class="footer">© SillyStarer</div>
+  <div class="title">EMOTIONAL ARCADE</div>
+  <div class="subtitle">Version 1.0</div>
+  <div class="press-start" onclick="startGame()">PRESS START</div>
+  <div class="footer">© SillyStarer</div>
 </div>
 
 <script>
-// STARFIELD
+/* ---------------- STARFIELD ---------------- */
+
 const canvas = document.getElementById("starfield");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
 let stars = [];
-
 for (let i = 0; i < 200; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2,
-        speed: Math.random() * 1 + 0.2
-    });
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    speed: Math.random() * 1 + 0.3
+  });
 }
 
 function animateStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
 
-    stars.forEach(star => {
-        ctx.fillRect(star.x, star.y, star.size, star.size);
-        star.y += star.speed;
+  stars.forEach(star => {
+    ctx.fillRect(star.x, star.y, star.size, star.size);
+    star.y += star.speed;
 
-        if (star.y > canvas.height) {
-            star.y = 0;
-            star.x = Math.random() * canvas.width;
-        }
-    });
+    if (star.y > canvas.height) {
+      star.y = 0;
+      star.x = Math.random() * canvas.width;
+    }
+  });
 
-    requestAnimationFrame(animateStars);
+  requestAnimationFrame(animateStars);
 }
-
 animateStars();
 
-// CHECK IF ALREADY UNLOCKED
-if (localStorage.getItem("arcadeUnlocked") === "true") {
-    document.getElementById("bootScreen").style.display = "none";
-    showWelcome();
-}
+/* ---------------- MUSIC SYSTEM ---------------- */
 
-// START GAME
-let audioStarted = false;
 let audioCtx;
-
-function startGame() {
-    document.getElementById("bootScreen").style.display = "none";
-
-    if (!audioStarted) {
-        startMusic();
-        audioStarted = true;
-    }
-
-    showCodeScreen();
-}
+let gainNode;
+let melodyInterval;
 
 function startMusic() {
+  if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = 0.05; // volume (soft)
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0.08;
     gainNode.connect(audioCtx.destination);
+  }
 
-    function playTone(freq, time) {
-        const osc = audioCtx.createOscillator();
-        osc.type = "square";
-        osc.frequency.value = freq;
-        osc.connect(gainNode);
-        osc.start(audioCtx.currentTime + time);
-        osc.stop(audioCtx.currentTime + time + 0.2);
-    }
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
 
-    function loopMelody() {
-        const notes = [220, 330, 440, 330];
-        notes.forEach((note, i) => {
-            playTone(note, i * 0.4);
-        });
+  function playTone(freq, duration, delay) {
+    const osc = audioCtx.createOscillator();
+    osc.type = "square";
+    osc.frequency.value = freq;
+    osc.connect(gainNode);
+    osc.start(audioCtx.currentTime + delay);
+    osc.stop(audioCtx.currentTime + delay + duration);
+  }
 
-        setTimeout(loopMelody, 1600);
-    }
+  function playMelody() {
+    playTone(220, 0.2, 0);
+    playTone(330, 0.2, 0.3);
+    playTone(440, 0.2, 0.6);
+    playTone(330, 0.2, 0.9);
+  }
 
-    loopMelody();
+  if (!melodyInterval) {
+    playMelody();
+    melodyInterval = setInterval(playMelody, 1600);
+  }
 }
 
-// SHOW CODE SCREEN
+/* ---------------- GAME FLOW ---------------- */
+
+function startGame() {
+  document.getElementById("bootScreen").style.display = "none";
+  startMusic();
+  showCodeScreen();
+}
+
 function showCodeScreen() {
-    document.body.innerHTML += `
-    <div id="codeScreen" class="screen">
-        <div class="title">ENTER ACCESS CODE</div>
-        <input id="codeInput" type="password" maxlength="6"
-        style="margin-top:20px;padding:10px;font-size:1.5rem;text-align:center;background:black;color:white;border:2px solid white;">
-        <div class="press-start" onclick="checkCode()">CONFIRM</div>
-    </div>`;
+  if (localStorage.getItem("arcadeUnlocked") === "true") {
+    showWelcome();
+    return;
+  }
+
+  const div = document.createElement("div");
+  div.className = "screen";
+  div.id = "codeScreen";
+
+  div.innerHTML = `
+    <div class="title">ENTER ACCESS CODE</div>
+    <input id="codeInput" type="password" maxlength="6">
+    <div class="press-start" onclick="checkCode()">CONFIRM</div>
+  `;
+
+  document.body.appendChild(div);
 }
 
-// CHECK CODE
 function checkCode() {
-    const input = document.getElementById("codeInput").value;
-    if (input === "280226") {
-        localStorage.setItem("arcadeUnlocked", "true");
-        document.getElementById("codeScreen").remove();
-        showWelcome();
-    } else {
-        alert("ACCESS DENIED");
-    }
+  const input = document.getElementById("codeInput").value;
+
+  if (input === "280226") {
+    localStorage.setItem("arcadeUnlocked", "true");
+    document.getElementById("codeScreen").remove();
+    showWelcome();
+  } else {
+    alert("ACCESS DENIED");
+  }
 }
 
-// SHOW WELCOME SCREEN
 function showWelcome() {
-    document.body.innerHTML += `
-    <div id="welcomeScreen" class="screen">
-        <div class="title">WELCOME, MY FAVOURITE STARE.</div>
-        <div class="subtitle" style="margin-top:20px;max-width:300px;">
-        You have unlocked a private server.<br>
-        Inside are 24 emotional side quests.<br>
-        Some restore HP.<br>
-        Some boost XP.<br>
-        Some are… after dark DLC.<br><br>
-        Each one was designed specifically for you.<br>
-        No microtransactions required.<br>
-        Just press start when you're ready.
-        </div>
-        <div class="press-start" onclick="alert('Letters coming next phase')">
-        ENTER ARCADE
-        </div>
-        <div class="footer">Built by: SillyStarer</div>
-    </div>`;
+  const div = document.createElement("div");
+  div.className = "screen";
+  div.id = "welcomeScreen";
+
+  div.innerHTML = `
+    <div class="title">WELCOME, MY FAVOURITE STARE.</div>
+    <div class="subtitle">
+      You have unlocked a private server.<br>
+      Inside are 24 emotional side quests.<br>
+      Some restore HP.<br>
+      Some boost XP.<br>
+      Some are… after dark DLC.<br><br>
+      Each one was designed specifically for you.<br>
+      No microtransactions required.<br>
+      Just press start when you're ready.
+    </div>
+    <div class="press-start">ENTER ARCADE</div>
+    <div class="footer">Built by: SillyStarer</div>
+  `;
+
+  document.body.appendChild(div);
 }
 </script>
 

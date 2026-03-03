@@ -13,7 +13,6 @@ body{
   color:white;
   font-family:'Courier New',monospace;
   overflow:hidden;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* STARFIELD */
@@ -37,7 +36,7 @@ canvas{
   opacity:0;
   pointer-events:none;
   transform:translateY(20px);
-  transition:0.5s;
+  transition:0.4s ease;
 }
 
 .screen.active{
@@ -47,7 +46,7 @@ canvas{
 }
 
 .title{
-  font-size:2rem;
+  font-size:1.8rem;
   letter-spacing:3px;
 }
 
@@ -95,7 +94,7 @@ input{
   outline:none;
 }
 
-/* WRONG PASSWORD */
+/* PASSWORD ANIMATIONS */
 @keyframes shake{
   0%{transform:translateX(0);}
   25%{transform:translateX(-6px);}
@@ -148,13 +147,12 @@ input{
   100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
 }
 
-/* ARCADE GRID */
+/* ARCADE LAYOUT */
 #arcadeScreen{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:flex-start;
-  padding-top:120px;
   overflow:hidden;
 }
 
@@ -165,30 +163,51 @@ input{
   width:100%;
   padding:40px 20px 20px 20px;
   background:black;
-  text-align:center;
   z-index:5;
 }
 
 .arcade-grid-wrapper{
   width:100%;
   max-width:500px;
-  height:calc(100vh - 140px);
+  height:calc(100vh - 120px);
   overflow-y:auto;
-  padding:20px;
+  padding:140px 20px 40px 20px;
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:16px;
-  width:100%;
-  max-width:500px;
 }
 
+/* PIXEL LOCK */
+.pixel-lock{
+  display:inline-block;
+  width:14px;
+  height:10px;
+  background:white;
+  position:relative;
+  margin-right:10px;
+}
+.pixel-lock:before{
+  content:"";
+  position:absolute;
+  width:10px;
+  height:8px;
+  border:3px solid white;
+  border-bottom:none;
+  border-radius:8px 8px 0 0;
+  top:-9px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+/* TILES */
 .tile{
   position:relative;
   height:100px;
   padding:12px;
+  border:2px solid;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -197,7 +216,6 @@ input{
   opacity:0;
   transform:translateY(20px);
   transition:0.4s;
-  border:2px solid;
 }
 
 .tile.show{
@@ -216,16 +234,8 @@ input{
   border-bottom:none;
 }
 
-.tile-title{
-  font-size:0.75rem;
-  letter-spacing:1px;
-}
-
-.tile-sub{
-  font-size:0.6rem;
-  opacity:0.6;
-  margin-top:4px;
-}
+.tile-title{font-size:0.75rem;letter-spacing:1px;}
+.tile-sub{font-size:0.6rem;opacity:0.6;margin-top:4px;}
 
 /* LETTER OVERLAY */
 #letterOverlay{
@@ -250,36 +260,7 @@ input{
   opacity:1;
   pointer-events:auto;
 }
-
-.footer{
-  position:absolute;
-  bottom:15px;
-  font-size:0.7rem;
-  opacity:0.6;
-}
 </style>
-  .pixel-lock{
-  display:inline-block;
-  width:14px;
-  height:10px;
-  background:white;
-  position:relative;
-  margin-right:10px;
-  image-rendering:pixelated;
-}
-
-.pixel-lock:before{
-  content:"";
-  position:absolute;
-  width:10px;
-  height:8px;
-  border:3px solid white;
-  border-bottom:none;
-  border-radius:8px 8px 0 0;
-  top:-9px;
-  left:50%;
-  transform:translateX(-50%);
-}
 </head>
 
 <body>
@@ -289,9 +270,8 @@ input{
 <!-- BOOT -->
 <div id="bootScreen" class="screen active">
   <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 4.0</div>
+  <div class="subtitle">Version 5.0</div>
   <div class="button white" onclick="startGame()">PRESS START</div>
-  <div class="footer">© SillyStarer</div>
 </div>
 
 <!-- CODE -->
@@ -305,12 +285,10 @@ input{
 <div id="welcomeScreen" class="screen">
   <div class="title">WELCOME, MY FAVOURITE STARE.</div>
   <div class="subtitle">
-    You’ve accessed a private vault.<br>
     Inside are 24 side quests.<br>
     Some restore HP.<br>
     Some boost XP.<br>
-    Some unlock After Dark mode.<br><br>
-    Proceed carefully.
+    Some unlock After Dark mode.
   </div>
   <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
 </div>
@@ -329,16 +307,15 @@ input{
 
 <!-- ARCADE -->
 <div id="arcadeScreen" class="screen">
-
- <div class="title">
-  <span class="pixel-lock"></span>
-  ARCADE GRID
-</div>
+  <div class="arcade-header">
+    <div class="title">
+      <span class="pixel-lock"></span>ARCADE GRID
+    </div>
+  </div>
 
   <div class="arcade-grid-wrapper">
     <div class="grid" id="grid"></div>
   </div>
-
 </div>
 
 <!-- LETTER OVERLAY -->
@@ -425,29 +402,9 @@ function checkCode(){
 /* LETTER DATA */
 const letters=[
 {title:"LEVEL UP",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
-{title:"ACHIEVEMENT UNLOCKED",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
-{title:"POWER BOOST",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
-{title:"GHOST MODE",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
-{title:"HIGH ALERT",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
-{title:"PIECES NOT FITTING",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
-{title:"LOW BATTERY",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
-{title:"FIGHT MODE",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
-{title:"HP RESTORE",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
-{title:"HEALING CENTER",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
-{title:"AFFECTION BOOST",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
-{title:"FREE ROAM",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
 {title:"AFTER DARK",sub:"when you're feeling naughty",color:"#cc0000",text:"Some levels unlock only after midnight."},
-{title:"WEB OF THOUGHTS",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
-{title:"FAR FROM HOME",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
-{title:"RAINY DAY MODE",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
-{title:"BONUS ROUND",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
-{title:"MIDNIGHT SERVER",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
-{title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
-{title:"ANNUAL EVENT",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
-{title:"ON MY WAY",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
-{title:"LOW SIGNAL",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
-{title:"ENERGY RECHARGE",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
-{title:"SIDE QUEST",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
+{title:"HP RESTORE",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
+{title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."}
 ];
 
 const grid=document.getElementById("grid");
@@ -457,7 +414,6 @@ letters.forEach((l,i)=>{
   tile.classList.add("tile");
   tile.style.borderColor=l.color;
   tile.style.color=l.color;
-
   tile.innerHTML=`<div class="tile-title">${l.title}</div>
                   <div class="tile-sub">${l.sub}</div>`;
   tile.onclick=()=>openLetter(l);

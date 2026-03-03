@@ -6,85 +6,83 @@
 <title>Emotional Arcade</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  overflow: hidden;
-  background: black;
-  color: white;
-  font-family: 'Courier New', monospace;
+  overflow:hidden;
+  background:black;
+  color:white;
+  font-family:'Courier New', monospace;
 }
 
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
 }
 
-/* Screen System */
 .screen {
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
+  position:absolute;
+  width:100%;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transform:translateX(30px);
+  transition:opacity 0.5s ease, transform 0.5s ease;
 }
 
 .screen.active {
-  opacity: 1;
-  pointer-events: auto;
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(0);
 }
 
 .title {
-  font-size: 2rem;
-  letter-spacing: 3px;
+  font-size:2rem;
+  letter-spacing:3px;
 }
 
 .subtitle {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  opacity: 0.7;
-  max-width: 320px;
+  margin-top:15px;
+  font-size:0.9rem;
+  opacity:0.7;
+  max-width:340px;
+  line-height:1.4;
 }
 
 .press-start {
-  margin-top: 40px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  animation: blink 1.2s infinite;
+  margin-top:35px;
+  font-size:1.1rem;
+  cursor:pointer;
+  animation:blink 1.2s infinite;
 }
 
 @keyframes blink {
-  0%,100% {opacity:1;}
-  50% {opacity:0.3;}
+  0%,100%{opacity:1;}
+  50%{opacity:0.3;}
 }
 
 .footer {
-  position: absolute;
-  bottom: 15px;
-  font-size: 0.7rem;
-  opacity: 0.6;
+  position:absolute;
+  bottom:15px;
+  font-size:0.7rem;
+  opacity:0.6;
 }
 
 input {
-  margin-top: 20px;
-  padding: 10px;
-  font-size: 1.5rem;
-  text-align: center;
-  background: black;
-  color: white;
-  border: 2px solid white;
+  margin-top:20px;
+  padding:10px;
+  font-size:1.5rem;
+  text-align:center;
+  background:black;
+  color:white;
+  border:2px solid white;
 }
 </style>
 </head>
@@ -93,6 +91,7 @@ input {
 
 <canvas id="starfield"></canvas>
 
+<!-- Boot -->
 <div id="bootScreen" class="screen active">
   <div class="title">EMOTIONAL ARCADE</div>
   <div class="subtitle">Version 1.0</div>
@@ -100,12 +99,14 @@ input {
   <div class="footer">© SillyStarer</div>
 </div>
 
+<!-- Code -->
 <div id="codeScreen" class="screen">
   <div class="title">ENTER ACCESS CODE</div>
   <input id="codeInput" type="password" maxlength="6">
   <div class="press-start" onclick="checkCode()">CONFIRM</div>
 </div>
 
+<!-- Welcome -->
 <div id="welcomeScreen" class="screen">
   <div class="title">WELCOME, MY FAVOURITE STARE.</div>
   <div class="subtitle">
@@ -118,26 +119,35 @@ input {
     No microtransactions required.<br>
     Just press start when you're ready.
   </div>
-  <div class="press-start">ENTER ARCADE</div>
+  <div class="press-start" onclick="showScreen('rulesScreen')">VIEW RULES</div>
+  <div class="press-start" onclick="alert('Letter grid next phase')">ENTER ARCADE</div>
   <div class="footer">Built by: SillyStarer</div>
+</div>
+
+<!-- Rules -->
+<div id="rulesScreen" class="screen">
+  <div class="title">GAME RULES</div>
+  <div class="subtitle">
+    1. Open a level only when it matches your mood.<br><br>
+    2. No speed-running through emotions.<br><br>
+    3. “After Dark Mode” requires honesty.<br><br>
+    4. Some levels may hit harder than expected.<br><br>
+    5. Progress saves automatically in your heart.
+  </div>
+  <div class="press-start" onclick="showScreen('welcomeScreen')">RETURN TO LOBBY</div>
 </div>
 
 <script>
 
-/* ---------------- SCREEN SWITCHER ---------------- */
-
-function showScreen(screenId) {
-  document.querySelectorAll(".screen").forEach(screen => {
-    screen.classList.remove("active");
-  });
-
+/* SCREEN SWITCHER */
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   setTimeout(() => {
-    document.getElementById(screenId).classList.add("active");
-  }, 100);
+    document.getElementById(id).classList.add("active");
+  }, 50);
 }
 
-/* ---------------- STARFIELD ---------------- */
-
+/* STARFIELD */
 const canvas = document.getElementById("starfield");
 const ctx = canvas.getContext("2d");
 
@@ -149,90 +159,78 @@ resize();
 window.addEventListener("resize", resize);
 
 let stars = [];
-for (let i = 0; i < 200; i++) {
+for (let i=0;i<200;i++){
   stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    size: Math.random() * 2,
-    speed: Math.random() * 1 + 0.3
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    size:Math.random()*2,
+    speed:Math.random()*1+0.3
   });
 }
 
-function animateStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
-
-  stars.forEach(star => {
-    ctx.fillRect(star.x, star.y, star.size, star.size);
-    star.y += star.speed;
-
-    if (star.y > canvas.height) {
-      star.y = 0;
-      star.x = Math.random() * canvas.width;
+function animateStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  stars.forEach(star=>{
+    ctx.fillRect(star.x,star.y,star.size,star.size);
+    star.y+=star.speed;
+    if(star.y>canvas.height){
+      star.y=0;
+      star.x=Math.random()*canvas.width;
     }
   });
-
   requestAnimationFrame(animateStars);
 }
 animateStars();
 
-/* ---------------- MUSIC ---------------- */
+/* MUSIC */
+let audioCtx, gainNode, melodyInterval;
 
-let audioCtx;
-let gainNode;
-let melodyInterval;
-
-function startMusic() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    gainNode = audioCtx.createGain();
-    gainNode.gain.value = 0.08;
+function startMusic(){
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    gainNode=audioCtx.createGain();
+    gainNode.gain.value=0.08;
     gainNode.connect(audioCtx.destination);
   }
+  if(audioCtx.state==="suspended"){audioCtx.resume();}
 
-  if (audioCtx.state === "suspended") {
-    audioCtx.resume();
-  }
-
-  function playTone(freq, duration, delay) {
-    const osc = audioCtx.createOscillator();
-    osc.type = "square";
-    osc.frequency.value = freq;
+  function playTone(freq,duration,delay){
+    const osc=audioCtx.createOscillator();
+    osc.type="square";
+    osc.frequency.value=freq;
     osc.connect(gainNode);
-    osc.start(audioCtx.currentTime + delay);
-    osc.stop(audioCtx.currentTime + delay + duration);
+    osc.start(audioCtx.currentTime+delay);
+    osc.stop(audioCtx.currentTime+delay+duration);
   }
 
-  function playMelody() {
-    playTone(220, 0.2, 0);
-    playTone(330, 0.2, 0.3);
-    playTone(440, 0.2, 0.6);
-    playTone(330, 0.2, 0.9);
+  function melody(){
+    playTone(220,0.2,0);
+    playTone(330,0.2,0.3);
+    playTone(440,0.2,0.6);
+    playTone(330,0.2,0.9);
   }
 
-  if (!melodyInterval) {
-    playMelody();
-    melodyInterval = setInterval(playMelody, 1600);
+  if(!melodyInterval){
+    melody();
+    melodyInterval=setInterval(melody,1600);
   }
 }
 
-/* ---------------- GAME FLOW ---------------- */
-
-function startGame() {
+/* FLOW */
+function startGame(){
   startMusic();
-
-  if (localStorage.getItem("arcadeUnlocked") === "true") {
+  if(localStorage.getItem("arcadeUnlocked")==="true"){
     showScreen("welcomeScreen");
   } else {
     showScreen("codeScreen");
   }
 }
 
-function checkCode() {
-  const input = document.getElementById("codeInput").value;
-
-  if (input === "280226") {
-    localStorage.setItem("arcadeUnlocked", "true");
+function checkCode(){
+  const val=document.getElementById("codeInput").value;
+  if(val==="280226"){
+    localStorage.setItem("arcadeUnlocked","true");
     showScreen("welcomeScreen");
   } else {
     alert("ACCESS DENIED");

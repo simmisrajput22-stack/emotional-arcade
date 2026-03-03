@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emotional Arcade</title>
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background: black;
+    font-family: 'Courier New', monospace;
+    color: white;
+}
+
+/* STARFIELD CANVAS */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* CENTER CONTENT */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    letter-spacing: 3px;
+}
+
+.subtitle {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.press-start {
+    margin-top: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<div id="bootScreen" class="screen">
+    <div class="title">EMOTIONAL ARCADE</div>
+    <div class="subtitle">Version 1.0</div>
+    <div class="press-start" onclick="startGame()">PRESS START</div>
+    <div class="footer">© SillyStarer</div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8a1a0f4b4.mp3?filename=8-bit-arcade-11060.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// STARFIELD
+const canvas = document.getElementById("starfield");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for (let i = 0; i < 200; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 1 + 0.2
+    });
+}
+
+function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+
+    stars.forEach(star => {
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+        star.y += star.speed;
+
+        if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+        }
+    });
+
+    requestAnimationFrame(animateStars);
+}
+
+animateStars();
+
+// START GAME
+function startGame() {
+    document.getElementById("bootScreen").style.display = "none";
+    document.getElementById("bgMusic").play();
+
+    // Temporary alert (we replace this next phase)
+    alert("Phase 1 Complete. Next: Cheat Code Screen.");
+}
+</script>
+
+</body>
+</html>

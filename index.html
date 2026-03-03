@@ -15,7 +15,6 @@ body {
   font-family:'Courier New', monospace;
 }
 
-/* STARFIELD */
 canvas {
   position:fixed;
   top:0;
@@ -60,7 +59,7 @@ canvas {
 
 /* NEON BUTTON */
 .button {
-  margin-top:25px;
+  margin-top:20px;
   padding:12px 28px;
   font-size:0.9rem;
   letter-spacing:2px;
@@ -76,7 +75,7 @@ canvas {
   transform:scale(1.05);
 }
 
-.cyan { border-color:#00ffff; color:#00ffff; box-shadow:0 0 10px #00ffff; }
+.cyan  { border-color:#00ffff; color:#00ffff; box-shadow:0 0 10px #00ffff; }
 .green { border-color:#00ff88; color:#00ff88; box-shadow:0 0 10px #00ff88; }
 .blue  { border-color:#0099ff; color:#0099ff; box-shadow:0 0 10px #0099ff; }
 .white { border-color:#ffffff; color:#ffffff; box-shadow:0 0 8px #ffffff; }
@@ -94,7 +93,7 @@ input {
   width:180px;
 }
 
-/* WRONG PASSWORD ANIMATIONS */
+/* WRONG PASSWORD ANIMATION */
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-6px); }
@@ -102,25 +101,22 @@ input {
   75% { transform: translateX(-6px); }
   100% { transform: translateX(0); }
 }
-
 .shake { animation: shake 0.3s; }
 
 @keyframes errorGlow {
-  0% { box-shadow: 0 0 15px red; border-color:red; }
-  100% { box-shadow: 0 0 10px #00ff88; border-color:#00ff88; }
+  0% { box-shadow:0 0 15px red; border-color:red; }
+  100% { box-shadow:0 0 10px #00ff88; border-color:#00ff88; }
 }
-
-.errorGlow { animation: errorGlow 0.4s; }
+.errorGlow { animation:errorGlow 0.4s; }
 
 @keyframes flicker {
-  0% { opacity:1; }
-  20% { opacity:0.2; }
-  40% { opacity:1; }
-  60% { opacity:0.3; }
-  80% { opacity:1; }
-  100% { opacity:1; }
+  0%{opacity:1;}
+  20%{opacity:0.2;}
+  40%{opacity:1;}
+  60%{opacity:0.3;}
+  80%{opacity:1;}
+  100%{opacity:1;}
 }
-
 .flicker { animation:flicker 0.3s; }
 
 /* HEARTS */
@@ -145,7 +141,7 @@ input {
 }
 
 .heart:before { top:-4px; left:0; }
-.heart:after { left:-4px; top:0; }
+.heart:after  { left:-4px; top:0; }
 
 @keyframes floatUp {
   0% { transform: translateY(0) rotate(45deg); opacity:1; }
@@ -168,7 +164,7 @@ input {
 <!-- BOOT -->
 <div id="bootScreen" class="screen active">
   <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 1.0</div>
+  <div class="subtitle">Version 1.1</div>
   <div class="button white" onclick="startGame()">PRESS START</div>
   <div class="footer">© SillyStarer</div>
 </div>
@@ -177,7 +173,7 @@ input {
 <div id="codeScreen" class="screen">
   <div class="title">ENTER ACCESS CODE</div>
   <input id="codeInput" type="password" maxlength="6">
-  <div id="confirmBtn" class="button green" onclick="checkCode()">CONFIRM</div>
+  <div class="button green" onclick="checkCode()">CONFIRM</div>
 </div>
 
 <!-- WELCOME -->
@@ -192,6 +188,27 @@ input {
     Proceed carefully.
   </div>
   <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
+</div>
+
+<!-- RULES -->
+<div id="rulesScreen" class="screen">
+  <div class="title">GAME RULES</div>
+  <div class="subtitle">
+    1. Open a level only when it matches your mood.<br><br>
+    2. No speed-running through emotions.<br><br>
+    3. After Dark Mode requires honesty.<br><br>
+    4. Some levels may hit harder than expected.<br><br>
+    5. Progress saves automatically in your heart.
+  </div>
+  <div class="button blue" onclick="showScreen('arcadeScreen')">ENTER ARCADE</div>
+  <div class="button white" onclick="showScreen('welcomeScreen')">RETURN TO LOBBY</div>
+</div>
+
+<!-- ARCADE PLACEHOLDER -->
+<div id="arcadeScreen" class="screen">
+  <div class="title">ARCADE GRID</div>
+  <div class="subtitle">Letter grid loading next phase...</div>
+  <div class="button white" onclick="showScreen('rulesScreen')">BACK</div>
 </div>
 
 <script>
@@ -296,7 +313,7 @@ function checkCode(){
 
   if(val==="280226"){
     createHearts();
-    setTimeout(()=>showScreen("welcomeScreen"),1000);
+    setTimeout(()=>showScreen("welcomeScreen"),900);
   } else {
     input.classList.add("shake","errorGlow");
     title.classList.add("flicker");

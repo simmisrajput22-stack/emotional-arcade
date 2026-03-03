@@ -275,6 +275,18 @@ input{
   opacity:1;
   pointer-events:auto;
 }
+
+/* Blinking cursor */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.cursor {
+  display:inline-block;
+  width:8px;
+  animation: blink 1s infinite;
+}
 </style>
 </head>
 
@@ -282,21 +294,18 @@ input{
 
 <canvas id="starfield"></canvas>
 
-<!-- BOOT -->
 <div id="bootScreen" class="screen active">
   <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 7.0</div>
+  <div class="subtitle">Version 8.0</div>
   <div class="button white" onclick="startGame()">PRESS START</div>
 </div>
 
-<!-- CODE -->
 <div id="codeScreen" class="screen">
   <div class="title">ENTER ACCESS CODE</div>
   <input id="codeInput" type="password" maxlength="6">
   <div class="button green" onclick="checkCode()">CONFIRM</div>
 </div>
 
-<!-- WELCOME -->
 <div id="welcomeScreen" class="screen">
   <div class="title">WELCOME, MY FAVOURITE STARE.</div>
   <div class="subtitle">
@@ -308,7 +317,6 @@ input{
   <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
 </div>
 
-<!-- RULES -->
 <div id="rulesScreen" class="screen">
   <div class="title">GAME RULES</div>
   <div class="subtitle">
@@ -320,18 +328,15 @@ input{
   <div class="button white" onclick="showScreen('welcomeScreen')">RETURN</div>
 </div>
 
-<!-- ARCADE -->
 <div id="arcadeScreen" class="screen">
   <div class="arcade-header">
     <div class="title"><span class="pixel-lock"></span>ARCADE GRID</div>
   </div>
-
   <div class="arcade-grid-wrapper">
     <div class="grid" id="grid"></div>
   </div>
 </div>
 
-<!-- LETTER OVERLAY -->
 <div id="letterOverlay">
   <div id="letterContent"></div>
   <div class="button white" onclick="closeLetter()">CLOSE</div>
@@ -408,7 +413,7 @@ function checkCode(){
   }
 }
 
-/* FULL 24 LETTERS */
+/* LETTER DATA */
 const letters=[
 {title:"LEVEL UP",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
 {title:"ACHIEVEMENT UNLOCKED",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
@@ -463,29 +468,26 @@ function enterArcade(){
 
 function openLetter(letter,tile){
   tile.classList.add("opening");
-
   setTimeout(()=>{
     document.getElementById("letterOverlay").classList.add("active");
+    const content=document.getElementById("letterContent");
+    content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
+                       <p id="typedText" style="margin-top:15px;"></p>`;
+    const text=letter.text;
+    const typedElement=document.getElementById("typedText");
+    let i=0;
 
-    const content = document.getElementById("letterContent");
-    content.innerHTML = `<h2 style="color:${letter.color}">${letter.title}</h2>
-                         <p id="typedText" style="margin-top:15px;"></p>`;
-
-    const text = letter.text;
-    const typedElement = document.getElementById("typedText");
-
-    let i = 0;
     function typeWriter(){
-      if(i < text.length){
-        typedElement.innerHTML += text.charAt(i);
+      if(i<text.length){
+        typedElement.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
         i++;
-        setTimeout(typeWriter, 40); // typing speed (lower = faster)
+        setTimeout(typeWriter,25);
+      }else{
+        typedElement.innerHTML=text+'<span class="cursor">_</span>';
       }
     }
-
     typeWriter();
     tile.classList.remove("opening");
-
   },250);
 }
 

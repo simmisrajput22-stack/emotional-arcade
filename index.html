@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emotional Arcade</title>
+<title>8-Bit Vault</title>
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -15,6 +15,7 @@ body {
   font-family:'Courier New', monospace;
 }
 
+/* STARFIELD */
 canvas {
   position:fixed;
   top:0;
@@ -22,6 +23,7 @@ canvas {
   z-index:-1;
 }
 
+/* SCREEN SYSTEM */
 .screen {
   position:absolute;
   width:100%;
@@ -33,14 +35,14 @@ canvas {
   text-align:center;
   opacity:0;
   pointer-events:none;
-  transform:translateX(30px);
+  transform:translateY(20px);
   transition:opacity 0.5s ease, transform 0.5s ease;
 }
 
 .screen.active {
   opacity:1;
   pointer-events:auto;
-  transform:translateX(0);
+  transform:translateY(0);
 }
 
 .title {
@@ -49,23 +51,54 @@ canvas {
 }
 
 .subtitle {
-  margin-top:15px;
+  margin-top:20px;
   font-size:0.9rem;
-  opacity:0.7;
+  opacity:0.75;
   max-width:340px;
-  line-height:1.4;
+  line-height:1.5;
 }
 
-.press-start {
-  margin-top:35px;
-  font-size:1.1rem;
+/* NEON BUTTON */
+.button {
+  margin-top:25px;
+  padding:12px 28px;
+  font-size:0.9rem;
+  letter-spacing:2px;
+  background:transparent;
+  border:2px solid;
   cursor:pointer;
-  animation:blink 1.2s infinite;
+  transition:0.3s;
+  text-transform:uppercase;
 }
 
-@keyframes blink {
-  0%,100%{opacity:1;}
-  50%{opacity:0.3;}
+.button:hover {
+  background:rgba(255,255,255,0.05);
+  transform:scale(1.05);
+}
+
+.cyan { border-color:#00ffff; color:#00ffff; box-shadow:0 0 10px #00ffff; }
+.green { border-color:#00ff88; color:#00ff88; box-shadow:0 0 10px #00ff88; }
+.blue  { border-color:#0099ff; color:#0099ff; box-shadow:0 0 10px #0099ff; }
+.white { border-color:#ffffff; color:#ffffff; box-shadow:0 0 8px #ffffff; }
+.redFlash {
+  animation: flash 0.4s;
+}
+
+@keyframes flash {
+  0% { border-color:red; box-shadow:0 0 15px red; }
+  100% { border-color:#00ff88; box-shadow:0 0 10px #00ff88; }
+}
+
+input {
+  margin-top:20px;
+  padding:12px;
+  font-size:1.2rem;
+  text-align:center;
+  background:black;
+  color:white;
+  border:2px solid #00ff88;
+  outline:none;
+  width:180px;
 }
 
 .footer {
@@ -74,16 +107,6 @@ canvas {
   font-size:0.7rem;
   opacity:0.6;
 }
-
-input {
-  margin-top:20px;
-  padding:10px;
-  font-size:1.5rem;
-  text-align:center;
-  background:black;
-  color:white;
-  border:2px solid white;
-}
 </style>
 </head>
 
@@ -91,75 +114,70 @@ input {
 
 <canvas id="starfield"></canvas>
 
-<!-- Boot -->
+<!-- BOOT -->
 <div id="bootScreen" class="screen active">
-  <div class="title">EMOTIONAL ARCADE</div>
+  <div class="title">8-BIT VAULT</div>
   <div class="subtitle">Version 1.0</div>
-  <div class="press-start" onclick="startGame()">PRESS START</div>
+  <div class="button white" onclick="startGame()">PRESS START</div>
   <div class="footer">© SillyStarer</div>
 </div>
 
-<!-- Code -->
+<!-- CODE -->
 <div id="codeScreen" class="screen">
   <div class="title">ENTER ACCESS CODE</div>
   <input id="codeInput" type="password" maxlength="6">
-  <div class="press-start" onclick="checkCode()">CONFIRM</div>
+  <div id="confirmBtn" class="button green" onclick="checkCode()">CONFIRM</div>
 </div>
 
-<!-- Welcome -->
+<!-- WELCOME -->
 <div id="welcomeScreen" class="screen">
   <div class="title">WELCOME, MY FAVOURITE STARE.</div>
   <div class="subtitle">
-    You have unlocked a private server.<br>
-    Inside are 24 emotional side quests.<br>
+    You’ve accessed a private vault.<br>
+    Inside are 24 side quests.<br>
     Some restore HP.<br>
     Some boost XP.<br>
-    Some are… after dark DLC.<br><br>
-    Each one was designed specifically for you.<br>
-    No microtransactions required.<br>
-    Just press start when you're ready.
+    Some unlock after dark mode.<br><br>
+    Proceed carefully.
   </div>
-  <div class="press-start" onclick="showScreen('rulesScreen')">VIEW RULES</div>
-  <div class="press-start" onclick="alert('Letter grid next phase')">ENTER ARCADE</div>
-  <div class="footer">Built by: SillyStarer</div>
+  <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
 </div>
 
-<!-- Rules -->
+<!-- RULES -->
 <div id="rulesScreen" class="screen">
   <div class="title">GAME RULES</div>
   <div class="subtitle">
     1. Open a level only when it matches your mood.<br><br>
     2. No speed-running through emotions.<br><br>
-    3. “After Dark Mode” requires honesty.<br><br>
+    3. After Dark Mode requires honesty.<br><br>
     4. Some levels may hit harder than expected.<br><br>
     5. Progress saves automatically in your heart.
   </div>
-  <div class="press-start" onclick="showScreen('welcomeScreen')">RETURN TO LOBBY</div>
+  <div class="button blue" onclick="alert('Arcade grid next phase')">ENTER ARCADE</div>
+  <div class="button white" onclick="showScreen('welcomeScreen')">RETURN TO LOBBY</div>
 </div>
 
 <script>
 
-/* SCREEN SWITCHER */
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  setTimeout(() => {
-    document.getElementById(id).classList.add("active");
-  }, 50);
+/* SCREEN SWITCH */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  setTimeout(()=>{document.getElementById(id).classList.add("active");},100);
 }
 
 /* STARFIELD */
-const canvas = document.getElementById("starfield");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("starfield");
+const ctx=canvas.getContext("2d");
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function resize(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
 }
 resize();
-window.addEventListener("resize", resize);
+window.addEventListener("resize",resize);
 
-let stars = [];
-for (let i=0;i<200;i++){
+let stars=[];
+for(let i=0;i<200;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
@@ -184,7 +202,7 @@ function animateStars(){
 animateStars();
 
 /* MUSIC */
-let audioCtx, gainNode, melodyInterval;
+let audioCtx,gainNode,melodyInterval;
 
 function startMusic(){
   if(!audioCtx){
@@ -195,20 +213,20 @@ function startMusic(){
   }
   if(audioCtx.state==="suspended"){audioCtx.resume();}
 
-  function playTone(freq,duration,delay){
+  function tone(f,d,delay){
     const osc=audioCtx.createOscillator();
     osc.type="square";
-    osc.frequency.value=freq;
+    osc.frequency.value=f;
     osc.connect(gainNode);
     osc.start(audioCtx.currentTime+delay);
-    osc.stop(audioCtx.currentTime+delay+duration);
+    osc.stop(audioCtx.currentTime+delay+d);
   }
 
   function melody(){
-    playTone(220,0.2,0);
-    playTone(330,0.2,0.3);
-    playTone(440,0.2,0.6);
-    playTone(330,0.2,0.9);
+    tone(220,0.2,0);
+    tone(330,0.2,0.3);
+    tone(440,0.2,0.6);
+    tone(330,0.2,0.9);
   }
 
   if(!melodyInterval){
@@ -220,20 +238,18 @@ function startMusic(){
 /* FLOW */
 function startGame(){
   startMusic();
-  if(localStorage.getItem("arcadeUnlocked")==="true"){
-    showScreen("welcomeScreen");
-  } else {
-    showScreen("codeScreen");
-  }
+  showScreen("codeScreen");
 }
 
 function checkCode(){
   const val=document.getElementById("codeInput").value;
+  const btn=document.getElementById("confirmBtn");
+
   if(val==="280226"){
-    localStorage.setItem("arcadeUnlocked","true");
     showScreen("welcomeScreen");
   } else {
-    alert("ACCESS DENIED");
+    btn.classList.add("redFlash");
+    setTimeout(()=>btn.classList.remove("redFlash"),400);
   }
 }
 

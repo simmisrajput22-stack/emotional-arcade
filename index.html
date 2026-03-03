@@ -124,13 +124,62 @@ function animateStars() {
 
 animateStars();
 
+// CHECK IF ALREADY UNLOCKED
+if (localStorage.getItem("arcadeUnlocked") === "true") {
+    document.getElementById("bootScreen").style.display = "none";
+    showWelcome();
+}
+
 // START GAME
 function startGame() {
     document.getElementById("bootScreen").style.display = "none";
     document.getElementById("bgMusic").play();
+    showCodeScreen();
+}
 
-    // Temporary alert (we replace this next phase)
-    alert("Phase 1 Complete. Next: Cheat Code Screen.");
+// SHOW CODE SCREEN
+function showCodeScreen() {
+    document.body.innerHTML += `
+    <div id="codeScreen" class="screen">
+        <div class="title">ENTER ACCESS CODE</div>
+        <input id="codeInput" type="password" maxlength="6"
+        style="margin-top:20px;padding:10px;font-size:1.5rem;text-align:center;background:black;color:white;border:2px solid white;">
+        <div class="press-start" onclick="checkCode()">CONFIRM</div>
+    </div>`;
+}
+
+// CHECK CODE
+function checkCode() {
+    const input = document.getElementById("codeInput").value;
+    if (input === "280226") {
+        localStorage.setItem("arcadeUnlocked", "true");
+        document.getElementById("codeScreen").remove();
+        showWelcome();
+    } else {
+        alert("ACCESS DENIED");
+    }
+}
+
+// SHOW WELCOME SCREEN
+function showWelcome() {
+    document.body.innerHTML += `
+    <div id="welcomeScreen" class="screen">
+        <div class="title">WELCOME, MY FAVOURITE STARE.</div>
+        <div class="subtitle" style="margin-top:20px;max-width:300px;">
+        You have unlocked a private server.<br>
+        Inside are 24 emotional side quests.<br>
+        Some restore HP.<br>
+        Some boost XP.<br>
+        Some are… after dark DLC.<br><br>
+        Each one was designed specifically for you.<br>
+        No microtransactions required.<br>
+        Just press start when you're ready.
+        </div>
+        <div class="press-start" onclick="alert('Letters coming next phase')">
+        ENTER ARCADE
+        </div>
+        <div class="footer">Built by: SillyStarer</div>
+    </div>`;
 }
 </script>
 

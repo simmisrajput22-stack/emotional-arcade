@@ -463,12 +463,29 @@ function enterArcade(){
 
 function openLetter(letter,tile){
   tile.classList.add("opening");
+
   setTimeout(()=>{
-    document.getElementById("letterContent").innerHTML=
-      `<h2 style="color:${letter.color}">${letter.title}</h2>
-       <p style="margin-top:15px;">${letter.text}</p>`;
     document.getElementById("letterOverlay").classList.add("active");
+
+    const content = document.getElementById("letterContent");
+    content.innerHTML = `<h2 style="color:${letter.color}">${letter.title}</h2>
+                         <p id="typedText" style="margin-top:15px;"></p>`;
+
+    const text = letter.text;
+    const typedElement = document.getElementById("typedText");
+
+    let i = 0;
+    function typeWriter(){
+      if(i < text.length){
+        typedElement.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 25); // typing speed (lower = faster)
+      }
+    }
+
+    typeWriter();
     tile.classList.remove("opening");
+
   },250);
 }
 

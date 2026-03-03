@@ -150,13 +150,31 @@ input{
 
 /* ARCADE GRID */
 #arcadeScreen{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding-top:120px;
+  overflow:hidden;
+}
+
+.arcade-header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  padding:40px 20px 20px 20px;
+  background:black;
+  text-align:center;
+  z-index:5;
+}
+
+.arcade-grid-wrapper{
+  width:100%;
+  max-width:500px;
+  height:calc(100vh - 140px);
   overflow-y:auto;
-  padding:
-    calc(80px + env(safe-area-inset-top))
-    20px
-    calc(60px + env(safe-area-inset-bottom))
-    20px;
-  align-items:flex-start;
+  padding:20px;
 }
 
 .grid{
@@ -289,7 +307,15 @@ input{
 
 <!-- ARCADE -->
 <div id="arcadeScreen" class="screen">
-  <div class="grid" id="grid"></div>
+
+  <div class="arcade-header">
+    <div class="title">ARCADE GRID</div>
+  </div>
+
+  <div class="arcade-grid-wrapper">
+    <div class="grid" id="grid"></div>
+  </div>
+
 </div>
 
 <!-- LETTER OVERLAY -->

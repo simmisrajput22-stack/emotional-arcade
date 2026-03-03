@@ -7,6 +7,25 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+  /* Envelope open animation */
+@keyframes openPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+  @keyframes darkPulse {
+  0% { box-shadow: 0 0 6px #cc0000; }
+  50% { box-shadow: 0 0 16px #cc0000; }
+  100% { box-shadow: 0 0 6px #cc0000; }
+}
+
+.tile.dark-mode {
+  animation: darkPulse 2s infinite ease-in-out;
+}
+
+.tile.opening {
+  animation: openPop 0.3s ease;
+}
 
 body{
   background:black;
@@ -432,9 +451,12 @@ letters.forEach((l,i)=>{
   tile.classList.add("tile");
   tile.style.borderColor=l.color;
   tile.style.color=l.color;
+  if(l.title === "AFTER DARK"){
+  tile.classList.add("dark-mode");
+}
   tile.innerHTML=`<div class="tile-title">${l.title}</div>
                   <div class="tile-sub">${l.sub}</div>`;
-  tile.onclick=()=>openLetter(l);
+  tile.onclick=()=>openLetter(l, tile);
   grid.appendChild(tile);
 });
 
@@ -446,11 +468,16 @@ function enterArcade(){
   });
 }
 
-function openLetter(letter){
-  document.getElementById("letterContent").innerHTML=
-    `<h2 style="color:${letter.color}">${letter.title}</h2>
-     <p style="margin-top:15px;">${letter.text}</p>`;
-  document.getElementById("letterOverlay").classList.add("active");
+function openLetter(letter, tile){
+  tile.classList.add("opening");
+
+  setTimeout(()=>{
+    document.getElementById("letterContent").innerHTML=
+      `<h2 style="color:${letter.color}">${letter.title}</h2>
+       <p style="margin-top:15px;">${letter.text}</p>`;
+    document.getElementById("letterOverlay").classList.add("active");
+    tile.classList.remove("opening");
+  },250);
 }
 
 function closeLetter(){

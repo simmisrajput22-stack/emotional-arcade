@@ -15,6 +15,7 @@ body{
   overflow:hidden;
 }
 
+/* STARFIELD */
 canvas{
   position:fixed;
   top:0;
@@ -22,7 +23,7 @@ canvas{
   z-index:-2;
 }
 
-/* SCREENS */
+/* SCREEN SYSTEM */
 .screen{
   position:absolute;
   width:100%;
@@ -80,7 +81,7 @@ canvas{
 .blue{border-color:#0099ff;color:#0099ff;box-shadow:0 0 10px #0099ff;}
 .white{border-color:#ffffff;color:#ffffff;box-shadow:0 0 8px #ffffff;}
 
-/* CODE INPUT */
+/* INPUT */
 input{
   margin-top:20px;
   padding:12px;
@@ -91,6 +92,59 @@ input{
   border:2px solid #00ff88;
   width:180px;
   outline:none;
+}
+
+/* WRONG PASSWORD ANIMATION */
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-6px);}
+  50%{transform:translateX(6px);}
+  75%{transform:translateX(-6px);}
+  100%{transform:translateX(0);}
+}
+.shake{animation:shake 0.3s;}
+
+@keyframes errorGlow{
+  0%{box-shadow:0 0 15px red;border-color:red;}
+  100%{box-shadow:0 0 10px #00ff88;border-color:#00ff88;}
+}
+.errorGlow{animation:errorGlow 0.4s;}
+
+@keyframes flicker{
+  0%{opacity:1;}
+  20%{opacity:0.2;}
+  40%{opacity:1;}
+  60%{opacity:0.3;}
+  80%{opacity:1;}
+  100%{opacity:1;}
+}
+.flicker{animation:flicker 0.3s;}
+
+/* HEARTS */
+.heart{
+  position:fixed;
+  width:8px;
+  height:8px;
+  background:red;
+  transform:rotate(45deg);
+  animation:floatUp 2s linear forwards;
+  z-index:-1;
+}
+.heart:before,
+.heart:after{
+  content:'';
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:red;
+  border-radius:50%;
+}
+.heart:before{top:-4px;left:0;}
+.heart:after{left:-4px;top:0;}
+
+@keyframes floatUp{
+  0%{transform:translateY(0) rotate(45deg);opacity:1;}
+  100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
 }
 
 /* ARCADE GRID */
@@ -108,7 +162,6 @@ input{
   max-width:500px;
 }
 
-/* PIXEL ENVELOPE TILE */
 .tile{
   position:relative;
   height:100px;
@@ -136,7 +189,7 @@ input{
   left:-2px;
   right:-2px;
   height:20px;
-  border:2px solid;
+  border:2px solid #00ffff;
   border-bottom:none;
 }
 
@@ -175,14 +228,6 @@ input{
   pointer-events:auto;
 }
 
-.letter-content{
-  max-width:400px;
-}
-
-.close-btn{
-  margin-top:30px;
-}
-
 .footer{
   position:absolute;
   bottom:15px;
@@ -199,7 +244,7 @@ input{
 <!-- BOOT -->
 <div id="bootScreen" class="screen active">
   <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 2.0</div>
+  <div class="subtitle">Version 3.0</div>
   <div class="button white" onclick="startGame()">PRESS START</div>
   <div class="footer">© SillyStarer</div>
 </div>
@@ -214,10 +259,6 @@ input{
 <!-- WELCOME -->
 <div id="welcomeScreen" class="screen">
   <div class="title">WELCOME, MY FAVOURITE STARE.</div>
-  <div class="subtitle">
-    You’ve accessed a private vault.<br>
-    Proceed carefully.
-  </div>
   <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
 </div>
 
@@ -240,8 +281,8 @@ input{
 
 <!-- LETTER OVERLAY -->
 <div id="letterOverlay">
-  <div class="letter-content" id="letterContent"></div>
-  <div class="button white close-btn" onclick="closeLetter()">CLOSE</div>
+  <div id="letterContent"></div>
+  <div class="button white" onclick="closeLetter()">CLOSE</div>
 </div>
 
 <script>
@@ -252,48 +293,107 @@ function showScreen(id){
   setTimeout(()=>{document.getElementById(id).classList.add("active");},100);
 }
 
-/* ENTER ARCADE */
-function enterArcade(){
-  showScreen("arcadeScreen");
-  revealTiles();
+/* MUSIC */
+let audioCtx,gainNode,melodyInterval;
+
+function startMusic(){
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    gainNode=audioCtx.createGain();
+    gainNode.gain.value=0.08;
+    gainNode.connect(audioCtx.destination);
+  }
+  if(audioCtx.state==="suspended"){audioCtx.resume();}
+
+  function tone(f,d,delay){
+    const osc=audioCtx.createOscillator();
+    osc.type="square";
+    osc.frequency.value=f;
+    osc.connect(gainNode);
+    osc.start(audioCtx.currentTime+delay);
+    osc.stop(audioCtx.currentTime+delay+d);
+  }
+
+  function melody(){
+    tone(220,0.2,0);
+    tone(330,0.2,0.3);
+    tone(440,0.2,0.6);
+    tone(330,0.2,0.9);
+  }
+
+  if(!melodyInterval){
+    melody();
+    melodyInterval=setInterval(melody,1600);
+  }
 }
 
-/* LETTER DATA (SAMPLE FOR NOW) */
+function startGame(){
+  startMusic();
+  showScreen("codeScreen");
+}
+
+/* HEARTS */
+function createHearts(){
+  for(let i=0;i<30;i++){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left=Math.random()*window.innerWidth+"px";
+    heart.style.bottom="0px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),2000);
+  }
+}
+
+/* PASSWORD */
+function checkCode(){
+  const val=document.getElementById("codeInput").value;
+  const input=document.getElementById("codeInput");
+  const title=document.querySelector("#codeScreen .title");
+
+  if(val==="280226"){
+    createHearts();
+    setTimeout(()=>showScreen("welcomeScreen"),900);
+  } else {
+    input.classList.add("shake","errorGlow");
+    title.classList.add("flicker");
+    setTimeout(()=>{
+      input.classList.remove("shake","errorGlow");
+      title.classList.remove("flicker");
+      input.value="";
+    },400);
+  }
+}
+
+/* LETTER DATA (Add full 24 later) */
 const letters=[
-  {title:"LEVEL UP",sub:"when you're feeling sad",text:"You’re stronger than you think."},
-  {title:"GHOST MODE",sub:"when you're overthinking",text:"Slow down. Breathe."},
+  {title:"LEVEL UP",sub:"when you're sad",text:"You are stronger than you think."},
+  {title:"GHOST MODE",sub:"when you're overthinking",text:"Breathe. Slow down."},
   {title:"HP RESTORE",sub:"when you need a hug",text:"Imagine I’m hugging you."},
-  {title:"AFTER DARK",sub:"when you're feeling naughty",text:"This level unlocks secrets."}
+  {title:"AFTER DARK",sub:"when you're naughty",text:"This level unlocks secrets."}
 ];
 
-/* GENERATE GRID */
 const grid=document.getElementById("grid");
 
 letters.forEach((l,i)=>{
   const tile=document.createElement("div");
   tile.classList.add("tile");
-  tile.innerHTML=`
-    <div class="tile-title">${l.title}</div>
-    <div class="tile-sub">${l.sub}</div>
-  `;
+  tile.innerHTML=`<div class="tile-title">${l.title}</div>
+                  <div class="tile-sub">${l.sub}</div>`;
   tile.onclick=()=>openLetter(l);
   grid.appendChild(tile);
 });
 
-/* STAGGER REVEAL */
-function revealTiles(){
+function enterArcade(){
+  showScreen("arcadeScreen");
   const tiles=document.querySelectorAll(".tile");
   tiles.forEach((tile,i)=>{
     setTimeout(()=>tile.classList.add("show"),i*120);
   });
 }
 
-/* LETTER OVERLAY */
 function openLetter(letter){
-  document.getElementById("letterContent").innerHTML=`
-    <h2>${letter.title}</h2>
-    <p style="margin-top:15px;">${letter.text}</p>
-  `;
+  document.getElementById("letterContent").innerHTML=
+    `<h2>${letter.title}</h2><p style="margin-top:15px;">${letter.text}</p>`;
   document.getElementById("letterOverlay").classList.add("active");
 }
 
@@ -337,18 +437,6 @@ function animateStars(){
 }
 animateStars();
 
-/* PASSWORD + HEARTS (Simplified for space here — we can re-add full animations if needed) */
-function startGame(){ showScreen("codeScreen"); }
-
-function checkCode(){
-  const val=document.getElementById("codeInput").value;
-  if(val==="280226"){
-    showScreen("welcomeScreen");
-  } else {
-    alert("ACCESS DENIED");
-  }
-}
 </script>
-
 </body>
 </html>

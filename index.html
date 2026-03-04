@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8-Bit Vault</title>
-
-<style>
-
-  .glitch{
-animation:glitchFlash 0.5s;
-}
-
-@keyframes glitchFlash{
-
-0%{filter:brightness(1);}
-20%{filter:brightness(2);}
-40%{filter:brightness(0.3);}
-60%{filter:brightness(1.5);}
-80%{filter:brightness(0.5);}
-100%{filter:brightness(1);}
-
-}
+<title>8-Bit Vault</title><style>
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -38,31 +20,6 @@ position:fixed;
 top:0;
 left:0;
 z-index:-5;
-}
-
-/* GAME ICON PARTICLES */
-
-.game-effect{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-pointer-events:none;
-z-index:50;
-overflow:hidden;
-}
-
-.game-icon{
-position:absolute;
-animation:floatGame linear infinite;
-opacity:0.9;
-}
-
-@keyframes floatGame{
-0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-100px) rotate(360deg);opacity:0;}
 }
 
 /* SCREEN SYSTEM */
@@ -113,8 +70,6 @@ transition:0.3s;
 text-transform:uppercase;
 }
 
-.button:hover{transform:scale(1.05);}
-
 .white{border-color:white;color:white;}
 .green{border-color:#00ff88;color:#00ff88;}
 .cyan{border-color:#00ffff;color:#00ffff;}
@@ -129,76 +84,6 @@ background:black;
 color:white;
 border:2px solid #00ff88;
 width:180px;
-}
-
-/* SHAKE */
-
-@keyframes shake{
-0%{transform:translateX(0);}
-25%{transform:translateX(-6px);}
-50%{transform:translateX(6px);}
-75%{transform:translateX(-6px);}
-100%{transform:translateX(0);}
-}
-
-.shake{animation:shake 0.3s;}
-
-/* HEARTS */
-
-.heart{
-position:fixed;
-width:8px;
-height:8px;
-transform:rotate(45deg);
-animation:floatUp 2s linear forwards;
-z-index:1000;
-}
-
-.heart:before,.heart:after{
-content:'';
-position:absolute;
-width:8px;
-height:8px;
-border-radius:50%;
-background:inherit;
-}
-
-.heart:before{top:-4px;}
-.heart:after{left:-4px;}
-
-@keyframes floatUp{
-0%{transform:translateY(0) rotate(45deg);opacity:1;}
-100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
-}
-
-  .secret-photo{
-
-width:220px;
-max-width:80%;
-
-margin:20px 0;
-
-border:3px solid #ff00ff;
-border-radius:10px;
-
-box-shadow:
-0 0 20px #ff00ff,
-0 0 40px rgba(255,0,255,0.4);
-
-animation:photoGlow 2s infinite alternate;
-
-}
-
-@keyframes photoGlow{
-
-0%{
-box-shadow:0 0 10px #ff00ff;
-}
-
-100%{
-box-shadow:0 0 30px #ff00ff;
-}
-
 }
 
 /* ARCADE */
@@ -220,16 +105,11 @@ z-index:10;
 }
 
 .arcade-grid-wrapper{
-
 width:100%;
 max-width:500px;
 height:calc(100vh - 120px);
-
 overflow-y:auto;
-
 padding:140px 20px 40px;
-
-/* arcade screen look */
 
 border:3px solid #00ffff;
 border-radius:12px;
@@ -240,8 +120,9 @@ inset 0 0 25px rgba(0,255,255,0.2);
 
 background:rgba(0,0,0,0.4);
 
+animation:arcadeGlow 3s infinite alternate;
 }
-  animation:arcadeGlow 3s infinite alternate;
+
 @keyframes arcadeGlow{
 0%{box-shadow:0 0 10px #00ffff;}
 100%{box-shadow:0 0 30px #00ffff;}
@@ -253,31 +134,7 @@ grid-template-columns:repeat(2,1fr);
 gap:16px;
 }
 
-/* PIXEL LOCK */
-
-.pixel-lock{
-display:inline-block;
-width:14px;
-height:10px;
-background:white;
-position:relative;
-margin-right:10px;
-}
-
-.pixel-lock:before{
-content:"";
-position:absolute;
-width:10px;
-height:8px;
-border:3px solid white;
-border-bottom:none;
-border-radius:8px 8px 0 0;
-top:-9px;
-left:50%;
-transform:translateX(-50%);
-}
-
-/* TILES */
+/* TILE */
 
 .tile{
 height:110px;
@@ -299,45 +156,16 @@ transform:translateY(0);
 .tile-title{font-size:0.75rem;}
 .tile-sub{font-size:0.6rem;opacity:0.6;margin-top:4px;}
 
-/* ENVELOPE */
-
 .envelope{
-position:relative;
-width:100%;
-height:100%;
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 }
 
-.flap{
-position:absolute;
-top:0;
-width:100%;
-height:50%;
-background:rgba(255,255,255,0.1);
-transform-origin:top;
-transition:transform 0.5s;
-}
+.paper{font-size:22px;margin-bottom:4px;}
 
-.paper{
-position:absolute;
-top:40px;
-font-size:22px;
-transform:translateY(25px);
-transition:transform 0.6s;
-}
-
-.tile.opening .flap{
-transform:rotateX(180deg);
-}
-
-.tile.opening .paper{
-transform:translateY(-45px);
-}
-
-/* LETTER OVERLAY */
+/* LETTER */
 
 #letterOverlay{
 position:fixed;
@@ -363,210 +191,89 @@ opacity:1;
 pointer-events:auto;
 }
 
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0;}
-100%{opacity:1;}
-}
+/* HEARTS */
 
-.cursor{
-display:inline-block;
+.heart{
+position:fixed;
 width:8px;
-animation:blink 1s infinite;
+height:8px;
+background:red;
+transform:rotate(45deg);
+animation:floatUp 2s linear forwards;
 }
 
-</style>
-</head>
+.heart:before,.heart:after{
+content:'';
+position:absolute;
+width:8px;
+height:8px;
+background:red;
+border-radius:50%;
+}
 
-<body>
+.heart:before{top:-4px;}
+.heart:after{left:-4px;}
 
-<canvas id="starfield"></canvas>
-<div id="gameEffect" class="game-effect"></div>
+@keyframes floatUp{
+0%{transform:translateY(0) rotate(45deg);opacity:1;}
+100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
+}
 
-<!-- BOOT -->
+/* SECRET PHOTO */
+
+.secret-photo{
+width:220px;
+max-width:80%;
+margin:20px 0;
+border:3px solid #ff00ff;
+border-radius:10px;
+box-shadow:0 0 20px #ff00ff;
+}
+
+</style></head><body><canvas id="starfield"></canvas>
 
 <div id="bootScreen" class="screen active">
 <div class="title">8-BIT VAULT</div>
 <div class="button white" onclick="startGame()">PRESS START</div>
-</div>
-
-<!-- PASSWORD -->
-
-<div id="codeScreen" class="screen">
+</div><div id="codeScreen" class="screen">
 <div class="title">ENTER ACCESS CODE</div>
 <input id="codeInput" type="password" maxlength="6">
 <div class="button green" onclick="checkCode()">CONFIRM</div>
-</div>
-
-<!-- WELCOME -->
-
-<div id="welcomeScreen" class="screen">
+</div><div id="welcomeScreen" class="screen">
 <div class="title">WELCOME, MY FAVOURITE STARE</div>
-
 <div class="subtitle">
-If you're here, you found the vault.<br><br>
-Inside are small files for different moments.<br>
-Some are soft.<br>
-Some are playful.<br>
-Some unlock after dark.<br><br>
+Inside this vault are small files for different moments.<br>
 Explore slowly.
 </div>
-
 <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
-</div>
-
-<!-- RULES -->
-
-<div id="rulesScreen" class="screen">
-
+</div><div id="rulesScreen" class="screen">
 <div class="title">GAME RULES</div>
-
 <div class="subtitle">
-
-1. Each tile opens a message.<br><br>
-2. Some levels are soft.<br>
+Each tile opens a message.<br>
+Some levels are soft.<br>
 Some are ridiculous.<br>
-Some are dangerous.<br><br>
-3. AFTER DARK is self explanatory.<br><br>
-4. No speed running.<br><br>
-5. Access level: personal.
-
+Some are dangerous.
 </div>
-
 <div class="button blue" onclick="enterArcade()">ENTER ARCADE</div>
-
-</div>
-
-<!-- ARCADE -->
-
-<div id="arcadeScreen" class="screen">
-
-<div class="arcade-header">
-<div class="title"><span class="pixel-lock"></span>ARCADE GRID</div>
-</div>
-
-<div class="arcade-grid-wrapper">
+</div><div id="arcadeScreen" class="screen"><div class="arcade-header">
+<div class="title">ARCADE GRID</div>
+</div><div class="arcade-grid-wrapper">
 <div class="grid" id="grid"></div>
-</div>
-
-</div>
-
-<!-- LETTER -->
-
-<div id="letterOverlay">
+</div></div><div id="letterOverlay">
 <div id="letterContent"></div>
 <div class="button white" onclick="closeLetter()">CLOSE</div>
-</div>
+</div><script>
 
-<script>
-
-  function secretBurst(){
-
-for(let i=0;i<40;i++){
-
-const p=document.createElement("div");
-
-p.style.position="fixed";
-p.style.left=Math.random()*window.innerWidth+"px";
-p.style.top=Math.random()*window.innerHeight+"px";
-
-p.style.width="5px";
-p.style.height="5px";
-
-p.style.background="#ff00ff";
-p.style.boxShadow="0 0 10px #ff00ff";
-
-p.style.zIndex="1000";
-
-document.body.appendChild(p);
-
-setTimeout(()=>{
-p.remove();
-},700);
-
-}
-
-}
-
-let lettersOpened = 0;
-let secretUnlocked = false;
-
-  function unlockSecretTile(){
-
-const grid = document.getElementById("grid");
-
-const tile = document.createElement("div");
-
-tile.classList.add("tile","show");
-
-tile.style.borderColor="#ff00ff";
-tile.style.color="#ff00ff";
-
-tile.innerHTML=`
-
-<div class="envelope">
-
-<div class="flap"></div>
-
-<div class="paper">⭐</div>
-
-<div class="tile-title">SECRET LEVEL</div>
-<div class="tile-sub">you found it</div>
-
-</div>
-
-`;
-
-tile.onclick=()=>{
-
-coinSound();
-
-tile.classList.add("opening");
-
-setTimeout(()=>{
-
-document.getElementById("letterOverlay").classList.add("active");
-
-const content=document.getElementById("letterContent");
-
-content.innerHTML=`
-
-<h2 style="color:#ff00ff">SECRET UNLOCKED</h2>
-
-<p>
-You were curious enough to open everything.<br><br>
-
-Which means you deserve the hidden message.<br><br>
-
-Come here.<br>
-Yes you.<br><br>
-
-Closer.
-</p>
-
-`;
-
-},700);
-
-};
-
-grid.appendChild(tile);
-
-unlockSound();
-
-}
-  
 /* SCREEN SWITCH */
 
 function showScreen(id){
 document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-setTimeout(()=>document.getElementById(id).classList.add("active"),100);
+document.getElementById(id).classList.add("active");
 }
 
 /* PASSWORD */
 
 function startGame(){
-startMusic();
 showScreen("codeScreen");
 }
 
@@ -575,293 +282,131 @@ function checkCode(){
 const input=document.getElementById("codeInput");
 
 if(input.value==="280226"){
-unlockSound();
-unlockSparkles();
-
-setTimeout(()=>{
 showScreen("welcomeScreen");
-},500);
 }else{
-input.classList.add("shake");
-setTimeout(()=>input.classList.remove("shake"),300);
 input.value="";
 }
 
 }
 
-/* HEARTS */
+/* LETTERS */
 
-function createHearts(color){
-
-for(let i=0;i<20;i++){
-
-const heart=document.createElement("div");
-
-heart.classList.add("heart");
-
-heart.style.left=Math.random()*window.innerWidth+"px";
-heart.style.bottom="0px";
-heart.style.background=color;
-
-document.body.appendChild(heart);
-
-setTimeout(()=>heart.remove(),2000);
-
-}
-
-}
-
-/* PARTICLES */
-
-function startGameEffect(icon){
-
-const container=document.getElementById("gameEffect");
-
-container.innerHTML="";
-
-for(let i=0;i<25;i++){
-
-const el=document.createElement("div");
-
-el.className="game-icon";
-el.innerText=icon;
-
-el.style.left=Math.random()*100+"%";
-el.style.animationDuration=(4+Math.random()*4)+"s";
-el.style.fontSize=(20+Math.random()*20)+"px";
-
-container.appendChild(el);
-
-}
-
-}
-
-function stopGameEffect(){
-document.getElementById("gameEffect").innerHTML="";
-}
-
-/* RETRO SOUND */
-
-function coinSound(){
-
-if(!audioCtx) return;
-
-const osc = audioCtx.createOscillator();
-const gain = audioCtx.createGain();
-
-osc.type="square";
-osc.frequency.value=900;
-
-gain.gain.value=0.1;
-
-osc.connect(gain);
-gain.connect(audioCtx.destination);
-
-osc.start();
-osc.stop(audioCtx.currentTime+0.08);
-
-}
-
-/* LETTER DATA */
+let lettersOpened=0;
+let secretUnlocked=false;
 
 const letters=[
 
-{title:"LEVEL UP",effect:"🍄",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
-
-{title:"ACHIEVEMENT UNLOCKED",effect:"🏆",sub:"when you're celebrating",color:"#ffd500",text:"You earned this."},
-
-{title:"POWER BOOST",effect:"⚡",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability."},
-
-{title:"GHOST MODE",effect:"👻",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
-
-{title:"HIGH ALERT",effect:"🚨",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days."},
-
-{title:"PIECES NOT FITTING",effect:"🧩",sub:"when you had a bad day",color:"#0099ff",text:"Not every day aligns."},
-
-{title:"LOW BATTERY",effect:"🔋",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
-
-{title:"FIGHT MODE",effect:"🥊",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe."},
-
-{title:"HP RESTORE",effect:"❤️",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you."},
-
-{title:"HEALING CENTER",effect:"💊",sub:"when you're sick",color:"#00ff88",text:"Slow down."},
-
-{title:"AFFECTION BOOST",effect:"💋",sub:"when you need a kiss",color:"#00ff88",text:"Consider this one."},
-
-{title:"FREE ROAM",effect:"⭐",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
-
-{title:"AFTER DARK",effect:"🔥",sub:"when you're feeling naughty",color:"#cc0000",text:"Some things feel better slowly."},
-
-{title:"WEB OF THOUGHTS",effect:"🕷",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone you’re connected."},
-
-{title:"FAR FROM HOME",effect:"🏠",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
-
-{title:"RAINY DAY MODE",effect:"🌧",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow things down."},
-
-{title:"BONUS ROUND",effect:"🦆",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
-
-{title:"MIDNIGHT SERVER",effect:"🌙",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
-
-{title:"VICTORY SCREEN",effect:"🎉",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
-
-{title:"ANNUAL EVENT",effect:"🎂",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
-
-{title:"ON MY WAY",effect:"🚗",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
-
-{title:"LOW SIGNAL",effect:"📡",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals connect."},
-
-{title:"ENERGY RECHARGE",effect:"🔌",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset."},
-
-{title:"SIDE QUEST",effect:"🎮",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
+["🍄","LEVEL UP","when you're sad","Even on your lowest days you still carry strength."],
+["🏆","ACHIEVEMENT UNLOCKED","when celebrating","You earned this."],
+["⚡","POWER BOOST","motivation","You don’t lack ability."],
+["👻","GHOST MODE","overthinking","Pause. Thoughts are not facts."],
+["🚨","HIGH ALERT","stressed","You’ve survived worse days."],
+["🧩","PIECES NOT FITTING","bad day","Not every day aligns."],
+["🔋","LOW BATTERY","lazy","Rest is not failure."],
+["🥊","FIGHT MODE","angry","Feel it. Then breathe."],
+["❤️","HP RESTORE","need a hug","Imagine my arms around you."],
+["💊","HEALING CENTER","sick","Slow down."],
+["💋","AFFECTION BOOST","need a kiss","Consider this one."],
+["⭐","FREE ROAM","need attention","You’re allowed to want me."],
+["🔥","AFTER DARK","naughty","Some things feel better slowly."],
+["🕷","WEB OF THOUGHTS","lonely","Even when alone you’re connected."],
+["🏠","FAR FROM HOME","miss home","Distance doesn’t erase belonging."],
+["🌧","RAINY DAY MODE","raining","Let the rain slow things down."],
+["🦆","BONUS ROUND","need a laugh","You deserve lightness."],
+["🌙","MIDNIGHT SERVER","can't sleep","Close your eyes."],
+["🎉","VICTORY SCREEN","happy","Stay in this moment."],
+["🎂","ANNUAL EVENT","birthday","Another year leveled up."],
+["🚗","ON MY WAY","coming to see me","The countdown begins."],
+["📡","LOW SIGNAL","feeling distant","Even weak signals connect."],
+["🔌","ENERGY RECHARGE","drained","Refill. Reset."],
+["🎮","SIDE QUEST","bored","Find something small to conquer."]
 
 ];
 
-/* BUILD GRID */
-
 const grid=document.getElementById("grid");
 
-letters.forEach((l,i)=>{
+letters.forEach(l=>{
 
 const tile=document.createElement("div");
 
-tile.classList.add("tile");
+tile.classList.add("tile","show");
 
-tile.style.borderColor=l.color;
-tile.style.color=l.color;
+tile.style.borderColor="#00ffff";
 
 tile.innerHTML=`
-
 <div class="envelope">
-
-<div class="flap"></div>
-
-<div class="paper">💌</div>
-
-<div class="tile-title">${l.title}</div>
-<div class="tile-sub">${l.sub}</div>
-
+<div class="paper">${l[0]}</div>
+<div class="tile-title">${l[1]}</div>
+<div class="tile-sub">${l[2]}</div>
 </div>
-
 `;
 
-tile.onclick=()=>{
-
-coinSound();
-
-tile.classList.add("opening");
-
-setTimeout(()=>{
-openLetter(l,tile);
-},700);
-
-};
+tile.onclick=()=>openLetter(l);
 
 grid.appendChild(tile);
 
 });
-  function unlockSound(){
 
-if(!audioCtx) return;
-
-const osc1 = audioCtx.createOscillator();
-const osc2 = audioCtx.createOscillator();
-const gain = audioCtx.createGain();
-
-osc1.type = "triangle";
-osc2.type = "triangle";
-
-osc1.frequency.value = 523; 
-osc2.frequency.value = 784;
-
-gain.gain.value = 0.08;
-
-osc1.connect(gain);
-osc2.connect(gain);
-gain.connect(audioCtx.destination);
-
-osc1.start();
-osc2.start(audioCtx.currentTime + 0.05);
-
-osc1.stop(audioCtx.currentTime + 0.3);
-osc2.stop(audioCtx.currentTime + 0.35);
-
-}
-
-/* ENTER ARCADE */
-
-function enterArcade(){
-
-showScreen("arcadeScreen");
-
-document.querySelectorAll(".tile").forEach((t,i)=>{
-setTimeout(()=>t.classList.add("show"),i*80);
-});
-
-}
-
-  function unlockSparkles(){
-
-for(let i=0;i<30;i++){
-
-let spark=document.createElement("div")
-
-spark.style.position="fixed"
-spark.style.left=Math.random()*window.innerWidth+"px"
-spark.style.top=Math.random()*window.innerHeight+"px"
-
-spark.style.width="4px"
-spark.style.height="4px"
-
-spark.style.background="#00ffff"
-spark.style.boxShadow="0 0 10px #00ffff"
-
-spark.style.zIndex="1000"
-
-document.body.appendChild(spark)
-
-setTimeout(()=>{
-spark.remove()
-},700)
-
-}
-
-}
 /* OPEN LETTER */
 
-function openLetter(letter,tile){
+function openLetter(letter){
 
 document.getElementById("letterOverlay").classList.add("active");
 
-createHearts(letter.color);
+lettersOpened++;
 
-startGameEffect(letter.effect);
+if(lettersOpened>=5 && !secretUnlocked){
+unlockSecretTile();
+secretUnlocked=true;
+}
 
-  lettersOpened++;
+document.getElementById("letterContent").innerHTML=
+`<h2>${letter[1]}</h2><p>${letter[3]}</p>`;
 
-if(lettersOpened >= 5 && !secretUnlocked){
+createHearts();
 
-  function unlockSecretTile(){
+}
 
-document.body.classList.add("glitch")
+/* HEARTS */
 
-setTimeout(()=>{
-document.body.classList.remove("glitch")
-},400)
+function createHearts(){
 
-let tile=document.createElement("div")
+for(let i=0;i<20;i++){
 
-tile.className="tile show"
-tile.style.borderColor="#ff00ff"
+const h=document.createElement("div");
+h.className="heart";
+
+h.style.left=Math.random()*window.innerWidth+"px";
+h.style.bottom="0px";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),2000);
+
+}
+
+}
+
+/* SECRET TILE */
+
+function unlockSecretTile(){
+
+const tile=document.createElement("div");
+
+tile.classList.add("tile","show");
+tile.style.borderColor="#ff00ff";
 
 tile.innerHTML=`
-<div class="icon">⚠</div>
-<div>DO NOT OPEN</div>
-<div class="small">seriously</div>
-`
+<div class="envelope">
+<div class="paper">⚠</div>
+<div class="tile-title">DO NOT OPEN</div>
+<div class="tile-sub">seriously</div>
+</div>
+`;
 
 tile.onclick=()=>{
 
-document.getElementById("letterOverlay").classList.add("active")
+document.getElementById("letterOverlay").classList.add("active");
 
 document.getElementById("letterContent").innerHTML=`
 
@@ -869,177 +414,33 @@ document.getElementById("letterContent").innerHTML=`
 
 <p>I told you not to open this.</p>
 
-<div id="rewardButton" class="button" onclick="showReward()">SHOW REWARD</div>
+<div class="button white" onclick="showReward()">SHOW REWARD</div>
 
 <div id="rewardArea"></div>
 
-`
-
-}
-
-grid.appendChild(tile)
-
-}
-
-  function showReward(){
-
-const area=document.getElementById("rewardArea");
-
-area.innerHTML=`
-
-<img src="secret.jpg" class="secret-photo">
-
-<p>
-Your favourite outfit.<br>
-Just for you.
-</p>
-
 `;
 
-document.getElementById("rewardButton").style.display="none";
+};
 
-}
-const content=document.getElementById("letterContent");
-
-content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
-<p id="typedText"></p>`;
-
-const text=letter.text;
-
-const typed=document.getElementById("typedText");
-
-let i=0;
-
-function type(){
-
-if(i<text.length){
-
-typed.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
-
-i++;
-
-setTimeout(type,25);
-
-}else{
-
-typed.innerHTML=text+'<span class="cursor">_</span>';
+grid.appendChild(tile);
 
 }
 
+/* PHOTO REVEAL */
+
+function showReward(){
+
+document.getElementById("rewardArea").innerHTML=`
+<img src="secret.jpg" class="secret-photo">
+<p>Your favourite outfit.<br>Just for you.</p>
+`;
+
 }
 
-type();
-
-}
-
-/* CLOSE LETTER */
+/* CLOSE */
 
 function closeLetter(){
-
 document.getElementById("letterOverlay").classList.remove("active");
-
-stopGameEffect();
-
-document.querySelectorAll(".tile").forEach(t=>{
-t.classList.remove("opening");
-});
-
-}
-
-/* RETRO MUSIC */
-
-/* SOFT RETRO BACKGROUND MUSIC */
-
-let audioCtx;
-let gainNode;
-let musicLoop;
-let ambientLoop;
-
-function startMusic(){
-
-if(!audioCtx){
-
-audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-gainNode = audioCtx.createGain();
-gainNode.gain.value = 0.05;
-
-gainNode.connect(audioCtx.destination);
-
-}
-
-/* main melody tone */
-
-function playTone(freq,time){
-
-const osc = audioCtx.createOscillator();
-const gain = audioCtx.createGain();
-
-osc.type = "triangle";
-osc.frequency.value = freq;
-
-gain.gain.value = 0.05;
-
-osc.connect(gain);
-gain.connect(gainNode);
-
-osc.start(audioCtx.currentTime + time);
-osc.stop(audioCtx.currentTime + time + 0.35);
-
-}
-
-/* ambient sparkle */
-
-function ambient(freq,time){
-
-const osc = audioCtx.createOscillator();
-const gain = audioCtx.createGain();
-
-osc.type = "sine";
-osc.frequency.value = freq;
-
-gain.gain.value = 0.02;
-
-osc.connect(gain);
-gain.connect(gainNode);
-
-osc.start(audioCtx.currentTime + time);
-osc.stop(audioCtx.currentTime + time + 0.6);
-
-}
-
-/* main melody pattern */
-
-const notes = [
-440, 494, 523, 494,
-440, 392, 349, 392
-];
-
-let step = 0;
-
-musicLoop = setInterval(()=>{
-
-playTone(notes[step],0);
-
-step++;
-
-if(step >= notes.length){
-step = 0;
-}
-
-},450);
-
-/* soft ambient sparkle notes */
-
-ambientLoop = setInterval(()=>{
-
-const tones = [880,988,1046];
-const random = tones[Math.floor(Math.random()*tones.length)];
-
-ambient(random,0);
-
-},2000);
-
 }
 
 /* STARFIELD */
@@ -1057,7 +458,7 @@ stars.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 size:Math.random()*2,
-speed:Math.random()*1+0.2
+speed:Math.random()*1
 });
 }
 
@@ -1086,7 +487,5 @@ requestAnimationFrame(animate);
 
 animate();
 
-</script>
-
-</body>
+</script></body>
 </html>

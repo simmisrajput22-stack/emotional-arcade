@@ -362,7 +362,7 @@ Explore slowly.
 2. Some levels are soft.<br>
 Some are ridiculous.<br>
 Some are dangerous.<br><br>
-3. AFTER DARK is self explanatory.<br><br>
+3. AFTER DARK is self-explanatory.<br><br>
 4. No speed running.<br><br>
 5. Access level: personal.
 
@@ -493,6 +493,34 @@ gain.connect(audioCtx.destination);
 
 osc.start();
 osc.stop(audioCtx.currentTime+0.08);
+
+}
+  
+function unlockSound(){
+
+if(!audioCtx) return;
+
+const osc1 = audioCtx.createOscillator();
+const osc2 = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+osc1.type = "triangle";
+osc2.type = "triangle";
+
+osc1.frequency.value = 523; 
+osc2.frequency.value = 784;
+
+gain.gain.value = 0.08;
+
+osc1.connect(gain);
+osc2.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc1.start();
+osc2.start(audioCtx.currentTime + 0.05);
+
+osc1.stop(audioCtx.currentTime + 0.3);
+osc2.stop(audioCtx.currentTime + 0.35);
 
 }
 

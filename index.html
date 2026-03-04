@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -17,11 +17,37 @@ overflow:hidden;
 }
 
 /* STARFIELD */
+
 canvas{
 position:fixed;
 top:0;
 left:0;
-z-index:-2;
+z-index:-3;
+}
+
+/* GAME EFFECT LAYER */
+
+.game-effect{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:-1;
+overflow:hidden;
+}
+
+.game-icon{
+position:absolute;
+animation:floatGame linear infinite;
+opacity:0.85;
+}
+
+@keyframes floatGame{
+0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-120px) rotate(360deg);opacity:0;}
 }
 
 /* SCREENS */
@@ -70,14 +96,12 @@ transition:0.3s;
 text-transform:uppercase;
 }
 
-.button:hover{
-transform:scale(1.05);
-}
+.button:hover{transform:scale(1.05);}
 
+.white{border-color:white;color:white;box-shadow:0 0 8px white;}
+.green{border-color:#00ff88;color:#00ff88;box-shadow:0 0 10px #00ff88;}
 .cyan{border-color:#00ffff;color:#00ffff;box-shadow:0 0 10px #00ffff;}
 .blue{border-color:#0099ff;color:#0099ff;box-shadow:0 0 10px #0099ff;}
-.green{border-color:#00ff88;color:#00ff88;box-shadow:0 0 10px #00ff88;}
-.white{border-color:white;color:white;box-shadow:0 0 8px white;}
 
 input{
 margin-top:20px;
@@ -90,7 +114,7 @@ border:2px solid #00ff88;
 width:180px;
 }
 
-/* SHAKE */
+/* PASSWORD SHAKE */
 
 @keyframes shake{
 0%{transform:translateX(0);}
@@ -113,8 +137,7 @@ animation:floatUp 2s linear forwards;
 z-index:1000;
 }
 
-.heart:before,
-.heart:after{
+.heart:before,.heart:after{
 content:'';
 position:absolute;
 width:8px;
@@ -187,7 +210,7 @@ left:50%;
 transform:translateX(-50%);
 }
 
-/* TILE */
+/* TILES */
 
 .tile{
 height:100px;
@@ -269,17 +292,24 @@ animation:blink 1s infinite;
 <body>
 
 <canvas id="starfield"></canvas>
+<div id="gameEffect" class="game-effect"></div>
+
+<!-- BOOT -->
 
 <div id="bootScreen" class="screen active">
 <div class="title">8-BIT VAULT</div>
 <div class="button white" onclick="startGame()">PRESS START</div>
 </div>
 
+<!-- PASSWORD -->
+
 <div id="codeScreen" class="screen">
 <div class="title">ENTER ACCESS CODE</div>
 <input id="codeInput" type="password" maxlength="6">
 <div class="button green" onclick="checkCode()">CONFIRM</div>
 </div>
+
+<!-- WELCOME -->
 
 <div id="welcomeScreen" class="screen">
 
@@ -298,6 +328,8 @@ Explore slowly.
 
 </div>
 
+<!-- RULES -->
+
 <div id="rulesScreen" class="screen">
 
 <div class="title">GAME RULES</div>
@@ -305,15 +337,11 @@ Explore slowly.
 <div class="subtitle">
 
 1. Each tile opens a message.<br><br>
-
 2. Some levels are soft.<br>
 Some are ridiculous.<br>
 Some are dangerous.<br><br>
-
 3. AFTER DARK is self explanatory.<br><br>
-
 4. No speed running.<br><br>
-
 5. Access level: personal.
 
 </div>
@@ -321,6 +349,8 @@ Some are dangerous.<br><br>
 <div class="button blue" onclick="enterArcade()">ENTER ARCADE</div>
 
 </div>
+
+<!-- ARCADE -->
 
 <div id="arcadeScreen" class="screen">
 
@@ -333,6 +363,8 @@ Some are dangerous.<br><br>
 </div>
 
 </div>
+
+<!-- LETTER -->
 
 <div id="letterOverlay">
 
@@ -384,7 +416,6 @@ heart.classList.add("heart");
 
 heart.style.left=Math.random()*window.innerWidth+"px";
 heart.style.bottom="0px";
-
 heart.style.background=color;
 heart.style.boxShadow="0 0 10px "+color;
 
@@ -396,59 +427,90 @@ setTimeout(()=>heart.remove(),2000);
 
 }
 
+/* GAME EFFECT */
+
+function startGameEffect(icon){
+
+const container=document.getElementById("gameEffect");
+
+container.innerHTML="";
+
+for(let i=0;i<25;i++){
+
+const el=document.createElement("div");
+
+el.className="game-icon";
+el.innerText=icon;
+
+el.style.left=Math.random()*100+"%";
+el.style.animationDuration=(4+Math.random()*4)+"s";
+el.style.fontSize=(20+Math.random()*20)+"px";
+
+container.appendChild(el);
+
+}
+
+}
+
+function stopGameEffect(){
+document.getElementById("gameEffect").innerHTML="";
+}
+
 /* LETTER DATA */
 
 const letters=[
 
-{title:"LEVEL UP",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
+{title:"LEVEL UP",effect:"🍄",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
 
-{title:"ACHIEVEMENT UNLOCKED",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
+{title:"ACHIEVEMENT UNLOCKED",effect:"🏆",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
 
-{title:"POWER BOOST",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
+{title:"POWER BOOST",effect:"⚡",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
 
-{title:"GHOST MODE",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
+{title:"GHOST MODE",effect:"👻",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
 
-{title:"HIGH ALERT",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
+{title:"HIGH ALERT",effect:"🚨",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
 
-{title:"PIECES NOT FITTING",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
+{title:"PIECES NOT FITTING",effect:"🧩",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
 
-{title:"LOW BATTERY",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
+{title:"LOW BATTERY",effect:"🔋",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
 
-{title:"FIGHT MODE",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
+{title:"FIGHT MODE",effect:"🥊",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
 
-{title:"HP RESTORE",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
+{title:"HP RESTORE",effect:"❤️",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
 
-{title:"HEALING CENTER",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
+{title:"HEALING CENTER",effect:"💊",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
 
-{title:"AFFECTION BOOST",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
+{title:"AFFECTION BOOST",effect:"💋",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
 
-{title:"FREE ROAM",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
+{title:"FREE ROAM",effect:"⭐",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
 
-{title:"AFTER DARK",sub:"when you're feeling naughty",color:"#cc0000",text:"Some things feel better when earned slowly."},
+{title:"AFTER DARK",effect:"🔥",sub:"when you're feeling naughty",color:"#cc0000",text:"Some things feel better when earned slowly."},
 
-{title:"WEB OF THOUGHTS",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
+{title:"WEB OF THOUGHTS",effect:"🕷",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
 
-{title:"FAR FROM HOME",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
+{title:"FAR FROM HOME",effect:"🏠",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
 
-{title:"RAINY DAY MODE",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
+{title:"RAINY DAY MODE",effect:"🌧",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
 
-{title:"BONUS ROUND",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
+{title:"BONUS ROUND",effect:"🦆",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
 
-{title:"MIDNIGHT SERVER",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
+{title:"MIDNIGHT SERVER",effect:"🌙",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
 
-{title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
+{title:"VICTORY SCREEN",effect:"🎉",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
 
-{title:"ANNUAL EVENT",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
+{title:"ANNUAL EVENT",effect:"🎂",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
 
-{title:"ON MY WAY",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
+{title:"ON MY WAY",effect:"🚗",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
 
-{title:"LOW SIGNAL",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
+{title:"LOW SIGNAL",effect:"📡",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
 
-{title:"ENERGY RECHARGE",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
+{title:"ENERGY RECHARGE",effect:"🔌",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
 
-{title:"SIDE QUEST",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
+{title:"SIDE QUEST",effect:"🎮",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
 
 ];
+
+/* BUILD GRID */
 
 const grid=document.getElementById("grid");
 
@@ -496,6 +558,8 @@ document.getElementById("letterOverlay").classList.add("active");
 
 createHearts(letter.color);
 
+startGameEffect(letter.effect);
+
 const content=document.getElementById("letterContent");
 
 content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
@@ -535,6 +599,7 @@ tile.classList.remove("opening");
 
 function closeLetter(){
 document.getElementById("letterOverlay").classList.remove("active");
+stopGameEffect();
 }
 
 /* MUSIC */

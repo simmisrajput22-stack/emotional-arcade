@@ -175,11 +175,31 @@ z-index:10;
 }
 
 .arcade-grid-wrapper{
+
 width:100%;
 max-width:500px;
 height:calc(100vh - 120px);
+
 overflow-y:auto;
+
 padding:140px 20px 40px;
+
+/* arcade screen look */
+
+border:3px solid #00ffff;
+border-radius:12px;
+
+box-shadow:
+0 0 20px #00ffff,
+inset 0 0 25px rgba(0,255,255,0.2);
+
+background:rgba(0,0,0,0.4);
+
+}
+  animation:arcadeGlow 3s infinite alternate;
+@keyframes arcadeGlow{
+0%{box-shadow:0 0 10px #00ffff;}
+100%{box-shadow:0 0 30px #00ffff;}
 }
 
 .grid{
@@ -414,7 +434,12 @@ function checkCode(){
 const input=document.getElementById("codeInput");
 
 if(input.value==="280226"){
+unlockSound();
+unlockSparkles();
+
+setTimeout(()=>{
 showScreen("welcomeScreen");
+},500);
 }else{
 input.classList.add("shake");
 setTimeout(()=>input.classList.remove("shake"),300);
@@ -593,6 +618,33 @@ openLetter(l,tile);
 grid.appendChild(tile);
 
 });
+  function unlockSound(){
+
+if(!audioCtx) return;
+
+const osc1 = audioCtx.createOscillator();
+const osc2 = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+osc1.type = "triangle";
+osc2.type = "triangle";
+
+osc1.frequency.value = 523; 
+osc2.frequency.value = 784;
+
+gain.gain.value = 0.08;
+
+osc1.connect(gain);
+osc2.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc1.start();
+osc2.start(audioCtx.currentTime + 0.05);
+
+osc1.stop(audioCtx.currentTime + 0.3);
+osc2.stop(audioCtx.currentTime + 0.35);
+
+}
 
 /* ENTER ARCADE */
 
@@ -606,6 +658,33 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 }
 
+  function unlockSparkles(){
+
+for(let i=0;i<30;i++){
+
+let spark=document.createElement("div")
+
+spark.style.position="fixed"
+spark.style.left=Math.random()*window.innerWidth+"px"
+spark.style.top=Math.random()*window.innerHeight+"px"
+
+spark.style.width="4px"
+spark.style.height="4px"
+
+spark.style.background="#00ffff"
+spark.style.boxShadow="0 0 10px #00ffff"
+
+spark.style.zIndex="1000"
+
+document.body.appendChild(spark)
+
+setTimeout(()=>{
+spark.remove()
+},700)
+
+}
+
+}
 /* OPEN LETTER */
 
 function openLetter(letter,tile){
@@ -665,52 +744,97 @@ t.classList.remove("opening");
 
 /* RETRO MUSIC */
 
+/* SOFT RETRO BACKGROUND MUSIC */
+
 let audioCtx;
 let gainNode;
-let melodyInterval;
+let musicLoop;
+let ambientLoop;
 
 function startMusic(){
 
 if(!audioCtx){
 
-audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-gainNode=audioCtx.createGain();
-gainNode.gain.value=0.07;
+gainNode = audioCtx.createGain();
+gainNode.gain.value = 0.05;
 
 gainNode.connect(audioCtx.destination);
 
 }
 
-function tone(freq,duration,delay){
+/* main melody tone */
 
-const osc=audioCtx.createOscillator();
+function playTone(freq,time){
 
-osc.type="square";
-osc.frequency.value=freq;
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
 
-osc.connect(gainNode);
+osc.type = "triangle";
+osc.frequency.value = freq;
 
-osc.start(audioCtx.currentTime+delay);
-osc.stop(audioCtx.currentTime+delay+duration);
+gain.gain.value = 0.05;
 
-}
+osc.connect(gain);
+gain.connect(gainNode);
 
-function melody(){
-
-tone(220,0.2,0);
-tone(330,0.2,0.3);
-tone(440,0.2,0.6);
-tone(330,0.2,0.9);
+osc.start(audioCtx.currentTime + time);
+osc.stop(audioCtx.currentTime + time + 0.35);
 
 }
 
-if(!melodyInterval){
+/* ambient sparkle */
 
-melody();
-melodyInterval=setInterval(melody,1600);
+function ambient(freq,time){
+
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+osc.type = "sine";
+osc.frequency.value = freq;
+
+gain.gain.value = 0.02;
+
+osc.connect(gain);
+gain.connect(gainNode);
+
+osc.start(audioCtx.currentTime + time);
+osc.stop(audioCtx.currentTime + time + 0.6);
 
 }
+
+/* main melody pattern */
+
+const notes = [
+440, 494, 523, 494,
+440, 392, 349, 392
+];
+
+let step = 0;
+
+musicLoop = setInterval(()=>{
+
+playTone(notes[step],0);
+
+step++;
+
+if(step >= notes.length){
+step = 0;
+}
+
+},450);
+
+/* soft ambient sparkle notes */
+
+ambientLoop = setInterval(()=>{
+
+const tones = [880,988,1046];
+const random = tones[Math.floor(Math.random()*tones.length)];
+
+ambient(random,0);
+
+},2000);
 
 }
 

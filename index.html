@@ -9,7 +9,7 @@
 body{
 background:black;
 color:white;
-font-family:'Courier New',monospace;
+font-family:Courier New,monospace;
 overflow:hidden;
 }
 
@@ -22,7 +22,32 @@ left:0;
 z-index:-5;
 }
 
-/* SCREEN SYSTEM */
+/* GAME PARTICLES */
+
+.game-effect{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:50;
+overflow:hidden;
+}
+
+.game-icon{
+position:absolute;
+animation:floatGame linear infinite;
+opacity:.9;
+}
+
+@keyframes floatGame{
+0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-120px) rotate(360deg);opacity:0;}
+}
+
+/* SCREENS */
 
 .screen{
 position:absolute;
@@ -35,7 +60,7 @@ align-items:center;
 text-align:center;
 opacity:0;
 pointer-events:none;
-transition:0.4s;
+transition:.4s;
 }
 
 .screen.active{
@@ -50,30 +75,24 @@ letter-spacing:3px;
 
 .subtitle{
 margin-top:20px;
-font-size:0.9rem;
-opacity:0.8;
+font-size:.9rem;
 max-width:340px;
 line-height:1.6;
+opacity:.8;
 }
 
-/* BUTTONS */
+/* BUTTON */
 
 .button{
 margin-top:24px;
 padding:12px 28px;
-font-size:0.8rem;
+font-size:.8rem;
 letter-spacing:2px;
 background:transparent;
-border:2px solid;
+border:2px solid white;
 cursor:pointer;
-transition:0.3s;
 text-transform:uppercase;
 }
-
-.white{border-color:white;color:white;}
-.green{border-color:#00ff88;color:#00ff88;}
-.cyan{border-color:#00ffff;color:#00ffff;}
-.blue{border-color:#0099ff;color:#0099ff;}
 
 input{
 margin-top:20px;
@@ -83,7 +102,45 @@ text-align:center;
 background:black;
 color:white;
 border:2px solid #00ff88;
-width:180px;
+}
+
+/* SHAKE */
+
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(-6px)}
+50%{transform:translateX(6px)}
+75%{transform:translateX(-6px)}
+100%{transform:translateX(0)}
+}
+
+.shake{animation:shake .3s;}
+
+/* HEARTS */
+
+.heart{
+position:fixed;
+width:8px;
+height:8px;
+transform:rotate(45deg);
+animation:floatUp 2s linear forwards;
+}
+
+.heart:before,.heart:after{
+content:'';
+position:absolute;
+width:8px;
+height:8px;
+border-radius:50%;
+background:inherit;
+}
+
+.heart:before{top:-4px}
+.heart:after{left:-4px}
+
+@keyframes floatUp{
+0%{transform:translateY(0) rotate(45deg)}
+100%{transform:translateY(-300px) rotate(45deg);opacity:0}
 }
 
 /* ARCADE */
@@ -110,22 +167,9 @@ max-width:500px;
 height:calc(100vh - 120px);
 overflow-y:auto;
 padding:140px 20px 40px;
-
 border:3px solid #00ffff;
 border-radius:12px;
-
-box-shadow:
-0 0 20px #00ffff,
-inset 0 0 25px rgba(0,255,255,0.2);
-
-background:rgba(0,0,0,0.4);
-
-animation:arcadeGlow 3s infinite alternate;
-}
-
-@keyframes arcadeGlow{
-0%{box-shadow:0 0 10px #00ffff;}
-100%{box-shadow:0 0 30px #00ffff;}
+box-shadow:0 0 20px #00ffff;
 }
 
 .grid{
@@ -145,7 +189,7 @@ align-items:center;
 cursor:pointer;
 opacity:0;
 transform:translateY(20px);
-transition:0.4s;
+transition:.4s;
 }
 
 .tile.show{
@@ -153,19 +197,45 @@ opacity:1;
 transform:translateY(0);
 }
 
-.tile-title{font-size:0.75rem;}
-.tile-sub{font-size:0.6rem;opacity:0.6;margin-top:4px;}
-
-.envelope{
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
+.tile:hover{
+transform:scale(1.05);
+box-shadow:0 0 12px currentColor;
 }
 
-.paper{font-size:22px;margin-bottom:4px;}
+/* ENVELOPE */
 
-/* LETTER */
+.envelope{
+position:relative;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+.flap{
+position:absolute;
+top:0;
+width:100%;
+height:50%;
+background:rgba(255,255,255,.1);
+transform-origin:top;
+transition:transform .5s;
+}
+
+.paper{
+position:absolute;
+top:40px;
+font-size:22px;
+transform:translateY(25px);
+transition:transform .6s;
+}
+
+.tile.opening .flap{transform:rotateX(180deg)}
+.tile.opening .paper{transform:translateY(-45px)}
+
+/* OVERLAY */
 
 #letterOverlay{
 position:fixed;
@@ -173,7 +243,7 @@ top:0;
 left:0;
 width:100%;
 height:100vh;
-background:rgba(0,0,0,0.85);
+background:rgba(0,0,0,.85);
 display:flex;
 flex-direction:column;
 justify-content:center;
@@ -182,7 +252,7 @@ padding:20px;
 text-align:center;
 opacity:0;
 pointer-events:none;
-transition:0.4s;
+transition:.4s;
 z-index:20;
 }
 
@@ -191,32 +261,13 @@ opacity:1;
 pointer-events:auto;
 }
 
-/* HEARTS */
-
-.heart{
-position:fixed;
-width:8px;
-height:8px;
-background:red;
-transform:rotate(45deg);
-animation:floatUp 2s linear forwards;
+.cursor{
+display:inline-block;
+animation:blink 1s infinite;
 }
 
-.heart:before,.heart:after{
-content:'';
-position:absolute;
-width:8px;
-height:8px;
-background:red;
-border-radius:50%;
-}
-
-.heart:before{top:-4px;}
-.heart:after{left:-4px;}
-
-@keyframes floatUp{
-0%{transform:translateY(0) rotate(45deg);opacity:1;}
-100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
+@keyframes blink{
+50%{opacity:0}
 }
 
 /* SECRET PHOTO */
@@ -230,50 +281,66 @@ border-radius:10px;
 box-shadow:0 0 20px #ff00ff;
 }
 
+/* GLITCH */
+
+.glitch{
+animation:glitchFlash .5s;
+}
+
+@keyframes glitchFlash{
+0%{filter:brightness(1)}
+20%{filter:brightness(2)}
+40%{filter:brightness(.3)}
+60%{filter:brightness(1.5)}
+80%{filter:brightness(.5)}
+100%{filter:brightness(1)}
+}
+
 </style></head><body><canvas id="starfield"></canvas>
 
-<div id="bootScreen" class="screen active">
+<div id="gameEffect" class="game-effect"></div><div id="bootScreen" class="screen active">
 <div class="title">8-BIT VAULT</div>
-<div class="button white" onclick="startGame()">PRESS START</div>
+<div class="button" onclick="startGame()">PRESS START</div>
 </div><div id="codeScreen" class="screen">
 <div class="title">ENTER ACCESS CODE</div>
 <input id="codeInput" type="password" maxlength="6">
-<div class="button green" onclick="checkCode()">CONFIRM</div>
+<div class="button" onclick="checkCode()">CONFIRM</div>
 </div><div id="welcomeScreen" class="screen">
 <div class="title">WELCOME, MY FAVOURITE STARE</div>
 <div class="subtitle">
-Inside this vault are small files for different moments.<br>
+Inside this vault are small files for different moments.
 Explore slowly.
 </div>
-<div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
+<div class="button" onclick="showScreen('rulesScreen')">VIEW RULES</div>
 </div><div id="rulesScreen" class="screen">
 <div class="title">GAME RULES</div>
 <div class="subtitle">
-Each tile opens a message.<br>
-Some levels are soft.<br>
-Some are ridiculous.<br>
-Some are dangerous.
+1. Each tile opens a message.<br>
+2. Some levels are soft.<br>
+3. Some levels are dangerous.<br>
+4. No speed running.
 </div>
-<div class="button blue" onclick="enterArcade()">ENTER ARCADE</div>
+<div class="button" onclick="enterArcade()">ENTER ARCADE</div>
 </div><div id="arcadeScreen" class="screen"><div class="arcade-header">
-<div class="title">ARCADE GRID</div>
+<div class="title">🔒 ARCADE GRID</div>
 </div><div class="arcade-grid-wrapper">
 <div class="grid" id="grid"></div>
 </div></div><div id="letterOverlay">
 <div id="letterContent"></div>
-<div class="button white" onclick="closeLetter()">CLOSE</div>
+<div class="button" onclick="closeLetter()">CLOSE</div>
 </div><script>
 
-/* SCREEN SWITCH */
+/* SCREENS */
 
 function showScreen(id){
 document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+setTimeout(()=>document.getElementById(id).classList.add("active"),100);
 }
 
 /* PASSWORD */
 
 function startGame(){
+startMusic();
 showScreen("codeScreen");
 }
 
@@ -282,10 +349,67 @@ function checkCode(){
 const input=document.getElementById("codeInput");
 
 if(input.value==="280226"){
+
+unlockSound();
+unlockSparkles();
+
+setTimeout(()=>{
 showScreen("welcomeScreen");
+},500);
+
 }else{
+
+input.classList.add("shake");
+setTimeout(()=>input.classList.remove("shake"),300);
 input.value="";
+
 }
+
+}
+
+/* UNLOCK FX */
+
+function unlockSound(){
+const osc=new AudioContext().createOscillator();
+}
+
+function unlockSparkles(){
+for(let i=0;i<30;i++){
+const s=document.createElement("div");
+s.style.position="fixed";
+s.style.left=Math.random()*window.innerWidth+"px";
+s.style.top=Math.random()*window.innerHeight+"px";
+s.style.width="4px";
+s.style.height="4px";
+s.style.background="#00ffff";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),600);
+}
+}
+
+/* MUSIC */
+
+let audioCtx;
+
+function startMusic(){
+
+audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+
+function tone(f,t){
+const o=audioCtx.createOscillator();
+const g=audioCtx.createGain();
+o.type="triangle";
+o.frequency.value=f;
+g.gain.value=.05;
+o.connect(g);
+g.connect(audioCtx.destination);
+o.start();
+o.stop(audioCtx.currentTime+t);
+}
+
+setInterval(()=>{
+tone(440,.4);
+},900);
 
 }
 
@@ -295,53 +419,41 @@ let lettersOpened=0;
 let secretUnlocked=false;
 
 const letters=[
-
-["🍄","LEVEL UP","when you're sad","Even on your lowest days you still carry strength."],
-["🏆","ACHIEVEMENT UNLOCKED","when celebrating","You earned this."],
-["⚡","POWER BOOST","motivation","You don’t lack ability."],
-["👻","GHOST MODE","overthinking","Pause. Thoughts are not facts."],
-["🚨","HIGH ALERT","stressed","You’ve survived worse days."],
-["🧩","PIECES NOT FITTING","bad day","Not every day aligns."],
-["🔋","LOW BATTERY","lazy","Rest is not failure."],
-["🥊","FIGHT MODE","angry","Feel it. Then breathe."],
-["❤️","HP RESTORE","need a hug","Imagine my arms around you."],
-["💊","HEALING CENTER","sick","Slow down."],
-["💋","AFFECTION BOOST","need a kiss","Consider this one."],
-["⭐","FREE ROAM","need attention","You’re allowed to want me."],
-["🔥","AFTER DARK","naughty","Some things feel better slowly."],
-["🕷","WEB OF THOUGHTS","lonely","Even when alone you’re connected."],
-["🏠","FAR FROM HOME","miss home","Distance doesn’t erase belonging."],
-["🌧","RAINY DAY MODE","raining","Let the rain slow things down."],
-["🦆","BONUS ROUND","need a laugh","You deserve lightness."],
-["🌙","MIDNIGHT SERVER","can't sleep","Close your eyes."],
-["🎉","VICTORY SCREEN","happy","Stay in this moment."],
-["🎂","ANNUAL EVENT","birthday","Another year leveled up."],
-["🚗","ON MY WAY","coming to see me","The countdown begins."],
-["📡","LOW SIGNAL","feeling distant","Even weak signals connect."],
-["🔌","ENERGY RECHARGE","drained","Refill. Reset."],
-["🎮","SIDE QUEST","bored","Find something small to conquer."]
-
+{title:"LEVEL UP",effect:"🍄",text:"Even on your lowest days you still carry strength.",color:"#ffd500"},
+{title:"POWER BOOST",effect:"⚡",text:"You just need momentum.",color:"#ffd500"},
+{title:"HP RESTORE",effect:"❤️",text:"Imagine my arms around you.",color:"#00ff88"},
+{title:"GHOST MODE",effect:"👻",text:"Pause. Thoughts are not facts.",color:"#00ffff"},
+{title:"BONUS ROUND",effect:"🦆",text:"You deserve lightness.",color:"#ffaa00"},
+{title:"MIDNIGHT SERVER",effect:"🌙",text:"Close your eyes.",color:"#ffffff"},
+{title:"VICTORY SCREEN",effect:"🎉",text:"Stay in this moment.",color:"#ffffff"},
+{title:"SIDE QUEST",effect:"🎮",text:"Find something small to conquer.",color:"#0099ff"}
 ];
 
 const grid=document.getElementById("grid");
 
-letters.forEach(l=>{
+letters.forEach((l,i)=>{
 
 const tile=document.createElement("div");
-
-tile.classList.add("tile","show");
-
-tile.style.borderColor="#00ffff";
+tile.classList.add("tile");
+tile.style.borderColor=l.color;
 
 tile.innerHTML=`
 <div class="envelope">
-<div class="paper">${l[0]}</div>
-<div class="tile-title">${l[1]}</div>
-<div class="tile-sub">${l[2]}</div>
+<div class="flap"></div>
+<div class="paper">💌</div>
+<div>${l.title}</div>
 </div>
 `;
 
-tile.onclick=()=>openLetter(l);
+tile.onclick=()=>{
+
+tile.classList.add("opening");
+
+setTimeout(()=>{
+openLetter(l,tile);
+},700);
+
+};
 
 grid.appendChild(tile);
 
@@ -349,7 +461,7 @@ grid.appendChild(tile);
 
 /* OPEN LETTER */
 
-function openLetter(letter){
+function openLetter(letter,tile){
 
 document.getElementById("letterOverlay").classList.add("active");
 
@@ -360,36 +472,24 @@ unlockSecretTile();
 secretUnlocked=true;
 }
 
-document.getElementById("letterContent").innerHTML=
-`<h2>${letter[1]}</h2><p>${letter[3]}</p>`;
+const content=document.getElementById("letterContent");
 
-createHearts();
-
-}
-
-/* HEARTS */
-
-function createHearts(){
-
-for(let i=0;i<20;i++){
-
-const h=document.createElement("div");
-h.className="heart";
-
-h.style.left=Math.random()*window.innerWidth+"px";
-h.style.bottom="0px";
-
-document.body.appendChild(h);
-
-setTimeout(()=>h.remove(),2000);
-
-}
+content.innerHTML=`
+<h2 style="color:${letter.color}">${letter.title}</h2>
+<p>${letter.text}</p>
+`;
 
 }
 
 /* SECRET TILE */
 
 function unlockSecretTile(){
+
+document.body.classList.add("glitch");
+
+setTimeout(()=>{
+document.body.classList.remove("glitch");
+},500);
 
 const tile=document.createElement("div");
 
@@ -398,9 +498,9 @@ tile.style.borderColor="#ff00ff";
 
 tile.innerHTML=`
 <div class="envelope">
+<div class="flap"></div>
 <div class="paper">⚠</div>
-<div class="tile-title">DO NOT OPEN</div>
-<div class="tile-sub">seriously</div>
+<div>DO NOT OPEN</div>
 </div>
 `;
 
@@ -408,13 +508,17 @@ tile.onclick=()=>{
 
 document.getElementById("letterOverlay").classList.add("active");
 
-document.getElementById("letterContent").innerHTML=`
+const content=document.getElementById("letterContent");
+
+content.innerHTML=`
 
 <h2 style="color:#ff00ff">YOU WERE WARNED</h2>
 
 <p>I told you not to open this.</p>
 
-<div class="button white" onclick="showReward()">SHOW REWARD</div>
+<div id="rewardButton" class="button" onclick="showReward()">
+SHOW REWARD
+</div>
 
 <div id="rewardArea"></div>
 
@@ -430,10 +534,14 @@ grid.appendChild(tile);
 
 function showReward(){
 
-document.getElementById("rewardArea").innerHTML=`
+const area=document.getElementById("rewardArea");
+
+area.innerHTML=`
 <img src="secret.jpg" class="secret-photo">
-<p>Your favourite outfit.<br>Just for you.</p>
+<p>Your favourite outfit. Just for you.</p>
 `;
+
+document.getElementById("rewardButton").style.display="none";
 
 }
 
@@ -458,7 +566,7 @@ stars.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 size:Math.random()*2,
-speed:Math.random()*1
+speed:Math.random()*1+0.2
 });
 }
 
@@ -469,16 +577,12 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.fillStyle="white";
 
 stars.forEach(s=>{
-
 ctx.fillRect(s.x,s.y,s.size,s.size);
-
 s.y+=s.speed;
-
 if(s.y>canvas.height){
 s.y=0;
 s.x=Math.random()*canvas.width;
 }
-
 });
 
 requestAnimationFrame(animate);

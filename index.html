@@ -198,6 +198,23 @@ background:rgba(0,0,0,0.4);
 animation:arcadeGlow 3s infinite alternate;
 
 }
+
+.secret-photo{
+
+width:220px;
+max-width:80%;
+
+margin:20px 0;
+
+border:3px solid #ff00ff;
+border-radius:10px;
+
+box-shadow:
+0 0 15px #ff00ff,
+0 0 40px rgba(255,0,255,0.3);
+
+}
+  
 @keyframes arcadeGlow{
 
 0%{
@@ -693,17 +710,19 @@ const content=document.getElementById("letterContent");
 
 content.innerHTML=`
 
-<h2 style="color:#ff00ff">SECRET UNLOCKED</h2>
+<h2 style="color:#ff00ff">YOU WERE WARNED</h2>
 
 <p>
-You were curious enough to open everything.<br><br>
+I did say not to open this.<br>
+But curiosity always wins, doesn't it?<br><br>
+So here's your reward.
+</p>
 
-Which means you deserve the hidden message.<br><br>
+<img src="secret.jpg" class="secret-photo">
 
-Come here.<br>
-Yes you.<br><br>
-
-Closer.
+<p>
+Your favourite outfit.<br>
+Just for you.
 </p>
 
 `;

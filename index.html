@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8-Bit Vault</title>
 
 <style>
@@ -22,10 +22,10 @@ canvas{
 position:fixed;
 top:0;
 left:0;
-z-index:-3;
+z-index:-5;
 }
 
-/* GAME EFFECT LAYER */
+/* GAME ICON PARTICLES */
 
 .game-effect{
 position:fixed;
@@ -34,23 +34,23 @@ left:0;
 width:100%;
 height:100%;
 pointer-events:none;
-z-index:-1;
+z-index:50;
 overflow:hidden;
 }
 
 .game-icon{
 position:absolute;
 animation:floatGame linear infinite;
-opacity:0.85;
+opacity:0.9;
 }
 
 @keyframes floatGame{
 0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
 10%{opacity:1;}
-100%{transform:translateY(-120px) rotate(360deg);opacity:0;}
+100%{transform:translateY(-100px) rotate(360deg);opacity:0;}
 }
 
-/* SCREENS */
+/* SCREEN SYSTEM */
 
 .screen{
 position:absolute;
@@ -84,6 +84,8 @@ max-width:340px;
 line-height:1.6;
 }
 
+/* BUTTONS */
+
 .button{
 margin-top:24px;
 padding:12px 28px;
@@ -98,10 +100,10 @@ text-transform:uppercase;
 
 .button:hover{transform:scale(1.05);}
 
-.white{border-color:white;color:white;box-shadow:0 0 8px white;}
-.green{border-color:#00ff88;color:#00ff88;box-shadow:0 0 10px #00ff88;}
-.cyan{border-color:#00ffff;color:#00ffff;box-shadow:0 0 10px #00ffff;}
-.blue{border-color:#0099ff;color:#0099ff;box-shadow:0 0 10px #0099ff;}
+.white{border-color:white;color:white;}
+.green{border-color:#00ff88;color:#00ff88;}
+.cyan{border-color:#00ffff;color:#00ffff;}
+.blue{border-color:#0099ff;color:#0099ff;}
 
 input{
 margin-top:20px;
@@ -114,7 +116,7 @@ border:2px solid #00ff88;
 width:180px;
 }
 
-/* PASSWORD SHAKE */
+/* SHAKE */
 
 @keyframes shake{
 0%{transform:translateX(0);}
@@ -169,7 +171,7 @@ top:0;
 width:100%;
 padding:40px 20px 20px;
 background:black;
-z-index:5;
+z-index:10;
 }
 
 .arcade-grid-wrapper{
@@ -213,10 +215,9 @@ transform:translateX(-50%);
 /* TILES */
 
 .tile{
-height:100px;
+height:110px;
 border:2px solid;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
 cursor:pointer;
@@ -233,21 +234,43 @@ transform:translateY(0);
 .tile-title{font-size:0.75rem;}
 .tile-sub{font-size:0.6rem;opacity:0.6;margin-top:4px;}
 
-@keyframes openPop{
-0%{transform:scale(1);}
-40%{transform:scale(1.08);}
-100%{transform:scale(1);}
+/* ENVELOPE */
+
+.envelope{
+position:relative;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 }
 
-.tile.opening{animation:openPop 0.3s;}
-
-@keyframes darkPulse{
-0%{box-shadow:0 0 6px #cc0000;}
-50%{box-shadow:0 0 16px #cc0000;}
-100%{box-shadow:0 0 6px #cc0000;}
+.flap{
+position:absolute;
+top:0;
+width:100%;
+height:50%;
+background:rgba(255,255,255,0.1);
+transform-origin:top;
+transition:transform 0.5s;
 }
 
-.dark-mode{animation:darkPulse 2s infinite;}
+.paper{
+position:absolute;
+top:40px;
+font-size:22px;
+transform:translateY(25px);
+transition:transform 0.6s;
+}
+
+.tile.opening .flap{
+transform:rotateX(180deg);
+}
+
+.tile.opening .paper{
+transform:translateY(-45px);
+}
 
 /* LETTER OVERLAY */
 
@@ -257,7 +280,7 @@ top:0;
 left:0;
 width:100%;
 height:100vh;
-background:rgba(0,0,0,0.95);
+background:rgba(0,0,0,0.85);
 display:flex;
 flex-direction:column;
 justify-content:center;
@@ -267,6 +290,7 @@ text-align:center;
 opacity:0;
 pointer-events:none;
 transition:0.4s;
+z-index:20;
 }
 
 #letterOverlay.active{
@@ -312,7 +336,6 @@ animation:blink 1s infinite;
 <!-- WELCOME -->
 
 <div id="welcomeScreen" class="screen">
-
 <div class="title">WELCOME, MY FAVOURITE STARE</div>
 
 <div class="subtitle">
@@ -325,7 +348,6 @@ Explore slowly.
 </div>
 
 <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
-
 </div>
 
 <!-- RULES -->
@@ -367,11 +389,8 @@ Some are dangerous.<br><br>
 <!-- LETTER -->
 
 <div id="letterOverlay">
-
 <div id="letterContent"></div>
-
 <div class="button white" onclick="closeLetter()">CLOSE</div>
-
 </div>
 
 <script>
@@ -417,7 +436,6 @@ heart.classList.add("heart");
 heart.style.left=Math.random()*window.innerWidth+"px";
 heart.style.bottom="0px";
 heart.style.background=color;
-heart.style.boxShadow="0 0 10px "+color;
 
 document.body.appendChild(heart);
 
@@ -427,7 +445,7 @@ setTimeout(()=>heart.remove(),2000);
 
 }
 
-/* GAME EFFECT */
+/* PARTICLES */
 
 function startGameEffect(icon){
 
@@ -456,41 +474,63 @@ function stopGameEffect(){
 document.getElementById("gameEffect").innerHTML="";
 }
 
+/* RETRO SOUND */
+
+function coinSound(){
+
+if(!audioCtx) return;
+
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+osc.type="square";
+osc.frequency.value=900;
+
+gain.gain.value=0.1;
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start();
+osc.stop(audioCtx.currentTime+0.08);
+
+}
+
 /* LETTER DATA */
 
 const letters=[
 
 {title:"LEVEL UP",effect:"🍄",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
 
-{title:"ACHIEVEMENT UNLOCKED",effect:"🏆",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
+{title:"ACHIEVEMENT UNLOCKED",effect:"🏆",sub:"when you're celebrating",color:"#ffd500",text:"You earned this."},
 
-{title:"POWER BOOST",effect:"⚡",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
+{title:"POWER BOOST",effect:"⚡",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability."},
 
 {title:"GHOST MODE",effect:"👻",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
 
-{title:"HIGH ALERT",effect:"🚨",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
+{title:"HIGH ALERT",effect:"🚨",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days."},
 
-{title:"PIECES NOT FITTING",effect:"🧩",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
+{title:"PIECES NOT FITTING",effect:"🧩",sub:"when you had a bad day",color:"#0099ff",text:"Not every day aligns."},
 
 {title:"LOW BATTERY",effect:"🔋",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
 
-{title:"FIGHT MODE",effect:"🥊",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
+{title:"FIGHT MODE",effect:"🥊",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe."},
 
-{title:"HP RESTORE",effect:"❤️",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
+{title:"HP RESTORE",effect:"❤️",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you."},
 
-{title:"HEALING CENTER",effect:"💊",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
+{title:"HEALING CENTER",effect:"💊",sub:"when you're sick",color:"#00ff88",text:"Slow down."},
 
-{title:"AFFECTION BOOST",effect:"💋",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
+{title:"AFFECTION BOOST",effect:"💋",sub:"when you need a kiss",color:"#00ff88",text:"Consider this one."},
 
 {title:"FREE ROAM",effect:"⭐",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
 
-{title:"AFTER DARK",effect:"🔥",sub:"when you're feeling naughty",color:"#cc0000",text:"Some things feel better when earned slowly."},
+{title:"AFTER DARK",effect:"🔥",sub:"when you're feeling naughty",color:"#cc0000",text:"Some things feel better slowly."},
 
-{title:"WEB OF THOUGHTS",effect:"🕷",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
+{title:"WEB OF THOUGHTS",effect:"🕷",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone you’re connected."},
 
 {title:"FAR FROM HOME",effect:"🏠",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
 
-{title:"RAINY DAY MODE",effect:"🌧",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
+{title:"RAINY DAY MODE",effect:"🌧",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow things down."},
 
 {title:"BONUS ROUND",effect:"🦆",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
 
@@ -502,9 +542,9 @@ const letters=[
 
 {title:"ON MY WAY",effect:"🚗",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
 
-{title:"LOW SIGNAL",effect:"📡",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
+{title:"LOW SIGNAL",effect:"📡",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals connect."},
 
-{title:"ENERGY RECHARGE",effect:"🔌",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
+{title:"ENERGY RECHARGE",effect:"🔌",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset."},
 
 {title:"SIDE QUEST",effect:"🎮",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
 
@@ -523,12 +563,32 @@ tile.classList.add("tile");
 tile.style.borderColor=l.color;
 tile.style.color=l.color;
 
-if(l.title==="AFTER DARK"){tile.classList.add("dark-mode");}
+tile.innerHTML=`
 
-tile.innerHTML=`<div class="tile-title">${l.title}</div>
-<div class="tile-sub">${l.sub}</div>`;
+<div class="envelope">
 
-tile.onclick=()=>openLetter(l,tile);
+<div class="flap"></div>
+
+<div class="paper">💌</div>
+
+<div class="tile-title">${l.title}</div>
+<div class="tile-sub">${l.sub}</div>
+
+</div>
+
+`;
+
+tile.onclick=()=>{
+
+coinSound();
+
+tile.classList.add("opening");
+
+setTimeout(()=>{
+openLetter(l,tile);
+},700);
+
+};
 
 grid.appendChild(tile);
 
@@ -549,10 +609,6 @@ setTimeout(()=>t.classList.add("show"),i*80);
 /* OPEN LETTER */
 
 function openLetter(letter,tile){
-
-tile.classList.add("opening");
-
-setTimeout(()=>{
 
 document.getElementById("letterOverlay").classList.add("active");
 
@@ -591,18 +647,23 @@ typed.innerHTML=text+'<span class="cursor">_</span>';
 
 type();
 
-tile.classList.remove("opening");
-
-},200);
-
 }
+
+/* CLOSE LETTER */
 
 function closeLetter(){
+
 document.getElementById("letterOverlay").classList.remove("active");
+
 stopGameEffect();
+
+document.querySelectorAll(".tile").forEach(t=>{
+t.classList.remove("opening");
+});
+
 }
 
-/* MUSIC */
+/* RETRO MUSIC */
 
 let audioCtx;
 let gainNode;
@@ -620,8 +681,6 @@ gainNode.gain.value=0.07;
 gainNode.connect(audioCtx.destination);
 
 }
-
-if(audioCtx.state==="suspended"){audioCtx.resume();}
 
 function tone(freq,duration,delay){
 
@@ -660,25 +719,18 @@ melodyInterval=setInterval(melody,1600);
 const canvas=document.getElementById("starfield");
 const ctx=canvas.getContext("2d");
 
-function resize(){
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
-}
-
-resize();
-window.addEventListener("resize",resize);
 
 let stars=[];
 
 for(let i=0;i<150;i++){
-
 stars.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 size:Math.random()*2,
 speed:Math.random()*1+0.2
 });
-
 }
 
 function animate(){

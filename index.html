@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -6,182 +6,263 @@
 <title>8-Bit Vault</title>
 
 <style>
+
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-  background:black;
-  color:white;
-  font-family:'Courier New',monospace;
-  overflow:hidden;
+background:black;
+color:white;
+font-family:'Courier New',monospace;
+overflow:hidden;
 }
 
 /* STARFIELD */
 canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-2;
+position:fixed;
+top:0;
+left:0;
+z-index:-2;
 }
 
 /* SCREENS */
+
 .screen{
-  position:absolute;
-  width:100%;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  opacity:0;
-  pointer-events:none;
-  transition:0.4s;
-}
-.screen.active{
-  opacity:1;
-  pointer-events:auto;
+position:absolute;
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+opacity:0;
+pointer-events:none;
+transition:0.4s;
 }
 
-.title{font-size:1.8rem;letter-spacing:3px;}
-.subtitle{margin-top:20px;font-size:0.9rem;opacity:0.75;max-width:340px;line-height:1.5;}
+.screen.active{
+opacity:1;
+pointer-events:auto;
+}
+
+.title{
+font-size:1.8rem;
+letter-spacing:3px;
+}
+
+.subtitle{
+margin-top:20px;
+font-size:0.9rem;
+opacity:0.8;
+max-width:340px;
+line-height:1.6;
+}
 
 .button{
-  margin-top:20px;
-  padding:12px 28px;
-  font-size:0.8rem;
-  letter-spacing:2px;
-  background:transparent;
-  border:2px solid;
-  cursor:pointer;
-  transition:0.3s;
-  text-transform:uppercase;
+margin-top:24px;
+padding:12px 28px;
+font-size:0.8rem;
+letter-spacing:2px;
+background:transparent;
+border:2px solid;
+cursor:pointer;
+transition:0.3s;
+text-transform:uppercase;
 }
-.button:hover{transform:scale(1.05);}
+
+.button:hover{
+transform:scale(1.05);
+}
+
 .cyan{border-color:#00ffff;color:#00ffff;box-shadow:0 0 10px #00ffff;}
-.green{border-color:#00ff88;color:#00ff88;box-shadow:0 0 10px #00ff88;}
 .blue{border-color:#0099ff;color:#0099ff;box-shadow:0 0 10px #0099ff;}
+.green{border-color:#00ff88;color:#00ff88;box-shadow:0 0 10px #00ff88;}
 .white{border-color:white;color:white;box-shadow:0 0 8px white;}
 
 input{
-  margin-top:20px;
-  padding:12px;
-  font-size:1.2rem;
-  text-align:center;
-  background:black;
-  color:white;
-  border:2px solid #00ff88;
-  width:180px;
+margin-top:20px;
+padding:12px;
+font-size:1.2rem;
+text-align:center;
+background:black;
+color:white;
+border:2px solid #00ff88;
+width:180px;
 }
 
-/* PASSWORD SHAKE */
+/* SHAKE */
+
 @keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  50%{transform:translateX(6px);}
-  75%{transform:translateX(-6px);}
-  100%{transform:translateX(0);}
+0%{transform:translateX(0);}
+25%{transform:translateX(-6px);}
+50%{transform:translateX(6px);}
+75%{transform:translateX(-6px);}
+100%{transform:translateX(0);}
 }
+
 .shake{animation:shake 0.3s;}
 
 /* HEARTS */
+
 .heart{
-  position:fixed;
-  width:8px;
-  height:8px;
-  transform:rotate(45deg);
-  animation:floatUp 2s linear forwards;
-  z-index:1000;
+position:fixed;
+width:8px;
+height:8px;
+transform:rotate(45deg);
+animation:floatUp 2s linear forwards;
+z-index:1000;
 }
-.heart:before,.heart:after{
-  content:'';
-  position:absolute;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:inherit;
+
+.heart:before,
+.heart:after{
+content:'';
+position:absolute;
+width:8px;
+height:8px;
+border-radius:50%;
+background:inherit;
 }
-.heart:before{top:-4px;left:0;}
-.heart:after{left:-4px;top:0;}
+
+.heart:before{top:-4px;}
+.heart:after{left:-4px;}
 
 @keyframes floatUp{
-  0%{transform:translateY(0) rotate(45deg);opacity:1;}
-  100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
+0%{transform:translateY(0) rotate(45deg);opacity:1;}
+100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
 }
 
 /* ARCADE */
-#arcadeScreen{display:flex;flex-direction:column;justify-content:flex-start;align-items:center;}
+
+#arcadeScreen{
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+align-items:center;
+}
+
 .arcade-header{
-  position:fixed;
-  top:0;
-  width:100%;
-  padding:40px 20px 20px;
-  background:black;
-  z-index:5;
+position:fixed;
+top:0;
+width:100%;
+padding:40px 20px 20px;
+background:black;
+z-index:5;
 }
+
 .arcade-grid-wrapper{
-  width:100%;
-  max-width:500px;
-  height:calc(100vh - 120px);
-  overflow-y:auto;
-  padding:140px 20px 40px;
+width:100%;
+max-width:500px;
+height:calc(100vh - 120px);
+overflow-y:auto;
+padding:140px 20px 40px;
 }
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+}
 
 /* PIXEL LOCK */
+
 .pixel-lock{
-  display:inline-block;
-  width:14px;height:10px;background:white;position:relative;margin-right:10px;
+display:inline-block;
+width:14px;
+height:10px;
+background:white;
+position:relative;
+margin-right:10px;
 }
+
 .pixel-lock:before{
-  content:"";position:absolute;width:10px;height:8px;border:3px solid white;border-bottom:none;
-  border-radius:8px 8px 0 0;top:-9px;left:50%;transform:translateX(-50%);
+content:"";
+position:absolute;
+width:10px;
+height:8px;
+border:3px solid white;
+border-bottom:none;
+border-radius:8px 8px 0 0;
+top:-9px;
+left:50%;
+transform:translateX(-50%);
 }
 
 /* TILE */
+
 .tile{
-  height:100px;
-  border:2px solid;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  cursor:pointer;
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.4s;
+height:100px;
+border:2px solid;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+opacity:0;
+transform:translateY(20px);
+transition:0.4s;
 }
-.tile.show{opacity:1;transform:translateY(0);}
 
-@keyframes openPop{
-  0%{transform:scale(1);}
-  40%{transform:scale(1.08);}
-  100%{transform:scale(1);}
+.tile.show{
+opacity:1;
+transform:translateY(0);
 }
-.tile.opening{animation:openPop 0.3s;}
-
-@keyframes darkPulse{
-  0%{box-shadow:0 0 6px #cc0000;}
-  50%{box-shadow:0 0 16px #cc0000;}
-  100%{box-shadow:0 0 6px #cc0000;}
-}
-.dark-mode{animation:darkPulse 2s infinite;}
 
 .tile-title{font-size:0.75rem;}
 .tile-sub{font-size:0.6rem;opacity:0.6;margin-top:4px;}
 
-/* LETTER OVERLAY */
-#letterOverlay{
-  position:fixed;
-  top:0;left:0;width:100%;height:100vh;
-  background:rgba(0,0,0,0.95);
-  display:flex;flex-direction:column;
-  justify-content:center;align-items:center;
-  padding:20px;text-align:center;
-  opacity:0;pointer-events:none;transition:0.4s;
+@keyframes openPop{
+0%{transform:scale(1);}
+40%{transform:scale(1.08);}
+100%{transform:scale(1);}
 }
-#letterOverlay.active{opacity:1;pointer-events:auto;}
 
-@keyframes blink{0%{opacity:1;}50%{opacity:0;}100%{opacity:1;}}
-.cursor{display:inline-block;width:8px;animation:blink 1s infinite;}
+.tile.opening{animation:openPop 0.3s;}
+
+@keyframes darkPulse{
+0%{box-shadow:0 0 6px #cc0000;}
+50%{box-shadow:0 0 16px #cc0000;}
+100%{box-shadow:0 0 6px #cc0000;}
+}
+
+.dark-mode{animation:darkPulse 2s infinite;}
+
+/* LETTER OVERLAY */
+
+#letterOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100vh;
+background:rgba(0,0,0,0.95);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:20px;
+text-align:center;
+opacity:0;
+pointer-events:none;
+transition:0.4s;
+}
+
+#letterOverlay.active{
+opacity:1;
+pointer-events:auto;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0;}
+100%{opacity:1;}
+}
+
+.cursor{
+display:inline-block;
+width:8px;
+animation:blink 1s infinite;
+}
+
 </style>
 </head>
 
@@ -190,176 +271,377 @@ input{
 <canvas id="starfield"></canvas>
 
 <div id="bootScreen" class="screen active">
-  <div class="title">8-BIT VAULT</div>
-  <div class="subtitle">Version 10.0</div>
-  <div class="button white" onclick="startGame()">PRESS START</div>
+<div class="title">8-BIT VAULT</div>
+<div class="button white" onclick="startGame()">PRESS START</div>
 </div>
 
 <div id="codeScreen" class="screen">
-  <div class="title">ENTER ACCESS CODE</div>
-  <input id="codeInput" type="password" maxlength="6">
-  <div class="button green" onclick="checkCode()">CONFIRM</div>
+<div class="title">ENTER ACCESS CODE</div>
+<input id="codeInput" type="password" maxlength="6">
+<div class="button green" onclick="checkCode()">CONFIRM</div>
 </div>
 
 <div id="welcomeScreen" class="screen">
-  <div class="title">WELCOME, MY FAVOURITE STARE.</div>
-  <div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
+
+<div class="title">WELCOME, MY FAVOURITE STARE</div>
+
+<div class="subtitle">
+If you're here, you found the vault.<br><br>
+Inside are small files for different moments.<br>
+Some are soft.<br>
+Some are playful.<br>
+Some unlock after dark.<br><br>
+Explore slowly.
+</div>
+
+<div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
+
 </div>
 
 <div id="rulesScreen" class="screen">
-  <div class="title">GAME RULES</div>
-  <div class="button blue" onclick="enterArcade()">ENTER ARCADE</div>
+
+<div class="title">GAME RULES</div>
+
+<div class="subtitle">
+
+1. Each tile opens a message.<br><br>
+
+2. Some levels are soft.<br>
+Some are ridiculous.<br>
+Some are dangerous.<br><br>
+
+3. AFTER DARK is self explanatory.<br><br>
+
+4. No speed running.<br><br>
+
+5. Access level: personal.
+
+</div>
+
+<div class="button blue" onclick="enterArcade()">ENTER ARCADE</div>
+
 </div>
 
 <div id="arcadeScreen" class="screen">
-  <div class="arcade-header">
-    <div class="title"><span class="pixel-lock"></span>ARCADE GRID</div>
-  </div>
-  <div class="arcade-grid-wrapper">
-    <div class="grid" id="grid"></div>
-  </div>
+
+<div class="arcade-header">
+<div class="title"><span class="pixel-lock"></span>ARCADE GRID</div>
+</div>
+
+<div class="arcade-grid-wrapper">
+<div class="grid" id="grid"></div>
+</div>
+
 </div>
 
 <div id="letterOverlay">
-  <div id="letterContent"></div>
-  <div class="button white" onclick="closeLetter()">CLOSE</div>
+
+<div id="letterContent"></div>
+
+<div class="button white" onclick="closeLetter()">CLOSE</div>
+
 </div>
 
 <script>
 
 /* SCREEN SWITCH */
+
 function showScreen(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  setTimeout(()=>document.getElementById(id).classList.add("active"),100);
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+setTimeout(()=>document.getElementById(id).classList.add("active"),100);
 }
 
 /* PASSWORD */
-function checkCode(){
-  const input=document.getElementById("codeInput");
-  if(input.value==="280226"){
-    showScreen("welcomeScreen");
-  }else{
-    input.classList.add("shake");
-    setTimeout(()=>input.classList.remove("shake"),300);
-    input.value="";
-  }
+
+function startGame(){
+startMusic();
+showScreen("codeScreen");
 }
-function startGame(){showScreen("codeScreen");}
+
+function checkCode(){
+
+const input=document.getElementById("codeInput");
+
+if(input.value==="280226"){
+showScreen("welcomeScreen");
+}else{
+input.classList.add("shake");
+setTimeout(()=>input.classList.remove("shake"),300);
+input.value="";
+}
+
+}
 
 /* HEARTS */
+
 function createHearts(color){
-  for(let i=0;i<20;i++){
-    const heart=document.createElement("div");
-    heart.classList.add("heart");
-    heart.style.left=Math.random()*window.innerWidth+"px";
-    heart.style.bottom="0px";
-    heart.style.background=color;
-    heart.style.boxShadow="0 0 10px "+color;
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),2000);
-  }
+
+for(let i=0;i<20;i++){
+
+const heart=document.createElement("div");
+
+heart.classList.add("heart");
+
+heart.style.left=Math.random()*window.innerWidth+"px";
+heart.style.bottom="0px";
+
+heart.style.background=color;
+heart.style.boxShadow="0 0 10px "+color;
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),2000);
+
 }
 
-/* LETTERS */
+}
+
+/* LETTER DATA */
+
 const letters=[
+
 {title:"LEVEL UP",sub:"when you're feeling sad",color:"#ffd500",text:"Even on your lowest days, you still carry strength."},
+
 {title:"ACHIEVEMENT UNLOCKED",sub:"when you're celebrating",color:"#ffd500",text:"You earned this. Don’t downplay your wins."},
+
 {title:"POWER BOOST",sub:"when you need motivation",color:"#ffd500",text:"You don’t lack ability. You just need momentum."},
+
 {title:"GHOST MODE",sub:"when you're overthinking",color:"#00ffff",text:"Pause. Thoughts are not facts."},
+
 {title:"HIGH ALERT",sub:"when you're stressed",color:"#00ffff",text:"You’ve survived worse days than this."},
+
 {title:"PIECES NOT FITTING",sub:"when you had a bad day",color:"#0099ff",text:"Not every day needs to align perfectly."},
+
 {title:"LOW BATTERY",sub:"when you're feeling lazy",color:"#0099ff",text:"Rest is not failure."},
+
 {title:"FIGHT MODE",sub:"when you're angry",color:"#ff6600",text:"Feel it. Then breathe through it."},
+
 {title:"HP RESTORE",sub:"when you need a hug",color:"#00ff88",text:"Imagine my arms around you right now."},
+
 {title:"HEALING CENTER",sub:"when you're sick",color:"#00ff88",text:"Slow down. Let yourself recover."},
+
 {title:"AFFECTION BOOST",sub:"when you need a kiss",color:"#00ff88",text:"Consider this a digital one."},
+
 {title:"FREE ROAM",sub:"when you need attention",color:"#bb00ff",text:"You’re allowed to want me."},
+
 {title:"AFTER DARK",sub:"when you're feeling naughty",color:"#cc0000",text:"Some things feel better when earned slowly."},
+
 {title:"WEB OF THOUGHTS",sub:"when you feel lonely",color:"#ff0033",text:"Even when alone, you are connected."},
+
 {title:"FAR FROM HOME",sub:"when you miss home",color:"#ff0033",text:"Distance doesn’t erase belonging."},
+
 {title:"RAINY DAY MODE",sub:"when it's raining",color:"#ffaa00",text:"Let the rain slow everything down."},
+
 {title:"BONUS ROUND",sub:"when you need a laugh",color:"#ffaa00",text:"You deserve lightness."},
+
 {title:"MIDNIGHT SERVER",sub:"when you can't sleep",color:"#ffffff",text:"Close your eyes. Breathe slowly."},
+
 {title:"VICTORY SCREEN",sub:"when you're happy",color:"#ffffff",text:"Stay in this moment."},
+
 {title:"ANNUAL EVENT",sub:"when it's your birthday",color:"#ffffff",text:"Another year leveled up."},
+
 {title:"ON MY WAY",sub:"when you're coming to see me",color:"#ff0033",text:"The countdown begins."},
+
 {title:"LOW SIGNAL",sub:"when you feel distant",color:"#ff0033",text:"Even weak signals still connect."},
+
 {title:"ENERGY RECHARGE",sub:"when you're drained",color:"#00ff88",text:"Refill. Reset. Restart."},
+
 {title:"SIDE QUEST",sub:"when you're bored",color:"#0099ff",text:"Find something small to conquer."}
+
 ];
 
 const grid=document.getElementById("grid");
 
 letters.forEach((l,i)=>{
-  const tile=document.createElement("div");
-  tile.classList.add("tile");
-  tile.style.borderColor=l.color;
-  tile.style.color=l.color;
-  if(l.title==="AFTER DARK"){tile.classList.add("dark-mode");}
-  tile.innerHTML=`<div class="tile-title">${l.title}</div>
-                  <div class="tile-sub">${l.sub}</div>`;
-  tile.onclick=()=>openLetter(l,tile);
-  grid.appendChild(tile);
+
+const tile=document.createElement("div");
+
+tile.classList.add("tile");
+
+tile.style.borderColor=l.color;
+tile.style.color=l.color;
+
+if(l.title==="AFTER DARK"){tile.classList.add("dark-mode");}
+
+tile.innerHTML=`<div class="tile-title">${l.title}</div>
+<div class="tile-sub">${l.sub}</div>`;
+
+tile.onclick=()=>openLetter(l,tile);
+
+grid.appendChild(tile);
+
 });
 
+/* ENTER ARCADE */
+
 function enterArcade(){
-  showScreen("arcadeScreen");
-  document.querySelectorAll(".tile").forEach((t,i)=>{
-    setTimeout(()=>t.classList.add("show"),i*80);
-  });
+
+showScreen("arcadeScreen");
+
+document.querySelectorAll(".tile").forEach((t,i)=>{
+setTimeout(()=>t.classList.add("show"),i*80);
+});
+
 }
 
-function openLetter(letter,tile){
-  tile.classList.add("opening");
-  setTimeout(()=>{
-    document.getElementById("letterOverlay").classList.add("active");
-    createHearts(letter.color);
+/* OPEN LETTER */
 
-    const content=document.getElementById("letterContent");
-    content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
-                       <p id="typedText"></p>`;
-    const text=letter.text;
-    const typed=document.getElementById("typedText");
-    let i=0;
-    function type(){
-      if(i<text.length){
-        typed.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
-        i++;
-        setTimeout(type,25);
-      }else{
-        typed.innerHTML=text+'<span class="cursor">_</span>';
-      }
-    }
-    type();
-    tile.classList.remove("opening");
-  },200);
+function openLetter(letter,tile){
+
+tile.classList.add("opening");
+
+setTimeout(()=>{
+
+document.getElementById("letterOverlay").classList.add("active");
+
+createHearts(letter.color);
+
+const content=document.getElementById("letterContent");
+
+content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
+<p id="typedText"></p>`;
+
+const text=letter.text;
+
+const typed=document.getElementById("typedText");
+
+let i=0;
+
+function type(){
+
+if(i<text.length){
+
+typed.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
+
+i++;
+
+setTimeout(type,25);
+
+}else{
+
+typed.innerHTML=text+'<span class="cursor">_</span>';
+
+}
+
+}
+
+type();
+
+tile.classList.remove("opening");
+
+},200);
+
 }
 
 function closeLetter(){
-  document.getElementById("letterOverlay").classList.remove("active");
+document.getElementById("letterOverlay").classList.remove("active");
+}
+
+/* MUSIC */
+
+let audioCtx;
+let gainNode;
+let melodyInterval;
+
+function startMusic(){
+
+if(!audioCtx){
+
+audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+
+gainNode=audioCtx.createGain();
+gainNode.gain.value=0.07;
+
+gainNode.connect(audioCtx.destination);
+
+}
+
+if(audioCtx.state==="suspended"){audioCtx.resume();}
+
+function tone(freq,duration,delay){
+
+const osc=audioCtx.createOscillator();
+
+osc.type="square";
+osc.frequency.value=freq;
+
+osc.connect(gainNode);
+
+osc.start(audioCtx.currentTime+delay);
+osc.stop(audioCtx.currentTime+delay+duration);
+
+}
+
+function melody(){
+
+tone(220,0.2,0);
+tone(330,0.2,0.3);
+tone(440,0.2,0.6);
+tone(330,0.2,0.9);
+
+}
+
+if(!melodyInterval){
+
+melody();
+melodyInterval=setInterval(melody,1600);
+
+}
+
 }
 
 /* STARFIELD */
+
 const canvas=document.getElementById("starfield");
 const ctx=canvas.getContext("2d");
-function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-resize();window.addEventListener("resize",resize);
+
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize",resize);
+
 let stars=[];
+
 for(let i=0;i<150;i++){
-  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1+0.2});
+
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*2,
+speed:Math.random()*1+0.2
+});
+
 }
+
 function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
-  stars.forEach(s=>{
-    ctx.fillRect(s.x,s.y,s.size,s.size);
-    s.y+=s.speed;
-    if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;}
-  });
-  requestAnimationFrame(animate);
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="white";
+
+stars.forEach(s=>{
+
+ctx.fillRect(s.x,s.y,s.size,s.size);
+
+s.y+=s.speed;
+
+if(s.y>canvas.height){
+s.y=0;
+s.x=Math.random()*canvas.width;
 }
+
+});
+
+requestAnimationFrame(animate);
+
+}
+
 animate();
 
 </script>
+
 </body>
 </html>

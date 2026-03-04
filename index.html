@@ -171,6 +171,36 @@ background:inherit;
 100%{transform:translateY(-300px) rotate(45deg);opacity:0;}
 }
 
+  .secret-photo{
+
+width:220px;
+max-width:80%;
+
+margin:20px 0;
+
+border:3px solid #ff00ff;
+border-radius:10px;
+
+box-shadow:
+0 0 20px #ff00ff,
+0 0 40px rgba(255,0,255,0.4);
+
+animation:photoGlow 2s infinite alternate;
+
+}
+
+@keyframes photoGlow{
+
+0%{
+box-shadow:0 0 10px #ff00ff;
+}
+
+100%{
+box-shadow:0 0 30px #ff00ff;
+}
+
+}
+
 /* ARCADE */
 
 #arcadeScreen{

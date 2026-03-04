@@ -880,13 +880,16 @@ content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
 const text = letter.text;
 const typed = document.getElementById("typedText");
 
+/* stop any previous typing */
+if(window.typingTimer){
+clearTimeout(window.typingTimer);
+window.typingTimer = null;
+}
+
+/* reset text */
 typed.innerHTML = "";
 
 let i = 0;
-
-if(window.typingTimer){
-clearTimeout(window.typingTimer);
-}
 
 function type(){
 
@@ -907,12 +910,15 @@ typed.innerHTML = text + '<span class="cursor">_</span>';
 }
 
 type();
-
 }
 
 /* CLOSE LETTER */
 
 function closeLetter(){
+
+if(window.typingTimer){
+clearTimeout(window.typingTimer);
+}
 
 document.getElementById("letterOverlay").classList.remove("active");
 

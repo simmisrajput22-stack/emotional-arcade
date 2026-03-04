@@ -663,11 +663,12 @@ t.classList.remove("opening");
 
 }
 
-/* RETRO MUSIC */
+/* SOFT RETRO BACKGROUND MUSIC */
 
 let audioCtx;
 let gainNode;
 let musicLoop;
+let ambientLoop;
 
 function startMusic(){
 
@@ -682,16 +683,17 @@ gainNode.connect(audioCtx.destination);
 
 }
 
+/* main melody tone */
+
 function playTone(freq,time){
 
 const osc = audioCtx.createOscillator();
 const gain = audioCtx.createGain();
 
 osc.type = "triangle";
-
 osc.frequency.value = freq;
 
-gain.gain.value = 0.06;
+gain.gain.value = 0.05;
 
 osc.connect(gain);
 gain.connect(gainNode);
@@ -701,7 +703,27 @@ osc.stop(audioCtx.currentTime + time + 0.35);
 
 }
 
-/* calm retro melody */
+/* ambient sparkle */
+
+function ambient(freq,time){
+
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+osc.type = "sine";
+osc.frequency.value = freq;
+
+gain.gain.value = 0.02;
+
+osc.connect(gain);
+gain.connect(gainNode);
+
+osc.start(audioCtx.currentTime + time);
+osc.stop(audioCtx.currentTime + time + 0.6);
+
+}
+
+/* main melody pattern */
 
 const notes = [
 440, 494, 523, 494,
@@ -721,6 +743,17 @@ step = 0;
 }
 
 },450);
+
+/* soft ambient sparkle notes */
+
+ambientLoop = setInterval(()=>{
+
+const tones = [880,988,1046];
+const random = tones[Math.floor(Math.random()*tones.length)];
+
+ambient(random,0);
+
+},2000);
 
 }
 /* STARFIELD */

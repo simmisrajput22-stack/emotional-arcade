@@ -877,27 +877,30 @@ const content=document.getElementById("letterContent");
 content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
 <p id="typedText"></p>`;
 
-const text=letter.text;
+const text = letter.text;
+const typed = document.getElementById("typedText");
 
-const typed=document.getElementById("typedText");
+typed.innerHTML = "";
 
-typed.innerHTML="";
+let i = 0;
 
-let i=0;
+if(window.typingTimer){
+clearTimeout(window.typingTimer);
+}
 
 function type(){
 
-if(i<text.length){
+if(i < text.length){
 
-typed.innerHTML=text.substring(0,i+1)+'<span class="cursor">_</span>';
+typed.innerHTML = text.substring(0,i+1) + '<span class="cursor">_</span>';
 
 i++;
 
-setTimeout(type,25);
+window.typingTimer = setTimeout(type,25);
 
 }else{
 
-typed.innerHTML=text+'<span class="cursor">_</span>';
+typed.innerHTML = text + '<span class="cursor">_</span>';
 
 }
 

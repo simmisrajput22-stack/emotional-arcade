@@ -587,7 +587,44 @@ spark.remove();
 
 }
 
+function secretBurst(){
+
+for(let i=0;i<40;i++){
+
+const p=document.createElement("div");
+
+p.style.position="fixed";
+p.style.left=Math.random()*window.innerWidth+"px";
+p.style.top=Math.random()*window.innerHeight+"px";
+
+p.style.width="5px";
+p.style.height="5px";
+
+p.style.background="#ff00ff";
+p.style.boxShadow="0 0 10px #ff00ff";
+
+p.style.zIndex="1000";
+
+document.body.appendChild(p);
+
+setTimeout(()=>{
+p.remove();
+},700);
+
+}
+
+}
+
 function unlockSecretTile(){
+
+document.body.classList.add("glitch");
+
+unlockSound();
+secretBurst();
+
+setTimeout(()=>{
+document.body.classList.remove("glitch");
+},500);
 
 const grid = document.getElementById("grid");
 

@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8-Bit Vault</title><style>
 
-*{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
 background:black;
@@ -19,32 +19,7 @@ canvas{
 position:fixed;
 top:0;
 left:0;
-z-index:-5;
-}
-
-/* GAME PARTICLES */
-
-.game-effect{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-pointer-events:none;
-z-index:50;
-overflow:hidden;
-}
-
-.game-icon{
-position:absolute;
-animation:floatGame linear infinite;
-opacity:.9;
-}
-
-@keyframes floatGame{
-0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-120px) rotate(360deg);opacity:0;}
+z-index:-1;
 }
 
 /* SCREENS */
@@ -68,114 +43,76 @@ opacity:1;
 pointer-events:auto;
 }
 
+/* TEXT */
+
 .title{
-font-size:1.8rem;
+font-size:2rem;
 letter-spacing:3px;
+margin-bottom:10px;
 }
 
 .subtitle{
-margin-top:20px;
-font-size:.9rem;
-max-width:340px;
+max-width:320px;
 line-height:1.6;
-opacity:.8;
+opacity:.85;
 }
 
 /* BUTTON */
 
 .button{
-margin-top:24px;
-padding:12px 28px;
+margin-top:25px;
+padding:12px 30px;
+border:2px solid #00ffff;
+color:#00ffff;
+cursor:pointer;
 font-size:.8rem;
 letter-spacing:2px;
-background:transparent;
-border:2px solid white;
-cursor:pointer;
 text-transform:uppercase;
+background:transparent;
 }
+
+.button:hover{
+background:#00ffff;
+color:black;
+}
+
+/* PASSWORD */
 
 input{
 margin-top:20px;
 padding:12px;
-font-size:1.2rem;
+font-size:1.1rem;
 text-align:center;
+border:2px solid #00ffff;
 background:black;
 color:white;
-border:2px solid #00ff88;
 }
 
 /* SHAKE */
 
 @keyframes shake{
 0%{transform:translateX(0)}
-25%{transform:translateX(-6px)}
-50%{transform:translateX(6px)}
-75%{transform:translateX(-6px)}
+25%{transform:translateX(-5px)}
+50%{transform:translateX(5px)}
+75%{transform:translateX(-5px)}
 100%{transform:translateX(0)}
 }
 
-.shake{animation:shake .3s;}
-
-/* HEARTS */
-
-.heart{
-position:fixed;
-width:8px;
-height:8px;
-transform:rotate(45deg);
-animation:floatUp 2s linear forwards;
-}
-
-.heart:before,.heart:after{
-content:'';
-position:absolute;
-width:8px;
-height:8px;
-border-radius:50%;
-background:inherit;
-}
-
-.heart:before{top:-4px}
-.heart:after{left:-4px}
-
-@keyframes floatUp{
-0%{transform:translateY(0) rotate(45deg)}
-100%{transform:translateY(-300px) rotate(45deg);opacity:0}
-}
+.shake{animation:shake .3s}
 
 /* ARCADE */
 
 #arcadeScreen{
-display:flex;
-flex-direction:column;
 justify-content:flex-start;
-align-items:center;
-}
-
-.arcade-header{
-position:fixed;
-top:0;
-width:100%;
-padding:40px 20px 20px;
-background:black;
-z-index:10;
-}
-
-.arcade-grid-wrapper{
-width:100%;
-max-width:500px;
-height:calc(100vh - 120px);
-overflow-y:auto;
-padding:140px 20px 40px;
-border:3px solid #00ffff;
-border-radius:12px;
-box-shadow:0 0 20px #00ffff;
+padding-top:120px;
 }
 
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:16px;
+gap:15px;
+width:90%;
+max-width:420px;
 }
 
 /* TILE */
@@ -184,8 +121,8 @@ gap:16px;
 height:110px;
 border:2px solid;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 cursor:pointer;
 opacity:0;
 transform:translateY(20px);
@@ -199,61 +136,53 @@ transform:translateY(0);
 
 .tile:hover{
 transform:scale(1.05);
-box-shadow:0 0 12px currentColor;
 }
 
 /* ENVELOPE */
 
 .envelope{
-position:relative;
-width:100%;
-height:100%;
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 }
 
 .flap{
 position:absolute;
-top:0;
-width:100%;
-height:50%;
+width:80%;
+height:40px;
 background:rgba(255,255,255,.1);
 transform-origin:top;
-transition:transform .5s;
+transition:.4s;
 }
 
 .paper{
-position:absolute;
-top:40px;
-font-size:22px;
-transform:translateY(25px);
-transition:transform .6s;
+margin-top:10px;
+font-size:20px;
 }
 
-.tile.opening .flap{transform:rotateX(180deg)}
-.tile.opening .paper{transform:translateY(-45px)}
+.tile.opening .flap{
+transform:rotateX(180deg);
+}
 
-/* OVERLAY */
+/* LETTER OVERLAY */
 
 #letterOverlay{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-height:100vh;
-background:rgba(0,0,0,.85);
+height:100%;
+background:rgba(0,0,0,.9);
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
-padding:20px;
+justify-content:center;
 text-align:center;
+padding:20px;
 opacity:0;
 pointer-events:none;
 transition:.4s;
-z-index:20;
 }
 
 #letterOverlay.active{
@@ -261,121 +190,109 @@ opacity:1;
 pointer-events:auto;
 }
 
-.cursor{
-display:inline-block;
-animation:blink 1s infinite;
-}
-
-@keyframes blink{
-50%{opacity:0}
-}
-
-/* SECRET PHOTO */
+/* PHOTO */
 
 .secret-photo{
 width:220px;
 max-width:80%;
 margin:20px 0;
 border:3px solid #ff00ff;
-border-radius:10px;
 box-shadow:0 0 20px #ff00ff;
 }
 
 /* GLITCH */
 
 .glitch{
-animation:glitchFlash .5s;
+animation:glitch .5s;
 }
 
-@keyframes glitchFlash{
+@keyframes glitch{
 0%{filter:brightness(1)}
-20%{filter:brightness(2)}
-40%{filter:brightness(.3)}
-60%{filter:brightness(1.5)}
-80%{filter:brightness(.5)}
+50%{filter:brightness(3)}
 100%{filter:brightness(1)}
 }
 
-</style></head><body><canvas id="starfield"></canvas>
+</style></head><body><canvas id="stars"></canvas>
 
-<div id="gameEffect" class="game-effect"></div><div id="bootScreen" class="screen active">
+<!-- BOOT --><div id="bootScreen" class="screen active">
 <div class="title">8-BIT VAULT</div>
 <div class="button" onclick="startGame()">PRESS START</div>
-</div><div id="codeScreen" class="screen">
+</div><!-- PASSWORD --><div id="codeScreen" class="screen">
 <div class="title">ENTER ACCESS CODE</div>
-<input id="codeInput" type="password" maxlength="6">
+<input id="codeInput" maxlength="6" type="password">
 <div class="button" onclick="checkCode()">CONFIRM</div>
-</div><div id="welcomeScreen" class="screen">
+</div><!-- WELCOME --><div id="welcomeScreen" class="screen">
 <div class="title">WELCOME, MY FAVOURITE STARE</div>
 <div class="subtitle">
 Inside this vault are small files for different moments.
 Explore slowly.
 </div>
 <div class="button" onclick="showScreen('rulesScreen')">VIEW RULES</div>
-</div><div id="rulesScreen" class="screen">
+</div><!-- RULES --><div id="rulesScreen" class="screen">
 <div class="title">GAME RULES</div>
 <div class="subtitle">
 1. Each tile opens a message.<br>
 2. Some levels are soft.<br>
-3. Some levels are dangerous.<br>
+3. Some are dangerous.<br>
 4. No speed running.
 </div>
 <div class="button" onclick="enterArcade()">ENTER ARCADE</div>
-</div><div id="arcadeScreen" class="screen"><div class="arcade-header">
-<div class="title">🔒 ARCADE GRID</div>
-</div><div class="arcade-grid-wrapper">
+</div><!-- ARCADE --><div id="arcadeScreen" class="screen">
+<div class="title">ARCADE GRID</div>
 <div class="grid" id="grid"></div>
-</div></div><div id="letterOverlay">
+</div><!-- LETTER --><div id="letterOverlay">
 <div id="letterContent"></div>
 <div class="button" onclick="closeLetter()">CLOSE</div>
 </div><script>
 
-/* SCREENS */
+/* SCREEN SWITCH */
 
 function showScreen(id){
 document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-setTimeout(()=>document.getElementById(id).classList.add("active"),100);
+document.getElementById(id).classList.add("active");
 }
 
-/* PASSWORD */
+/* START */
 
 function startGame(){
 startMusic();
 showScreen("codeScreen");
 }
 
+/* PASSWORD */
+
 function checkCode(){
 
 const input=document.getElementById("codeInput");
 
 if(input.value==="280226"){
-
-unlockSound();
 unlockSparkles();
-
-setTimeout(()=>{
-showScreen("welcomeScreen");
-},500);
-
+setTimeout(()=>showScreen("welcomeScreen"),400);
 }else{
-
 input.classList.add("shake");
 setTimeout(()=>input.classList.remove("shake"),300);
 input.value="";
-
 }
 
 }
 
-/* UNLOCK FX */
+/* ENTER ARCADE */
 
-function unlockSound(){
-const osc=new AudioContext().createOscillator();
+function enterArcade(){
+
+showScreen("arcadeScreen");
+
+document.querySelectorAll(".tile").forEach((t,i)=>{
+setTimeout(()=>t.classList.add("show"),i*100);
+});
+
 }
+
+/* SPARKLES */
 
 function unlockSparkles(){
-for(let i=0;i<30;i++){
-const s=document.createElement("div");
+for(let i=0;i<25;i++){
+let s=document.createElement("div");
 s.style.position="fixed";
 s.style.left=Math.random()*window.innerWidth+"px";
 s.style.top=Math.random()*window.innerHeight+"px";
@@ -389,52 +306,49 @@ setTimeout(()=>s.remove(),600);
 
 /* MUSIC */
 
-let audioCtx;
-
 function startMusic(){
 
-audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-
-function tone(f,t){
-const o=audioCtx.createOscillator();
-const g=audioCtx.createGain();
-o.type="triangle";
-o.frequency.value=f;
-g.gain.value=.05;
-o.connect(g);
-g.connect(audioCtx.destination);
-o.start();
-o.stop(audioCtx.currentTime+t);
-}
+let ctx=new(window.AudioContext||window.webkitAudioContext)();
 
 setInterval(()=>{
-tone(440,.4);
+
+let o=ctx.createOscillator();
+let g=ctx.createGain();
+
+o.type="triangle";
+o.frequency.value=440;
+g.gain.value=.03;
+
+o.connect(g);
+g.connect(ctx.destination);
+
+o.start();
+o.stop(ctx.currentTime+.3);
+
 },900);
 
 }
 
-/* LETTERS */
+/* LETTER DATA */
 
-let lettersOpened=0;
+let opened=0;
 let secretUnlocked=false;
 
 const letters=[
-{title:"LEVEL UP",effect:"🍄",text:"Even on your lowest days you still carry strength.",color:"#ffd500"},
-{title:"POWER BOOST",effect:"⚡",text:"You just need momentum.",color:"#ffd500"},
-{title:"HP RESTORE",effect:"❤️",text:"Imagine my arms around you.",color:"#00ff88"},
-{title:"GHOST MODE",effect:"👻",text:"Pause. Thoughts are not facts.",color:"#00ffff"},
-{title:"BONUS ROUND",effect:"🦆",text:"You deserve lightness.",color:"#ffaa00"},
-{title:"MIDNIGHT SERVER",effect:"🌙",text:"Close your eyes.",color:"#ffffff"},
-{title:"VICTORY SCREEN",effect:"🎉",text:"Stay in this moment.",color:"#ffffff"},
-{title:"SIDE QUEST",effect:"🎮",text:"Find something small to conquer.",color:"#0099ff"}
+{title:"LEVEL UP",text:"Even on your lowest days you still carry strength.",color:"#ffd500"},
+{title:"POWER BOOST",text:"You just need momentum.",color:"#ffd500"},
+{title:"HP RESTORE",text:"Imagine my arms around you.",color:"#00ff88"},
+{title:"GHOST MODE",text:"Pause. Thoughts are not facts.",color:"#00ffff"},
+{title:"BONUS ROUND",text:"You deserve lightness.",color:"#ffaa00"},
+{title:"MIDNIGHT SERVER",text:"Close your eyes.",color:"#ffffff"}
 ];
 
 const grid=document.getElementById("grid");
 
-letters.forEach((l,i)=>{
+letters.forEach(l=>{
 
-const tile=document.createElement("div");
-tile.classList.add("tile");
+let tile=document.createElement("div");
+tile.className="tile";
 tile.style.borderColor=l.color;
 
 tile.innerHTML=`
@@ -446,13 +360,8 @@ tile.innerHTML=`
 `;
 
 tile.onclick=()=>{
-
 tile.classList.add("opening");
-
-setTimeout(()=>{
-openLetter(l,tile);
-},700);
-
+setTimeout(()=>openLetter(l),400);
 };
 
 grid.appendChild(tile);
@@ -461,23 +370,20 @@ grid.appendChild(tile);
 
 /* OPEN LETTER */
 
-function openLetter(letter,tile){
+function openLetter(letter){
 
 document.getElementById("letterOverlay").classList.add("active");
 
-lettersOpened++;
+opened++;
 
-if(lettersOpened>=5 && !secretUnlocked){
+if(opened>=5 && !secretUnlocked){
 unlockSecretTile();
 secretUnlocked=true;
 }
 
-const content=document.getElementById("letterContent");
-
-content.innerHTML=`
-<h2 style="color:${letter.color}">${letter.title}</h2>
-<p>${letter.text}</p>
-`;
+document.getElementById("letterContent").innerHTML=
+`<h2 style="color:${letter.color}">${letter.title}</h2>
+<p>${letter.text}</p>`;
 
 }
 
@@ -486,14 +392,11 @@ content.innerHTML=`
 function unlockSecretTile(){
 
 document.body.classList.add("glitch");
+setTimeout(()=>document.body.classList.remove("glitch"),400);
 
-setTimeout(()=>{
-document.body.classList.remove("glitch");
-},500);
+let tile=document.createElement("div");
 
-const tile=document.createElement("div");
-
-tile.classList.add("tile","show");
+tile.className="tile show";
 tile.style.borderColor="#ff00ff";
 
 tile.innerHTML=`
@@ -508,17 +411,13 @@ tile.onclick=()=>{
 
 document.getElementById("letterOverlay").classList.add("active");
 
-const content=document.getElementById("letterContent");
-
-content.innerHTML=`
+document.getElementById("letterContent").innerHTML=`
 
 <h2 style="color:#ff00ff">YOU WERE WARNED</h2>
 
 <p>I told you not to open this.</p>
 
-<div id="rewardButton" class="button" onclick="showReward()">
-SHOW REWARD
-</div>
+<div id="rewardButton" class="button" onclick="showReward()">SHOW REWARD</div>
 
 <div id="rewardArea"></div>
 
@@ -534,18 +433,15 @@ grid.appendChild(tile);
 
 function showReward(){
 
-const area=document.getElementById("rewardArea");
-
-area.innerHTML=`
-<img src="secret.jpg" class="secret-photo">
-<p>Your favourite outfit. Just for you.</p>
-`;
+document.getElementById("rewardArea").innerHTML=
+`<img src="secret.jpg" class="secret-photo">
+<p>Your favourite outfit. Just for you.</p>`;
 
 document.getElementById("rewardButton").style.display="none";
 
 }
 
-/* CLOSE */
+/* CLOSE LETTER */
 
 function closeLetter(){
 document.getElementById("letterOverlay").classList.remove("active");
@@ -553,7 +449,7 @@ document.getElementById("letterOverlay").classList.remove("active");
 
 /* STARFIELD */
 
-const canvas=document.getElementById("starfield");
+const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
 
 canvas.width=window.innerWidth;
@@ -562,12 +458,7 @@ canvas.height=window.innerHeight;
 let stars=[];
 
 for(let i=0;i<150;i++){
-stars.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-size:Math.random()*2,
-speed:Math.random()*1+0.2
-});
+stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1});
 }
 
 function animate(){
@@ -586,7 +477,6 @@ s.x=Math.random()*canvas.width;
 });
 
 requestAnimationFrame(animate);
-
 }
 
 animate();

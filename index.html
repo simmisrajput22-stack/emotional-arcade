@@ -587,6 +587,71 @@ spark.remove();
 
 }
 
+function unlockSecretTile(){
+
+const grid = document.getElementById("grid");
+
+const tile = document.createElement("div");
+
+tile.classList.add("tile","show");
+
+tile.style.borderColor="#ff00ff";
+tile.style.color="#ff00ff";
+
+tile.innerHTML=`
+
+<div class="envelope">
+
+<div class="flap"></div>
+
+<div class="paper">⭐</div>
+
+<div class="tile-title">SECRET LEVEL</div>
+<div class="tile-sub">you found it</div>
+
+</div>
+
+`;
+
+tile.onclick=()=>{
+
+coinSound();
+
+tile.classList.add("opening");
+
+setTimeout(()=>{
+
+document.getElementById("letterOverlay").classList.add("active");
+
+const content=document.getElementById("letterContent");
+
+content.innerHTML=`
+
+<h2 style="color:#ff00ff">SECRET UNLOCKED</h2>
+
+<p>
+You were curious enough to open everything.<br><br>
+
+Which means you deserve the hidden message.<br><br>
+
+Come here.<br>
+Yes you.<br><br>
+
+Closer.
+</p>
+
+`;
+
+},700);
+
+};
+
+grid.appendChild(tile);
+
+unlockSound();
+
+}
+
 }
 
 /* LETTER DATA */

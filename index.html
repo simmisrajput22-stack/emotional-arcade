@@ -414,7 +414,12 @@ function checkCode(){
 const input=document.getElementById("codeInput");
 
 if(input.value==="280226"){
+unlockSound();
+unlockSparkles();
+
+setTimeout(()=>{
 showScreen("welcomeScreen");
+},500);
 }else{
 input.classList.add("shake");
 setTimeout(()=>input.classList.remove("shake"),300);
@@ -521,6 +526,31 @@ osc2.start(audioCtx.currentTime + 0.05);
 
 osc1.stop(audioCtx.currentTime + 0.3);
 osc2.stop(audioCtx.currentTime + 0.35);
+
+}
+
+function unlockSparkles(){
+
+for(let i=0;i<30;i++){
+
+const spark = document.createElement("div");
+
+spark.style.position="fixed";
+spark.style.left=Math.random()*window.innerWidth+"px";
+spark.style.top=Math.random()*window.innerHeight+"px";
+spark.style.width="4px";
+spark.style.height="4px";
+spark.style.background="#00ffff";
+spark.style.boxShadow="0 0 8px #00ffff";
+spark.style.zIndex="1000";
+
+document.body.appendChild(spark);
+
+setTimeout(()=>{
+spark.remove();
+},600);
+
+}
 
 }
 

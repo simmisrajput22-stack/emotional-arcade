@@ -7,6 +7,21 @@
 
 <style>
 
+  .glitch{
+animation:glitchFlash 0.5s;
+}
+
+@keyframes glitchFlash{
+
+0%{filter:brightness(1);}
+20%{filter:brightness(2);}
+40%{filter:brightness(0.3);}
+60%{filter:brightness(1.5);}
+80%{filter:brightness(0.5);}
+100%{filter:brightness(1);}
+
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -415,6 +430,34 @@ Some are dangerous.<br><br>
 
 <script>
 
+  function secretBurst(){
+
+for(let i=0;i<40;i++){
+
+const p=document.createElement("div");
+
+p.style.position="fixed";
+p.style.left=Math.random()*window.innerWidth+"px";
+p.style.top=Math.random()*window.innerHeight+"px";
+
+p.style.width="5px";
+p.style.height="5px";
+
+p.style.background="#ff00ff";
+p.style.boxShadow="0 0 10px #ff00ff";
+
+p.style.zIndex="1000";
+
+document.body.appendChild(p);
+
+setTimeout(()=>{
+p.remove();
+},700);
+
+}
+
+}
+
 let lettersOpened = 0;
 let secretUnlocked = false;
 
@@ -766,10 +809,66 @@ startGameEffect(letter.effect);
   lettersOpened++;
 
 if(lettersOpened >= 5 && !secretUnlocked){
-unlockSecretTile();
-secretUnlocked = true;
+
+  function unlockSecretTile(){
+
+document.body.classList.add("glitch")
+
+setTimeout(()=>{
+document.body.classList.remove("glitch")
+},400)
+
+let tile=document.createElement("div")
+
+tile.className="tile show"
+tile.style.borderColor="#ff00ff"
+
+tile.innerHTML=`
+<div class="icon">⚠</div>
+<div>DO NOT OPEN</div>
+<div class="small">seriously</div>
+`
+
+tile.onclick=()=>{
+
+document.getElementById("letterOverlay").classList.add("active")
+
+document.getElementById("letterContent").innerHTML=`
+
+<h2 style="color:#ff00ff">YOU WERE WARNED</h2>
+
+<p>I told you not to open this.</p>
+
+<div id="rewardButton" class="button" onclick="showReward()">SHOW REWARD</div>
+
+<div id="rewardArea"></div>
+
+`
+
 }
 
+grid.appendChild(tile)
+
+}
+
+  function showReward(){
+
+const area=document.getElementById("rewardArea");
+
+area.innerHTML=`
+
+<img src="secret.jpg" class="secret-photo">
+
+<p>
+Your favourite outfit.<br>
+Just for you.
+</p>
+
+`;
+
+document.getElementById("rewardButton").style.display="none";
+
+}
 const content=document.getElementById("letterContent");
 
 content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>

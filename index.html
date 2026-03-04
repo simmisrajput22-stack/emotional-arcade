@@ -220,6 +220,35 @@ grid-template-columns:repeat(2,1fr);
 gap:16px;
 }
 
+.tile:hover{
+transform:scale(1.05);
+box-shadow:0 0 12px currentColor;
+}
+
+.tile:active{
+transform:scale(0.96);
+}
+
+.tile.selected{
+animation:tilePulse 1.2s infinite;
+}
+
+@keyframes tilePulse{
+
+0%{
+box-shadow:0 0 6px currentColor;
+}
+
+50%{
+box-shadow:0 0 18px currentColor;
+}
+
+100%{
+box-shadow:0 0 6px currentColor;
+}
+
+}
+
 /* PIXEL LOCK */
 
 .pixel-lock{
@@ -643,8 +672,8 @@ tile.innerHTML=`
 
 <div class="paper">⭐</div>
 
-<div class="tile-title">SECRET LEVEL</div>
-<div class="tile-sub">you found it</div>
+<div class="tile-title">DO NOT OPEN</div>
+<div class="tile-sub">seriously</div>
 
 </div>
 
@@ -774,6 +803,12 @@ tile.innerHTML=`
 `;
 
 tile.onclick=()=>{
+
+document.querySelectorAll(".tile").forEach(t=>{
+t.classList.remove("selected");
+});
+
+tile.classList.add("selected");
 
 coinSound();
 

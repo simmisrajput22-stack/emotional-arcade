@@ -10,7 +10,7 @@ body{
 background:black;
 color:white;
 font-family:Courier New,monospace;
-overflow:hidden;
+overflow:hidden
 }
 
 /* STARFIELD */
@@ -19,10 +19,10 @@ canvas{
 position:fixed;
 top:0;
 left:0;
-z-index:-1;
+z-index:-1
 }
 
-/* SCREENS */
+/* SCREEN SYSTEM */
 
 .screen{
 position:absolute;
@@ -35,57 +35,55 @@ align-items:center;
 text-align:center;
 opacity:0;
 pointer-events:none;
-transition:.4s;
+transition:.4s
 }
 
 .screen.active{
 opacity:1;
-pointer-events:auto;
+pointer-events:auto
 }
 
-/* TEXT */
-
 .title{
-font-size:2rem;
+font-size:1.8rem;
 letter-spacing:3px;
-margin-bottom:10px;
+margin-bottom:10px
 }
 
 .subtitle{
-max-width:320px;
+max-width:340px;
 line-height:1.6;
-opacity:.85;
+opacity:.85
 }
 
 /* BUTTON */
 
 .button{
-margin-top:25px;
+margin-top:24px;
 padding:12px 30px;
 border:2px solid #00ffff;
 color:#00ffff;
+background:transparent;
 cursor:pointer;
-font-size:.8rem;
 letter-spacing:2px;
 text-transform:uppercase;
-background:transparent;
+font-size:.8rem
 }
 
 .button:hover{
 background:#00ffff;
-color:black;
+color:black
 }
 
-/* PASSWORD */
+/* INPUT */
 
 input{
 margin-top:20px;
 padding:12px;
 font-size:1.1rem;
 text-align:center;
-border:2px solid #00ffff;
 background:black;
 color:white;
+border:2px solid #00ffff
 }
 
 /* SHAKE */
@@ -104,15 +102,15 @@ color:white;
 
 #arcadeScreen{
 justify-content:flex-start;
-padding-top:120px;
+padding-top:120px
 }
 
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:15px;
+gap:16px;
 width:90%;
-max-width:420px;
+max-width:420px
 }
 
 /* TILE */
@@ -121,21 +119,22 @@ max-width:420px;
 height:110px;
 border:2px solid;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 cursor:pointer;
 opacity:0;
 transform:translateY(20px);
-transition:.4s;
+transition:.4s
 }
 
 .tile.show{
 opacity:1;
-transform:translateY(0);
+transform:translateY(0)
 }
 
 .tile:hover{
 transform:scale(1.05);
+box-shadow:0 0 10px currentColor
 }
 
 /* ENVELOPE */
@@ -144,7 +143,7 @@ transform:scale(1.05);
 display:flex;
 flex-direction:column;
 align-items:center;
-justify-content:center;
+justify-content:center
 }
 
 .flap{
@@ -153,16 +152,16 @@ width:80%;
 height:40px;
 background:rgba(255,255,255,.1);
 transform-origin:top;
-transition:.4s;
+transition:.4s
 }
 
 .paper{
 margin-top:10px;
-font-size:20px;
+font-size:20px
 }
 
 .tile.opening .flap{
-transform:rotateX(180deg);
+transform:rotateX(180deg)
 }
 
 /* LETTER OVERLAY */
@@ -182,28 +181,28 @@ text-align:center;
 padding:20px;
 opacity:0;
 pointer-events:none;
-transition:.4s;
+transition:.4s
 }
 
 #letterOverlay.active{
 opacity:1;
-pointer-events:auto;
+pointer-events:auto
 }
 
-/* PHOTO */
+/* SECRET PHOTO */
 
 .secret-photo{
 width:220px;
 max-width:80%;
 margin:20px 0;
 border:3px solid #ff00ff;
-box-shadow:0 0 20px #ff00ff;
+box-shadow:0 0 20px #ff00ff
 }
 
 /* GLITCH */
 
 .glitch{
-animation:glitch .5s;
+animation:glitch .5s
 }
 
 @keyframes glitch{
@@ -224,7 +223,7 @@ animation:glitch .5s;
 </div><!-- WELCOME --><div id="welcomeScreen" class="screen">
 <div class="title">WELCOME, MY FAVOURITE STARE</div>
 <div class="subtitle">
-Inside this vault are small files for different moments.
+Inside this vault are small files for different moments.  
 Explore slowly.
 </div>
 <div class="button" onclick="showScreen('rulesScreen')">VIEW RULES</div>
@@ -240,7 +239,7 @@ Explore slowly.
 </div><!-- ARCADE --><div id="arcadeScreen" class="screen">
 <div class="title">ARCADE GRID</div>
 <div class="grid" id="grid"></div>
-</div><!-- LETTER --><div id="letterOverlay">
+</div><!-- LETTER OVERLAY --><div id="letterOverlay">
 <div id="letterContent"></div>
 <div class="button" onclick="closeLetter()">CLOSE</div>
 </div><script>
@@ -248,30 +247,30 @@ Explore slowly.
 /* SCREEN SWITCH */
 
 function showScreen(id){
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))
+document.getElementById(id).classList.add("active")
 }
 
 /* START */
 
 function startGame(){
-startMusic();
-showScreen("codeScreen");
+startMusic()
+showScreen("codeScreen")
 }
 
 /* PASSWORD */
 
 function checkCode(){
 
-const input=document.getElementById("codeInput");
+let input=document.getElementById("codeInput")
 
 if(input.value==="280226"){
-unlockSparkles();
-setTimeout(()=>showScreen("welcomeScreen"),400);
+unlockSparkles()
+setTimeout(()=>showScreen("welcomeScreen"),400)
 }else{
-input.classList.add("shake");
-setTimeout(()=>input.classList.remove("shake"),300);
-input.value="";
+input.classList.add("shake")
+setTimeout(()=>input.classList.remove("shake"),300)
+input.value=""
 }
 
 }
@@ -280,110 +279,136 @@ input.value="";
 
 function enterArcade(){
 
-showScreen("arcadeScreen");
+showScreen("arcadeScreen")
 
 document.querySelectorAll(".tile").forEach((t,i)=>{
-setTimeout(()=>t.classList.add("show"),i*100);
-});
+setTimeout(()=>t.classList.add("show"),i*60)
+})
 
 }
 
 /* SPARKLES */
 
 function unlockSparkles(){
+
 for(let i=0;i<25;i++){
-let s=document.createElement("div");
-s.style.position="fixed";
-s.style.left=Math.random()*window.innerWidth+"px";
-s.style.top=Math.random()*window.innerHeight+"px";
-s.style.width="4px";
-s.style.height="4px";
-s.style.background="#00ffff";
-document.body.appendChild(s);
-setTimeout(()=>s.remove(),600);
+
+let s=document.createElement("div")
+
+s.style.position="fixed"
+s.style.left=Math.random()*window.innerWidth+"px"
+s.style.top=Math.random()*window.innerHeight+"px"
+s.style.width="4px"
+s.style.height="4px"
+s.style.background="#00ffff"
+
+document.body.appendChild(s)
+
+setTimeout(()=>s.remove(),600)
+
 }
+
 }
 
 /* MUSIC */
 
 function startMusic(){
 
-let ctx=new(window.AudioContext||window.webkitAudioContext)();
+let ctx=new(window.AudioContext||window.webkitAudioContext)()
 
 setInterval(()=>{
 
-let o=ctx.createOscillator();
-let g=ctx.createGain();
+let o=ctx.createOscillator()
+let g=ctx.createGain()
 
-o.type="triangle";
-o.frequency.value=440;
-g.gain.value=.03;
+o.type="triangle"
+o.frequency.value=440
+g.gain.value=.03
 
-o.connect(g);
-g.connect(ctx.destination);
+o.connect(g)
+g.connect(ctx.destination)
 
-o.start();
-o.stop(ctx.currentTime+.3);
+o.start()
+o.stop(ctx.currentTime+.3)
 
-},900);
+},900)
 
 }
 
-/* LETTER DATA */
+/* LETTERS */
 
-let opened=0;
-let secretUnlocked=false;
+let opened=0
+let secretUnlocked=false
 
 const letters=[
-{title:"LEVEL UP",text:"Even on your lowest days you still carry strength.",color:"#ffd500"},
-{title:"POWER BOOST",text:"You just need momentum.",color:"#ffd500"},
-{title:"HP RESTORE",text:"Imagine my arms around you.",color:"#00ff88"},
-{title:"GHOST MODE",text:"Pause. Thoughts are not facts.",color:"#00ffff"},
-{title:"BONUS ROUND",text:"You deserve lightness.",color:"#ffaa00"},
-{title:"MIDNIGHT SERVER",text:"Close your eyes.",color:"#ffffff"}
-];
 
-const grid=document.getElementById("grid");
+["LEVEL UP","Even on your lowest days you still carry strength."],
+["VICTORY SCREEN","Stay in this moment."],
+["GHOST MODE","Pause. Thoughts are not facts."],
+["HP RESTORE","Imagine my arms around you."],
+["HEALING CENTER","Slow down and recover."],
+["POWER BOOST","You just need momentum."],
+["SIDE QUEST","Find something small to conquer."],
+["BONUS ROUND","You deserve lightness."],
+["MIDNIGHT SERVER","Close your eyes and breathe."],
+["HIGH ALERT","You will get through this day."],
+["PIECES NOT FITTING","Not every day aligns perfectly."],
+["FIGHT MODE","Feel it, then breathe."],
+["LOW BATTERY","Rest is not failure."],
+["FREE ROAM","You are allowed to want attention."],
+["AFTER DARK","Some things feel better slowly."],
+["WEB OF THOUGHTS","Even when alone you’re connected."],
+["FAR FROM HOME","Distance doesn’t erase belonging."],
+["RAINY DAY MODE","Let the rain slow everything down."],
+["ACHIEVEMENT UNLOCKED","You earned this moment."],
+["LOW SIGNAL","Even weak signals still connect."],
+["ENERGY RECHARGE","Reset and refill."],
+["ON MY WAY","The countdown begins."],
+["ANNUAL EVENT","Happy birthday."],
+["AFFECTION BOOST","Consider this a digital kiss."]
+
+]
+
+const grid=document.getElementById("grid")
 
 letters.forEach(l=>{
 
-let tile=document.createElement("div");
-tile.className="tile";
-tile.style.borderColor=l.color;
+let tile=document.createElement("div")
+tile.className="tile"
+tile.style.borderColor="#00ffff"
 
 tile.innerHTML=`
 <div class="envelope">
 <div class="flap"></div>
 <div class="paper">💌</div>
-<div>${l.title}</div>
+<div>${l[0]}</div>
 </div>
-`;
+`
 
 tile.onclick=()=>{
-tile.classList.add("opening");
-setTimeout(()=>openLetter(l),400);
-};
+tile.classList.add("opening")
+setTimeout(()=>openLetter(l),350)
+}
 
-grid.appendChild(tile);
+grid.appendChild(tile)
 
-});
+})
 
 /* OPEN LETTER */
 
 function openLetter(letter){
 
-document.getElementById("letterOverlay").classList.add("active");
+document.getElementById("letterOverlay").classList.add("active")
 
-opened++;
+opened++
 
 if(opened>=5 && !secretUnlocked){
-unlockSecretTile();
-secretUnlocked=true;
+unlockSecretTile()
+secretUnlocked=true
 }
 
 document.getElementById("letterContent").innerHTML=
-`<h2 style="color:${letter.color}">${letter.title}</h2>
-<p>${letter.text}</p>`;
+`<h2>${letter[0]}</h2><p>${letter[1]}</p>`
 
 }
 
@@ -391,13 +416,13 @@ document.getElementById("letterContent").innerHTML=
 
 function unlockSecretTile(){
 
-document.body.classList.add("glitch");
-setTimeout(()=>document.body.classList.remove("glitch"),400);
+document.body.classList.add("glitch")
+setTimeout(()=>document.body.classList.remove("glitch"),400)
 
-let tile=document.createElement("div");
+let tile=document.createElement("div")
 
-tile.className="tile show";
-tile.style.borderColor="#ff00ff";
+tile.className="tile show"
+tile.style.borderColor="#ff00ff"
 
 tile.innerHTML=`
 <div class="envelope">
@@ -405,11 +430,11 @@ tile.innerHTML=`
 <div class="paper">⚠</div>
 <div>DO NOT OPEN</div>
 </div>
-`;
+`
 
 tile.onclick=()=>{
 
-document.getElementById("letterOverlay").classList.add("active");
+document.getElementById("letterOverlay").classList.add("active")
 
 document.getElementById("letterContent").innerHTML=`
 
@@ -421,11 +446,11 @@ document.getElementById("letterContent").innerHTML=`
 
 <div id="rewardArea"></div>
 
-`;
+`
 
-};
+}
 
-grid.appendChild(tile);
+grid.appendChild(tile)
 
 }
 
@@ -435,51 +460,52 @@ function showReward(){
 
 document.getElementById("rewardArea").innerHTML=
 `<img src="secret.jpg" class="secret-photo">
-<p>Your favourite outfit. Just for you.</p>`;
+<p>Your favourite outfit. Just for you.</p>`
 
-document.getElementById("rewardButton").style.display="none";
+document.getElementById("rewardButton").style.display="none"
 
 }
 
-/* CLOSE LETTER */
+/* CLOSE */
 
 function closeLetter(){
-document.getElementById("letterOverlay").classList.remove("active");
+document.getElementById("letterOverlay").classList.remove("active")
 }
 
 /* STARFIELD */
 
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
+const canvas=document.getElementById("stars")
+const ctx=canvas.getContext("2d")
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
 
-let stars=[];
+let stars=[]
 
 for(let i=0;i<150;i++){
-stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1});
+stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*1})
 }
 
 function animate(){
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.clearRect(0,0,canvas.width,canvas.height)
 
-ctx.fillStyle="white";
+ctx.fillStyle="white"
 
 stars.forEach(s=>{
-ctx.fillRect(s.x,s.y,s.size,s.size);
-s.y+=s.speed;
+ctx.fillRect(s.x,s.y,s.size,s.size)
+s.y+=s.speed
 if(s.y>canvas.height){
-s.y=0;
-s.x=Math.random()*canvas.width;
+s.y=0
+s.x=Math.random()*canvas.width
 }
-});
+})
 
-requestAnimationFrame(animate);
+requestAnimationFrame(animate)
+
 }
 
-animate();
+animate()
 
 </script></body>
 </html>

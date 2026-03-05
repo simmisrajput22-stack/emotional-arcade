@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -820,23 +820,38 @@ letters.forEach((letter, index) => {
         <div class="tile-sub">${letter.sub}</div>
     `;
 
-    tile.onclick = () => {
+   tile.onclick = () => {
 
-        document.querySelectorAll(".tile").forEach(t=>{
-            t.classList.remove("selected");
-        });
+    if(tile.classList.contains("opened")){
+        return;
+    }
 
-        tile.classList.add("selected");
+    tile.classList.add("opened");
 
-        coinSound();
+    lettersOpened++;
 
-        tile.classList.add("opening");
+    console.log("letters opened:", lettersOpened);
 
-        setTimeout(()=>{
-            openLetter(letter, tile);
-        },700);
+    if(lettersOpened === 5 && !secretUnlocked){
+        unlockSecretTile();
+        secretUnlocked = true;
+    }
 
-    };
+    document.querySelectorAll(".tile").forEach(t=>{
+        t.classList.remove("selected");
+    });
+
+    tile.classList.add("selected");
+
+    coinSound();
+
+    tile.classList.add("opening");
+
+    setTimeout(()=>{
+        openLetter(letter, tile);
+    },700);
+
+};
 
     grid.appendChild(tile);
 

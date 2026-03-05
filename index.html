@@ -910,10 +910,11 @@ tile.classList.add("opened");
 
     lettersOpened++;
 
-    if(lettersOpened >= 5 && !secretUnlocked){
-        unlockSecretTile();
-        secretUnlocked = true;
-    }
+if(lettersOpened >= 5 && !secretUnlocked){
+    console.log("SECRET TRIGGERED");
+    unlockSecretTile();
+    secretUnlocked = true;
+}
 
 }
 /* CLOSE LETTER */

@@ -911,13 +911,25 @@ tile.classList.add("opened");
 
         }else{
 
-            typed.innerHTML =
-            text +
-            '<span class="cursor">_</span>';
+    typed.innerHTML =
+    text +
+    '<span class="cursor">_</span>';
+
+    if(letter.title === "AFTER DARK"){
+
+        const area = document.getElementById("secretArea");
+
+        if(area){
+
+            area.innerHTML = `
+            <div class="button white" onclick="triggerSecret()">DO NOT OPEN</div>
+            `;
 
         }
 
     }
+
+}
 
     type();
     startGameEffect(letter.effect);

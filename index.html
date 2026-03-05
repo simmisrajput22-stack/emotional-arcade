@@ -859,7 +859,7 @@ function openLetter(letter, tile){
     const overlay = document.getElementById("letterOverlay");
     const content = document.getElementById("letterContent");
 
-    overlay.classList.add("show");
+    overlay.classList.add("active");
 
     content.innerHTML = `
         <h2 style="color:${letter.color}">${letter.title}</h2>
@@ -916,7 +916,7 @@ function closeLetter(){
 
     const overlay = document.getElementById("letterOverlay");
 
-    overlay.classList.remove("show");
+    overlay.classList.remove("active");
 
     if(typingTimer){
         clearTimeout(typingTimer);

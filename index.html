@@ -244,7 +244,8 @@ box-shadow:0 0 12px currentColor;
 }
 
 .tile:active{
-transform:scale(0.96);
+transform:scale(0.94);
+box-shadow:0 0 18px currentColor;
 }
 
 .tile.selected{
@@ -346,11 +347,19 @@ transform-origin:top;
 transition:transform 0.5s;
 }
 
+/* FLOATING HEART ANIMATION */
+@keyframes floatHeart{
+0%{transform:translateY(0);}
+50%{transform:translateY(-3px);}
+100%{transform:translateY(0);}
+}
+
 .paper{
 position:relative;
 top:-10px;
 font-size:22px;
 margin-bottom:6px;
+animation:floatHeart 2.5s infinite ease-in-out;
 }
 
 .tile.opening .flap{

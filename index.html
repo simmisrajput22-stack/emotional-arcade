@@ -807,7 +807,7 @@ const letters=[
 
 const grid = document.getElementById("grid");
 
-letters.forEach((letter, index) => {
+letters.forEach((letter, tile, index) => {
 
     const tile = document.createElement("div");
 
@@ -862,7 +862,7 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 /* OPEN LETTER */
 
-function openLetter(letter, tile){
+function openLetter(letter, tile, index){
 
   if(tile.classList.contains("opened")){
     return;
@@ -918,7 +918,7 @@ tile.classList.add("opened");
 startGameEffect(letter.effect);
 
 /* SECRET TILE TRIGGER */
-if(letter.title.includes("AFTER DARK")){
+if(index === 12){
 setTimeout(()=>{
 unlockSecretTile();
 },800);

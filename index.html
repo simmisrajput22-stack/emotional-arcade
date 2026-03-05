@@ -919,6 +919,13 @@ tile.classList.add("opened");
     type();
     startGameEffect(letter.effect);
 
+  /* SECRET TRIGGER */
+if(letter.effect === "🔥"){
+setTimeout(()=>{
+unlockSecretTile();
+},800);
+}
+
 }
 /* CLOSE LETTER */
 

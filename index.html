@@ -884,7 +884,7 @@ const typed = document.getElementById("typedText");
 
 typed.innerHTML = "";
 
-if (typingTimer) {
+if (window.typingTimer) {
 clearTimeout(typingTimer);
 typingTimer = null;
 }
@@ -899,7 +899,7 @@ typed.innerHTML = text.substring(0, i + 1) + '<span class="cursor">_</span>';
 
 i++;
 
-typingTimer = setTimeout(type, 25);
+window.typingTimer = setTimeout(type, 25);
 
 }else{
 

@@ -673,8 +673,6 @@ p.remove();
 
 function unlockSecretTile(){
 
-alert("SECRET TILE CREATED");
-
 document.body.classList.add("glitch");
 
 unlockSound();
@@ -918,6 +916,13 @@ tile.classList.add("opened");
 
     type();
     startGameEffect(letter.effect);
+
+  /* SECRET TILE TRIGGER */
+if(letter.title === "AFTER DARK"){
+setTimeout(()=>{
+unlockSecretTile();
+},800);
+}
 
 }
 /* CLOSE LETTER */

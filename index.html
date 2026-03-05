@@ -872,12 +872,6 @@ function openLetter(letter, tile){
 
 tile.classList.add("opened");
 
-  if(letter.title === "AFTER DARK"){
-setTimeout(()=>{
-unlockSecretTile();
-},1200);
-}
-
     const overlay = document.getElementById("letterOverlay");
     const content = document.getElementById("letterContent");
 

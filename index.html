@@ -868,85 +868,78 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 function openLetter(letter, tile){
 
-  if(tile.classList.contains("opened")){
-    return;
+if(tile.classList.contains("opened")){
+return;
 }
 
 tile.classList.add("opened");
 
-    const overlay = document.getElementById("letterOverlay");
-    const content = document.getElementById("letterContent");
+const overlay = document.getElementById("letterOverlay");
+const content = document.getElementById("letterContent");
 
-    overlay.classList.add("active");
+overlay.classList.add("active");
 
-    content.innerHTML = `
-    <h2 style="color:${letter.color}">${letter.title}</h2>
-    <p id="typedText"></p>
-    <div id="secretArea"></div>
+content.innerHTML = `
+<h2 style="color:${letter.color}">${letter.title}</h2>
+<p id="typedText"></p>
+<div id="secretArea"></div>
 `;
 
-    const text = letter.text;
-    const typed = document.getElementById("typedText");
+const text = letter.text;
+const typed = document.getElementById("typedText");
 
-    if(typingTimer){
-        clearTimeout(typingTimer);
-        typingTimer = null;
-    }
-
-    typed.innerHTML = "";
-
-    let i = 0;
-
-    function type(){
-
-        if(i < text.length){
-
-            typed.innerHTML =
-            text.substring(0,i+1) +
-            '<span class="cursor">_</span>';
-
-            i++;
-
-            typingTimer = setTimeout(type,25);
-
-        }else{
-
-    typed.innerHTML =
-    text +
-    '<span class="cursor">_</span>';
-
-    if(letter.title === "AFTER DARK"){
-
-        const area = document.getElementById("secretArea");
-
-        if(area){
-
-            area.innerHTML = `
-            <div class="button white" onclick="triggerSecret()">DO NOT OPEN</div>
-            `;
-
-        }
-
-    }
-
+if(typingTimer){
+clearTimeout(typingTimer);
+typingTimer = null;
 }
 
-    type();
-    startGameEffect(letter.effect);
-  
-  if(letter.title === "AFTER DARK"){
+typed.innerHTML = "";
 
-setTimeout(()=>{
+let i = 0;
 
-document.getElementById("secretArea").innerHTML = `
+function type(){
+
+if(i < text.length){
+
+typed.innerHTML =
+text.substring(0,i+1) +
+'<span class="cursor">_</span>';
+
+i++;
+
+typingTimer = setTimeout(type,25);
+
+}else{
+
+typed.innerHTML =
+text +
+'<span class="cursor">_</span>';
+
+/* AFTER DARK SECRET BUTTON */
+
+if(letter.title === "AFTER DARK"){
+
+const area = document.getElementById("secretArea");
+
+if(area){
+
+area.innerHTML = `
 <div class="button white" onclick="triggerSecret()">DO NOT OPEN</div>
 `;
 
-},1500);
+}
+
+}
 
 }
 
 }
+
+type();
+startGameEffect(letter.effect);
+
+}
+  
 /* CLOSE LETTER */
 
 function closeLetter(){

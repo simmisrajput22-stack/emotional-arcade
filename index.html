@@ -820,22 +820,7 @@ letters.forEach((letter, index) => {
         <div class="tile-sub">${letter.sub}</div>
     `;
 
-   tile.onclick = () => {
-
-    if(tile.classList.contains("opened")){
-        return;
-    }
-
-    tile.classList.add("opened");
-
-    lettersOpened++;
-
-    console.log("letters opened:", lettersOpened);
-
-    if(lettersOpened === 5 && !secretUnlocked){
-        unlockSecretTile();
-        secretUnlocked = true;
-    }
+ tile.onclick = () => {
 
     document.querySelectorAll(".tile").forEach(t=>{
         t.classList.remove("selected");

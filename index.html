@@ -643,6 +643,8 @@ spark.remove();
 
 }
 
+}
+
 function secretBurst(){
 
 for(let i=0;i<40;i++){
@@ -878,9 +880,10 @@ tile.classList.add("opened");
     overlay.classList.add("active");
 
     content.innerHTML = `
-        <h2 style="color:${letter.color}">${letter.title}</h2>
-        <p id="typedText"></p>
-    `;
+    <h2 style="color:${letter.color}">${letter.title}</h2>
+    <p id="typedText"></p>
+    <div id="secretArea"></div>
+`;
 
     const text = letter.text;
     const typed = document.getElementById("typedText");
@@ -918,6 +921,18 @@ tile.classList.add("opened");
 
     type();
     startGameEffect(letter.effect);
+  
+  if(letter.title === "AFTER DARK"){
+
+setTimeout(()=>{
+
+document.getElementById("secretArea").innerHTML = `
+<div class="button white" onclick="triggerSecret()">DO NOT OPEN</div>
+`;
+
+},1500);
+
+}
 
 }
 /* CLOSE LETTER */
@@ -936,6 +951,55 @@ function closeLetter(){
     }
 
 }
+
+/* SECRET FLOW */
+
+function triggerSecret(){
+
+document.body.classList.add("shake");
+
+setTimeout(()=>{
+
+document.body.classList.remove("shake");
+
+const content = document.getElementById("letterContent");
+
+content.innerHTML = `
+
+<h2 style="color:#ff00ff">RESTRICTED FILE</h2>
+
+<p>
+You were specifically told not to open this.<br><br>
+Some things are better left locked.<br><br>
+Do you really want to continue?
+</p>
+
+<div class="button white" onclick="revealSecret()">ARE YOU SURE</div>
+
+`;
+
+},400);
+
+}
+
+function revealSecret(){
+
+const content = document.getElementById("letterContent");
+
+content.innerHTML = `
+
+<h2 style="color:#ff00ff">FILE UNLOCKED</h2>
+
+<img src="secret.jpg" class="secret-photo">
+
+<p>
+You really don't listen, do you?
+</p>
+
+`;
+
+}
+  
 /* SOFT RETRO BACKGROUND MUSIC */
 
 let audioCtx;

@@ -643,8 +643,6 @@ spark.remove();
 
 }
 
-}
-
 function secretBurst(){
 
 for(let i=0;i<40;i++){
@@ -868,78 +866,60 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 function openLetter(letter, tile){
 
-if(tile.classList.contains("opened")){
-return;
+  if(tile.classList.contains("opened")){
+    return;
 }
 
 tile.classList.add("opened");
 
-const overlay = document.getElementById("letterOverlay");
-const content = document.getElementById("letterContent");
+    const overlay = document.getElementById("letterOverlay");
+    const content = document.getElementById("letterContent");
 
-overlay.classList.add("active");
+    overlay.classList.add("active");
 
-content.innerHTML = `
-<h2 style="color:${letter.color}">${letter.title}</h2>
-<p id="typedText"></p>
-<div id="secretArea"></div>
-`;
+    content.innerHTML = `
+        <h2 style="color:${letter.color}">${letter.title}</h2>
+        <p id="typedText"></p>
+    `;
 
-const text = letter.text;
-const typed = document.getElementById("typedText");
+    const text = letter.text;
+    const typed = document.getElementById("typedText");
 
-if(typingTimer){
-clearTimeout(typingTimer);
-typingTimer = null;
-}
+    if(typingTimer){
+        clearTimeout(typingTimer);
+        typingTimer = null;
+    }
 
-typed.innerHTML = "";
+    typed.innerHTML = "";
 
-let i = 0;
+    let i = 0;
 
-function type(){
+    function type(){
 
-if(i < text.length){
+        if(i < text.length){
 
-typed.innerHTML =
-text.substring(0,i+1) +
-'<span class="cursor">_</span>';
+            typed.innerHTML =
+            text.substring(0,i+1) +
+            '<span class="cursor">_</span>';
 
-i++;
+            i++;
 
-typingTimer = setTimeout(type,25);
+            typingTimer = setTimeout(type,25);
 
-}else{
+        }else{
 
-typed.innerHTML =
-text +
-'<span class="cursor">_</span>';
+            typed.innerHTML =
+            text +
+            '<span class="cursor">_</span>';
 
-/* AFTER DARK SECRET BUTTON */
+        }
 
-if(letter.title === "AFTER DARK"){
+    }
 
-const area = document.getElementById("secretArea");
-
-if(area){
-
-area.innerHTML = `
-<div class="button white" onclick="triggerSecret()">DO NOT OPEN</div>
-`;
+    type();
+    startGameEffect(letter.effect);
 
 }
-
-}
-
-}
-
-}
-
-type();
-startGameEffect(letter.effect);
-
-}
-  
 /* CLOSE LETTER */
 
 function closeLetter(){
@@ -956,55 +936,6 @@ function closeLetter(){
     }
 
 }
-
-/* SECRET FLOW */
-
-function triggerSecret(){
-
-document.body.classList.add("shake");
-
-setTimeout(()=>{
-
-document.body.classList.remove("shake");
-
-const content = document.getElementById("letterContent");
-
-content.innerHTML = `
-
-<h2 style="color:#ff00ff">RESTRICTED FILE</h2>
-
-<p>
-You were specifically told not to open this.<br><br>
-Some things are better left locked.<br><br>
-Do you really want to continue?
-</p>
-
-<div class="button white" onclick="revealSecret()">ARE YOU SURE</div>
-
-`;
-
-},400);
-
-}
-
-function revealSecret(){
-
-const content = document.getElementById("letterContent");
-
-content.innerHTML = `
-
-<h2 style="color:#ff00ff">FILE UNLOCKED</h2>
-
-<img src="secret.jpg" class="secret-photo">
-
-<p>
-You really don't listen, do you?
-</p>
-
-`;
-
-}
-  
 /* SOFT RETRO BACKGROUND MUSIC */
 
 let audioCtx;
@@ -1145,4 +1076,4 @@ animate();
 </script>
 
 </body>
-</html>
+  </html>

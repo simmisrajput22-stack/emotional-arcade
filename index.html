@@ -917,6 +917,7 @@ tile.classList.add("opened");
     }
 
     type();
+    startGameEffect(letter.effect);
 
 }
 /* CLOSE LETTER */
@@ -926,6 +927,8 @@ function closeLetter(){
     const overlay = document.getElementById("letterOverlay");
 
     overlay.classList.remove("active");
+
+    stopGameEffect();
 
     if(typingTimer){
         clearTimeout(typingTimer);

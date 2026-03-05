@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -797,51 +797,46 @@ const letters=[
 
 /* BUILD GRID */
 
-const grid=document.getElementById("grid");
+const grid = document.getElementById("grid");
 
-letters.forEach((l,i)=>{
+letters.forEach((letter, index) => {
 
-const tile=document.createElement("div");
+    const tile = document.createElement("div");
 
-tile.classList.add("tile");
+    tile.classList.add("tile");
 
-tile.style.borderColor=l.color;
-tile.style.color=l.color;
+    tile.style.borderColor = letter.color;
+    tile.style.color = letter.color;
 
-tile.innerHTML=`
+    tile.innerHTML = `
+        <div class="envelope">
+            <div class="flap"></div>
+            <div class="paper">💌</div>
+        </div>
 
-<div class="envelope">
+        <div class="tile-title">${letter.title}</div>
+        <div class="tile-sub">${letter.sub}</div>
+    `;
 
-<div class="flap"></div>
+    tile.onclick = () => {
 
-<div class="paper">💌</div>
+        document.querySelectorAll(".tile").forEach(t=>{
+            t.classList.remove("selected");
+        });
 
-<div class="tile-title">${l.title}</div>
-<div class="tile-sub">${l.sub}</div>
+        tile.classList.add("selected");
 
-</div>
+        coinSound();
 
-`;
+        tile.classList.add("opening");
 
-tile.onclick=()=>{
+        setTimeout(()=>{
+            openLetter(index, tile);
+        },700);
 
-document.querySelectorAll(".tile").forEach(t=>{
-t.classList.remove("selected");
-});
+    };
 
-tile.classList.add("selected");
-
-coinSound();
-
-tile.classList.add("opening");
-
-setTimeout(()=>{
-openLetter(l,tile);
-},700);
-
-};
-
-grid.appendChild(tile);
+    grid.appendChild(tile);
 
 });
 
@@ -859,77 +854,78 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 /* OPEN LETTER */
 
-function openLetter(letter,tile){
+function openLetter(index, tile){
 
-document.getElementById("letterOverlay").classList.add("active");
+    const letter = letters[index];
 
-createHearts(letter.color);
+    const overlay = document.getElementById("letterOverlay");
+    const content = document.getElementById("letterContent");
 
-startGameEffect(letter.effect);
+    overlay.classList.add("show");
 
-lettersOpened++;
+    content.innerHTML = `
+        <h2 style="color:${letter.color}">${letter.title}</h2>
+        <p id="typedText"></p>
+    `;
 
-if(lettersOpened >= 5 && !secretUnlocked){
-unlockSecretTile();
-secretUnlocked = true;
+    const text = letter.text;
+    const typed = document.getElementById("typedText");
+
+    if(typingTimer){
+        clearTimeout(typingTimer);
+        typingTimer = null;
+    }
+
+    typed.innerHTML = "";
+
+    let i = 0;
+
+    function type(){
+
+        if(i < text.length){
+
+            typed.innerHTML =
+            text.substring(0,i+1) +
+            '<span class="cursor">_</span>';
+
+            i++;
+
+            typingTimer = setTimeout(type,25);
+
+        }else{
+
+            typed.innerHTML =
+            text +
+            '<span class="cursor">_</span>';
+
+        }
+
+    }
+
+    type();
+
+    lettersOpened++;
+
+    if(lettersOpened >= 5 && !secretUnlocked){
+        unlockSecretTile();
+        secretUnlocked = true;
+    }
+
 }
-
-const content=document.getElementById("letterContent");
-
-content.innerHTML=`<h2 style="color:${letter.color}">${letter.title}</h2>
-<p id="typedText"></p>`;
-
-const text = letter.text;
-const typed = document.getElementById("typedText");
-
-typed.innerHTML = "";
-
-if (window.typingTimer) {
-clearTimeout(typingTimer);
-typingTimer = null;
-}
-
-let i = 0;
-
-function type(){
-
-if(i < text.length){
-
-typed.innerHTML = text.substring(0, i + 1) + '<span class="cursor">_</span>';
-
-i++;
-
-window.typingTimer = setTimeout(type, 25);
-
-}else{
-
-typed.innerHTML = text + '<span class="cursor">_</span>';
-
-}
-
-}
-
-type();
-}
-
 /* CLOSE LETTER */
 
 function closeLetter(){
 
-if(window.typingTimer){
-clearTimeout(window.typingTimer);
-}
+    const overlay = document.getElementById("letterOverlay");
 
-document.getElementById("letterOverlay").classList.remove("active");
+    overlay.classList.remove("show");
 
-stopGameEffect();
-
-document.querySelectorAll(".tile").forEach(t=>{
-t.classList.remove("opening");
-});
+    if(typingTimer){
+        clearTimeout(typingTimer);
+        typingTimer = null;
+    }
 
 }
-
 /* SOFT RETRO BACKGROUND MUSIC */
 
 let audioCtx;

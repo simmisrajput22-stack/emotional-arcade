@@ -673,6 +673,8 @@ p.remove();
 
 function unlockSecretTile(){
 
+alert("SECRET TILE CREATED");
+
 document.body.classList.add("glitch");
 
 unlockSound();
@@ -807,7 +809,7 @@ const letters=[
 
 const grid = document.getElementById("grid");
 
-letters.forEach((letter, tile, index) => {
+letters.forEach((letter, index) => {
 
     const tile = document.createElement("div");
 
@@ -862,7 +864,7 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 /* OPEN LETTER */
 
-function openLetter(letter, tile, index){
+function openLetter(letter, tile){
 
   if(tile.classList.contains("opened")){
     return;
@@ -915,16 +917,9 @@ tile.classList.add("opened");
     }
 
     type();
-startGameEffect(letter.effect);
+    startGameEffect(letter.effect);
 
-/* SECRET TILE TRIGGER */
-if(index === 12){
-setTimeout(()=>{
-unlockSecretTile();
-},800);
 }
-
-}2
 /* CLOSE LETTER */
 
 function closeLetter(){

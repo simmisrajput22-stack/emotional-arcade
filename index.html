@@ -686,11 +686,9 @@ document.body.classList.remove("glitch");
 
 const grid = document.getElementById("grid");
 
-if(document.querySelector(".secret-tile")) return;
-  
 const tile = document.createElement("div");
 
-tile.classList.add("tile","show","secret-tile");
+tile.classList.add("tile","show");
 
 tile.style.borderColor="#ff00ff";
 tile.style.color="#ff00ff";
@@ -748,6 +746,8 @@ Just for you.
 grid.prepend(tile);
 
 unlockSound();
+
+}
 
 }
 
@@ -916,14 +916,8 @@ tile.classList.add("opened");
 
     }
 
-type();
-startGameEffect(letter.effect);
-
-if(letter.title === "AFTER DARK"){
-setTimeout(()=>{
-unlockSecretTile();
-},800);
-}
+    type();
+    startGameEffect(letter.effect);
 
 }
 /* CLOSE LETTER */

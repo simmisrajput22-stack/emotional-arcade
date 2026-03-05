@@ -852,41 +852,39 @@ letters.forEach((letter, index) => {
 
 });
 
-  let lockTimer;
+ let lockTimer;
+
+function setupSecretLock(){
 
 const lock = document.getElementById("vaultLock");
+
+if(!lock) return;
 
 lock.addEventListener("mouseenter", () => {
 
 lockTimer = setTimeout(()=>{
-
 unlockSecretTile();
-
 },3000);
 
 });
 
 lock.addEventListener("mouseleave", () => {
-
 clearTimeout(lockTimer);
-
 });
 
-  lock.addEventListener("touchstart", () => {
+lock.addEventListener("touchstart", () => {
 
 lockTimer = setTimeout(()=>{
-
 unlockSecretTile();
-
 },3000);
 
 });
 
 lock.addEventListener("touchend", () => {
-
 clearTimeout(lockTimer);
-
 });
+
+}
 
 /* ENTER ARCADE */
 

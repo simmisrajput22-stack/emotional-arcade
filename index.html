@@ -665,6 +665,8 @@ p.remove();
 
 function unlockSecretTile(){
 
+alert("SECRET TILE CREATED");
+
 document.body.classList.add("glitch");
 
 unlockSound();
@@ -733,7 +735,7 @@ Just for you.
 
 };
 
-grid.appendChild(tile);
+grid.prepend(tile);
 
 unlockSound();
 

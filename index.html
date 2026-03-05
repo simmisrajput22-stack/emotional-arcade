@@ -856,6 +856,12 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 function openLetter(letter, tile){
 
+  if(tile.classList.contains("opened")){
+    return;
+}
+
+tile.classList.add("opened");
+
     const overlay = document.getElementById("letterOverlay");
     const content = document.getElementById("letterContent");
 

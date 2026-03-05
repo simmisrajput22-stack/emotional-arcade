@@ -831,7 +831,7 @@ letters.forEach((letter, index) => {
         tile.classList.add("opening");
 
         setTimeout(()=>{
-            openLetter(index, tile);
+            openLetter(letter, tile);
         },700);
 
     };
@@ -854,9 +854,7 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 /* OPEN LETTER */
 
-function openLetter(index, tile){
-
-    const letter = letters[index];
+function openLetter(letter, tile){
 
     const overlay = document.getElementById("letterOverlay");
     const content = document.getElementById("letterContent");

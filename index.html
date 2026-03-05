@@ -473,9 +473,6 @@ Some are dangerous.<br><br>
 
 <script>
 
-let lettersOpened = 0;
-let secretUnlocked = false;
-
 let typingTimer = null;
   
 /* SCREEN SWITCH */
@@ -909,14 +906,6 @@ tile.classList.add("opened");
     }
 
     type();
-
-    lettersOpened++;
-
-if(lettersOpened >= 5 && !secretUnlocked){
-    console.log("SECRET TRIGGERED");
-    unlockSecretTile();
-    secretUnlocked = true;
-}
 
 }
 /* CLOSE LETTER */

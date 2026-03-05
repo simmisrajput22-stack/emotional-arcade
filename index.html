@@ -915,16 +915,16 @@ tile.classList.add("opened");
     }
 
     type();
-    startGameEffect(letter.effect);
+startGameEffect(letter.effect);
 
-  /* SECRET TILE TRIGGER */
-if(letter.title === "AFTER DARK"){
+/* SECRET TILE TRIGGER */
+if(letter.title.includes("AFTER DARK")){
 setTimeout(()=>{
 unlockSecretTile();
 },800);
 }
 
-}
+}2
 /* CLOSE LETTER */
 
 function closeLetter(){

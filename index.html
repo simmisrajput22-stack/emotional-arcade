@@ -466,7 +466,7 @@ Some are dangerous.<br><br>
 <div id="arcadeScreen" class="screen">
 
 <div class="arcade-header">
-<div class="title"><span id="vaultLock" class="pixel-lock"></span>ARCADE GRID</div>
+<div class="title"><span class="pixel-lock"></span>ARCADE GRID</div>
 </div>
 
 <div class="arcade-grid-wrapper">
@@ -641,8 +641,6 @@ setTimeout(()=>{
 spark.remove();
 },600);
 
-}
-  
 }
 
 function secretBurst(){
@@ -852,47 +850,11 @@ letters.forEach((letter, index) => {
 
 });
 
- let lockTimer;
-
-function setupSecretLock(){
-
-const lock = document.getElementById("vaultLock");
-
-if(!lock) return;
-
-lock.addEventListener("mouseenter", () => {
-
-lockTimer = setTimeout(()=>{
-unlockSecretTile();
-},3000);
-
-});
-
-lock.addEventListener("mouseleave", () => {
-clearTimeout(lockTimer);
-});
-
-lock.addEventListener("touchstart", () => {
-
-lockTimer = setTimeout(()=>{
-unlockSecretTile();
-},3000);
-
-});
-
-lock.addEventListener("touchend", () => {
-clearTimeout(lockTimer);
-});
-
-}
-
 /* ENTER ARCADE */
 
 function enterArcade(){
 
 showScreen("arcadeScreen");
-
-setupSecretLock();
 
 document.querySelectorAll(".tile").forEach((t,i)=>{
 setTimeout(()=>t.classList.add("show"),i*80);

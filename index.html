@@ -1264,6 +1264,8 @@ let pacX = -40;
 const pacY = pacCanvas.height * 0.30;
 let mouth = 0.25;
 
+const px = 5;
+
 const targetX = pacCanvas.width - 40;
 
 let hearts = [];
@@ -1296,36 +1298,60 @@ function drawHeart(x,y){
 
 pacCtx.fillStyle = "#ff2fa6";
 
-pacCtx.beginPath();
+const shape = [
+[1,1,0,1,1],
+[1,1,1,1,1],
+[1,1,1,1,1],
+[0,1,1,1,0],
+[0,0,1,0,0]
+];
 
-pacCtx.moveTo(x,y);
+for(let r=0;r<shape.length;r++){
+for(let c=0;c<shape[r].length;c++){
 
-pacCtx.bezierCurveTo(x-6,y-6,x-12,y+4,x,y+12);
-pacCtx.bezierCurveTo(x+12,y+4,x+6,y-6,x,y);
-
-pacCtx.fill();
-
+if(shape[r][c]){
+pacCtx.fillRect(
+x + c*px - (2*px),
+y + r*px - (2*px),
+px,
+px
+);
 }
 
+}
+}
+
+}
 function drawPacman(x,flip=false){
 
 pacCtx.fillStyle="yellow";
 
-pacCtx.beginPath();
+const pac = [
+[0,1,1,1,0],
+[1,1,1,1,1],
+[1,1,1,1,0],
+[1,1,1,1,1],
+[0,1,1,1,0]
+];
 
-if(!flip){
+for(let r=0;r<pac.length;r++){
+for(let c=0;c<pac[r].length;c++){
 
-pacCtx.arc(x,pacY,18,mouth*Math.PI,(2-mouth)*Math.PI);
+if(pac[r][c]){
 
-}else{
+let pxPos = flip ? (4-c) : c;
 
-pacCtx.arc(x,pacY,18,(1+mouth)*Math.PI,(1-mouth)*Math.PI,true);
+pacCtx.fillRect(
+x + pxPos*px - (2*px),
+pacY + r*px - (2*px),
+px,
+px
+);
 
 }
 
-pacCtx.lineTo(x,pacY);
-
-pacCtx.fill();
+}
+}
 
 }
 function animatePacman(){

@@ -485,6 +485,10 @@ Some are dangerous.<br><br>
 <script>
 
 let typingTimer = null;
+
+/* SECRET TILE COUNTER */
+let openedCount = 0;
+let secretUnlocked = false;
   
 /* SCREEN SWITCH */
 
@@ -866,11 +870,23 @@ setTimeout(()=>t.classList.add("show"),i*80);
 
 function openLetter(letter, tile){
 
-  if(tile.classList.contains("opened")){
+if(tile.classList.contains("opened")){
     return;
 }
 
 tile.classList.add("opened");
+
+openedCount++;
+
+if(openedCount === 5 && !secretUnlocked){
+
+    secretUnlocked = true;
+
+    setTimeout(()=>{
+        unlockSecretTile();
+    },800);
+
+}
 
     const overlay = document.getElementById("letterOverlay");
     const content = document.getElementById("letterContent");

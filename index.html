@@ -1264,7 +1264,9 @@ let pacX = -40;
 const pacY = pacCanvas.height * 0.30;
 let mouth = 0.25;
 
-const px = 5;
+const px = 4;
+
+let heartBlink = 0;
 
 const targetX = pacCanvas.width - 40;
 
@@ -1296,7 +1298,8 @@ createHearts();
 
 function drawHeart(x,y){
 
-pacCtx.fillStyle = "#ff2fa6";
+let glow = 200 + Math.sin(heartBlink) * 55;
+pacCtx.fillStyle = `rgb(255, ${glow/4}, ${glow})`;
 
 const shape = [
 [1,1,0,1,1],
@@ -1358,11 +1361,21 @@ function animatePacman(){
 
 pacCtx.clearRect(0,0,pacCanvas.width,pacCanvas.height);
 
+/* heart blinking timer */
+
+heartBlink += 0.08;
+
 hearts.forEach(h=>{
 
 if(!h.eaten){
 
+/* blink effect */
+
+if(Math.sin(heartBlink) > 0){
 drawHeart(h.x,h.y);
+}
+
+/* pacman eats heart */
 
 if(pacX > h.x-10){
 h.eaten = true;
@@ -1372,16 +1385,25 @@ h.eaten = true;
 
 });
 
+/* draw pacmen */
+
 drawPacman(pacX,false);
 
 drawPacman(targetX,true);
 
+/* move pacman */
+
 pacX += 1.2;
-mouth += 0.03;
+
+/* pacman mouth animation */
+
+mouth += mouthDir;
 
 if(mouth > 0.35 || mouth < 0.05){
-mouth *= -1;
+mouthDir *= -1;
 }
+
+/* reset loop */
 
 if(pacX > targetX-30){
 
@@ -1393,8 +1415,6 @@ createHearts();
 requestAnimationFrame(animatePacman);
 
 }
-
-animatePacman();
   
 /* STARFIELD */
 

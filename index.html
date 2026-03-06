@@ -1262,6 +1262,7 @@ pacCanvas.height = window.innerHeight;
 
 let pacX = -40;
 const pacY = pacCanvas.height * 0.30;
+let mouth = 0.25;
 
 const targetX = pacCanvas.width - 40;
 
@@ -1314,11 +1315,11 @@ pacCtx.beginPath();
 
 if(!flip){
 
-pacCtx.arc(x,pacY,18,0.25*Math.PI,1.75*Math.PI);
+pacCtx.arc(x,pacY,18,mouth*Math.PI,(2-mouth)*Math.PI);
 
 }else{
 
-pacCtx.arc(x,pacY,18,1.25*Math.PI,0.75*Math.PI);
+pacCtx.arc(x,pacY,18,(1+mouth)*Math.PI,(1-mouth)*Math.PI,true);
 
 }
 
@@ -1327,7 +1328,6 @@ pacCtx.lineTo(x,pacY);
 pacCtx.fill();
 
 }
-
 function animatePacman(){
 
 pacCtx.clearRect(0,0,pacCanvas.width,pacCanvas.height);
@@ -1351,6 +1351,11 @@ drawPacman(pacX,false);
 drawPacman(targetX,true);
 
 pacX += 1.2;
+mouth += 0.03;
+
+if(mouth > 0.35 || mouth < 0.05){
+mouth *= -1;
+}
 
 if(pacX > targetX-30){
 

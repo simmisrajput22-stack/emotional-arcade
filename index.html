@@ -438,18 +438,15 @@ animation:blink 1s infinite;
 <!-- WELCOME -->
 
 <div id="welcomeScreen" class="screen">
-<div class="title">WELCOME, MY FAVOURITE STARE</div>
 
-<div class="subtitle">
-If you're here, you found the vault.<br><br>
-Inside are small files for different moments.<br>
-Some are soft.<br>
-Some are playful.<br>
-Some unlock after dark.<br><br>
-Explore slowly.
+<div class="title" id="welcomeTitle"></div>
+
+<div class="subtitle" id="welcomeText"></div>
+
+<div class="button cyan" id="rulesBtn" onclick="showScreen('rulesScreen')" style="display:none;">
+VIEW RULES
 </div>
 
-<div class="button cyan" onclick="showScreen('rulesScreen')">VIEW RULES</div>
 </div>
 
 <!-- RULES -->
@@ -527,6 +524,11 @@ unlockSparkles();
 
 setTimeout(()=>{
 showScreen("welcomeScreen");
+
+setTimeout(()=>{
+typeWelcome();
+},300);
+
 },500);
 }else{
 
@@ -540,6 +542,66 @@ input.classList.remove("error");
 
 input.value="";
 }
+
+}
+
+/* WELCOME TYPING */
+
+function typeWelcome(){
+
+const title = "WELCOME, MY FAVOURITE STARE";
+
+const text = `If you're here, you found the vault.<br><br>
+Inside are small files for different moments.<br>
+Some are soft.<br>
+Some are playful.<br>
+Some unlock after dark.<br><br>
+Explore slowly.`;
+
+const titleEl = document.getElementById("welcomeTitle");
+const textEl = document.getElementById("welcomeText");
+const btn = document.getElementById("rulesBtn");
+
+let i = 0;
+
+function typeTitle(){
+
+if(i < title.length){
+
+titleEl.innerHTML = title.substring(0,i+1) + '<span class="cursor">_</span>';
+i++;
+setTimeout(typeTitle,40);
+
+}else{
+
+titleEl.innerHTML = title;
+
+setTimeout(typeText,400);
+
+}
+
+}
+
+let j = 0;
+
+function typeText(){
+
+if(j < text.length){
+
+textEl.innerHTML = text.substring(0,j+1) + '<span class="cursor">_</span>';
+j++;
+setTimeout(typeText,18);
+
+}else{
+
+textEl.innerHTML = text;
+btn.style.display = "inline-block";
+
+}
+
+}
+
+typeTitle();
 
 }
 

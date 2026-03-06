@@ -1268,7 +1268,7 @@ const targetX = pacCanvas.width - 35;
 let hearts = [];
 
 let mouth = 0.2;
-let mouthDir = 0.02;
+let mouthDir = 0.012;
 
 
 /* CREATE HEART PATH */
@@ -1302,19 +1302,35 @@ createHearts();
 
 function drawHeart(x,y){
 
-pacCtx.fillStyle = "#ff2fa6";
+const size = 2.5;   // pixel size
 
-pacCtx.beginPath();
+const shape = [
+[0,1,1,0,0,1,1,0],
+[1,1,1,1,1,1,1,1],
+[1,1,1,1,1,1,1,1],
+[0,1,1,1,1,1,1,0],
+[0,0,1,1,1,1,0,0],
+[0,0,0,1,1,0,0,0]
+];
 
-pacCtx.moveTo(x,y);
+pacCtx.fillStyle = "#ff4dd2";
 
-pacCtx.bezierCurveTo(x-6,y-6,x-12,y+4,x,y+12);
-pacCtx.bezierCurveTo(x+12,y+4,x+6,y-6,x,y);
+for(let row=0; row<shape.length; row++){
+for(let col=0; col<shape[row].length; col++){
 
-pacCtx.fill();
-
+if(shape[row][col] === 1){
+pacCtx.fillRect(
+x + col*size - 10,
+y + row*size - 6,
+size,
+size
+);
 }
 
+}
+}
+
+}
 
 /* DRAW PACMAN */
 
@@ -1370,7 +1386,7 @@ pacX += 1.2;
 
 mouth += mouthDir;
 
-if(mouth > 0.35 || mouth < 0.05){
+if(mouth > 0.22 || mouth < 0.08){
 mouthDir *= -1;
 }
 

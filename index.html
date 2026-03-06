@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+==<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -570,7 +570,7 @@ if(i < title.length){
 
 titleEl.innerHTML = title.substring(0,i+1) + '<span class="cursor">_</span>';
 i++;
-setTimeout(typeTitle,40);
+setTimeout(typeTitle,80);
 
 }else{
 
@@ -590,11 +590,11 @@ if(j < text.length){
 
 textEl.innerHTML = text.substring(0,j+1) + '<span class="cursor">_</span>';
 j++;
-setTimeout(typeText,18);
+setTimeout(typeText,35);
 
 }else{
 
-textEl.innerHTML = text;
+textEl.innerHTML = text + '<span class="cursor">_</span>';
 btn.style.display = "inline-block";
 
 }

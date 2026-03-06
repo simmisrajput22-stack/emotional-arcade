@@ -1072,9 +1072,15 @@ unlockSecretTile();
 
 function openLetter(letter, tile){
 
-if(tile.classList.contains("opened")){
-    return;
+if(letter.title === "BONUS ROUND"){
+startHeartGame();
+return;
 }
+
+if(tile.classList.contains("opened")){
+return;
+}
+
 
 tile.classList.add("opened");
 
@@ -1158,6 +1164,75 @@ function closeLetter(){
     }
 
 }
+
+function startHeartGame(){
+
+const overlay = document.getElementById("letterOverlay");
+const content = document.getElementById("letterContent");
+
+overlay.classList.add("active");
+
+content.innerHTML = `
+
+<h2 style="color:#ffaa00">FIND THE HIDDEN HEART</h2>
+
+<div id="heartGameGrid" style="
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:20px;
+max-width:260px;
+">
+
+</div>
+
+<p id="gameMsg" style="margin-top:20px;font-size:0.9rem;"></p>
+`;
+
+const grid = document.getElementById("heartGameGrid");
+const msg = document.getElementById("gameMsg");
+
+/* choose random tile */
+
+const target = Math.floor(Math.random()*9);
+
+for(let i=0;i<9;i++){
+
+const tile = document.createElement("div");
+
+tile.style.height="70px";
+tile.style.border="2px solid #ffaa00";
+tile.style.display="flex";
+tile.style.alignItems="center";
+tile.style.justifyContent="center";
+tile.style.fontSize="28px";
+tile.style.cursor="pointer";
+tile.style.background="rgba(0,0,0,0.5)";
+
+tile.onclick = ()=>{
+
+tile.innerText="🖕";
+
+/* tiny shake */
+
+tile.style.animation="shake 0.3s";
+
+setTimeout(()=>tile.style.animation="",300);
+
+/* reveal message */
+
+msg.innerHTML = `Wrong target.<br><br>
+The heart you're looking for<br>
+isn't hidden in this game.<br><br> <strong>It's with you.</strong>`;
+
+};
+
+grid.appendChild(tile);
+
+}
+
+}
+
 /* SOFT RETRO BACKGROUND MUSIC */
 
 let audioCtx;

@@ -884,24 +884,42 @@ document.getElementById("letterOverlay").classList.add("active");
 
 const content=document.getElementById("letterContent");
 
-content.innerHTML=`
-
-<h2 style="color:#ff00ff">YOU WERE WARNED</h2>
-
-<p>
-I did say not to open this.<br>
-But curiosity always wins, doesn't it?<br><br>
-So here's your reward.
-</p>
-
-<img src="secret.jpg" class="secret-photo">
-
-<p>
-Your favourite outfit.<br>
-Just for you.
-</p>
-
+content.innerHTML = `
+<h2 id="secretTitle" style="color:#ff00ff"></h2>
+<p id="secretLine1"></p>
+<p id="secretLine2"></p>
+<p id="secretLine3"></p>
+<div id="secretPhotoArea"></div>
 `;
+
+const title = document.getElementById("secretTitle");
+const line1 = document.getElementById("secretLine1");
+const line2 = document.getElementById("secretLine2");
+const line3 = document.getElementById("secretLine3");
+const photoArea = document.getElementById("secretPhotoArea");
+
+setTimeout(()=>{
+title.innerText = "YOU WERE WARNED";
+},200);
+
+setTimeout(()=>{
+line1.innerText = "I did say not to open this.";
+},1200);
+
+setTimeout(()=>{
+line2.innerText = "But curiosity always wins, doesn't it?";
+},2200);
+
+setTimeout(()=>{
+line3.innerText = "So here's your reward.";
+},3200);
+
+setTimeout(()=>{
+photoArea.innerHTML = `
+<img src="secret.jpg" class="secret-photo">
+<p>Your fantasy.</p>
+`;
+},4200);
 
 },700);
 

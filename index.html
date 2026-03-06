@@ -1262,15 +1262,16 @@ pacCanvas.height = window.innerHeight;
 
 let pacX = -40;
 const pacY = pacCanvas.height * 0.30;
-let mouth = 0.25;
 
-const px = 4;
-
-let heartBlink = 0;
-
-const targetX = pacCanvas.width - 40;
+const targetX = pacCanvas.width - 35;
 
 let hearts = [];
+
+let mouth = 0.2;
+let mouthDir = 0.02;
+
+
+/* CREATE HEART PATH */
 
 function createHearts(){
 
@@ -1296,86 +1297,61 @@ eaten:false
 
 createHearts();
 
+
+/* DRAW HEART */
+
 function drawHeart(x,y){
 
-let glow = 200 + Math.sin(heartBlink) * 55;
-pacCtx.fillStyle = `rgb(255, ${glow/4}, ${glow})`;
+pacCtx.fillStyle = "#ff2fa6";
 
-const shape = [
-[1,1,0,1,1],
-[1,1,1,1,1],
-[1,1,1,1,1],
-[0,1,1,1,0],
-[0,0,1,0,0]
-];
+pacCtx.beginPath();
 
-for(let r=0;r<shape.length;r++){
-for(let c=0;c<shape[r].length;c++){
+pacCtx.moveTo(x,y);
 
-if(shape[r][c]){
-pacCtx.fillRect(
-x + c*px - (2*px),
-y + r*px - (2*px),
-px,
-px
-);
-}
+pacCtx.bezierCurveTo(x-6,y-6,x-12,y+4,x,y+12);
+pacCtx.bezierCurveTo(x+12,y+4,x+6,y-6,x,y);
+
+pacCtx.fill();
 
 }
-}
 
-}
+
+/* DRAW PACMAN */
+
 function drawPacman(x,flip=false){
 
 pacCtx.fillStyle="yellow";
 
-const pac = [
-[0,1,1,1,0],
-[1,1,1,1,1],
-[1,1,1,1,0],
-[1,1,1,1,1],
-[0,1,1,1,0]
-];
+pacCtx.beginPath();
 
-for(let r=0;r<pac.length;r++){
-for(let c=0;c<pac[r].length;c++){
+if(!flip){
 
-if(pac[r][c]){
+pacCtx.arc(x,pacY,18,(0.25+mouth)*Math.PI,(1.75-mouth)*Math.PI);
 
-let pxPos = flip ? (4-c) : c;
+}else{
 
-pacCtx.fillRect(
-x + pxPos*px - (2*px),
-pacY + r*px - (2*px),
-px,
-px
-);
+pacCtx.arc(x,pacY,18,(1.25+mouth)*Math.PI,(0.75-mouth)*Math.PI);
 
 }
 
-}
-}
+pacCtx.lineTo(x,pacY);
+
+pacCtx.fill();
 
 }
+
+
+/* MAIN ANIMATION */
+
 function animatePacman(){
 
 pacCtx.clearRect(0,0,pacCanvas.width,pacCanvas.height);
-
-/* heart blinking timer */
-
-heartBlink += 0.08;
 
 hearts.forEach(h=>{
 
 if(!h.eaten){
 
-/* blink effect */
-
-if(Math.sin(heartBlink) > 0){
 drawHeart(h.x,h.y);
-}
-
-/* pacman eats heart */
 
 if(pacX > h.x-10){
 h.eaten = true;
@@ -1385,17 +1361,12 @@ h.eaten = true;
 
 });
 
-/* draw pacmen */
-
 drawPacman(pacX,false);
-
 drawPacman(targetX,true);
-
-/* move pacman */
 
 pacX += 1.2;
 
-/* pacman mouth animation */
+/* mouth animation */
 
 mouth += mouthDir;
 
@@ -1403,7 +1374,7 @@ if(mouth > 0.35 || mouth < 0.05){
 mouthDir *= -1;
 }
 
-/* reset loop */
+/* restart loop */
 
 if(pacX > targetX-30){
 
@@ -1415,6 +1386,8 @@ createHearts();
 requestAnimationFrame(animatePacman);
 
 }
+
+animatePacman();
   
 /* STARFIELD */
 

@@ -1156,7 +1156,7 @@ if(!audioCtx){
 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 gainNode = audioCtx.createGain();
-gainNode.gain.value = 0.05;
+gainNode.gain.value = 0.12;
 
 gainNode.connect(audioCtx.destination);
 

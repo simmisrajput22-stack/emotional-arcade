@@ -25,6 +25,17 @@ left:0;
 z-index:-5;
 }
 
+#pacmanCanvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-4;
+opacity:0.25;
+pointer-events:none;
+}
+  
 /* GAME ICON PARTICLES */
 
 .game-effect{
@@ -456,6 +467,7 @@ animation:blink 1s infinite;
 <body>
 
 <canvas id="starfield"></canvas>
+<canvas id="pacmanCanvas"></canvas>
 <div id="gameEffect" class="game-effect"></div>
 
 <!-- BOOT -->
@@ -1235,6 +1247,56 @@ ambient(random,0);
 },2000);
 
 }
+
+/* PACMAN ANIMATION */
+
+const pacCanvas = document.getElementById("pacmanCanvas");
+const pacCtx = pacCanvas.getContext("2d");
+
+pacCanvas.width = window.innerWidth;
+pacCanvas.height = window.innerHeight;
+
+let pacX = -50;
+const pacY = pacCanvas.height / 2;
+
+const hearts = [];
+
+for(let i=0;i<10;i++){
+hearts.push({
+x:150 + i*120,
+y:pacY
+});
+}
+
+function drawPacman(){
+
+pacCtx.clearRect(0,0,pacCanvas.width,pacCanvas.height);
+
+hearts.forEach((h)=>{
+if(h.x > pacX){
+pacCtx.fillStyle="#ff4da6";
+pacCtx.beginPath();
+pacCtx.arc(h.x,h.y,6,0,Math.PI*2);
+pacCtx.fill();
+}
+});
+
+pacCtx.fillStyle="yellow";
+pacCtx.beginPath();
+pacCtx.arc(pacX,pacY,18,0.25*Math.PI,1.75*Math.PI);
+pacCtx.lineTo(pacX,pacY);
+pacCtx.fill();
+
+pacX += 1.2;
+if(pacX > pacCanvas.width + 40){
+pacX = -40;
+}
+
+requestAnimationFrame(drawPacman);
+}
+
+drawPacman();
+  
 /* STARFIELD */
 
 const canvas=document.getElementById("starfield");

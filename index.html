@@ -27,12 +27,12 @@ z-index:-5;
 
 #pacmanCanvas{
 position:fixed;
-top:0;
+top:-120px;
 left:0;
 width:100%;
 height:100%;
 z-index:-4;
-opacity:0.25;
+opacity:0.6;
 pointer-events:none;
 }
   
@@ -562,6 +562,9 @@ setTimeout(()=>document.getElementById(id).classList.add("active"),100);
 /* PASSWORD */
 
 function startGame(){
+
+pacCanvas.style.display="none";
+  
 startMusic();
 showScreen("codeScreen");
 }
@@ -1256,46 +1259,135 @@ const pacCtx = pacCanvas.getContext("2d");
 pacCanvas.width = window.innerWidth;
 pacCanvas.height = window.innerHeight;
 
-let pacX = -50;
-const pacY = pacCanvas.height / 2;
+let pacX = -40;
+const pacY = pacCanvas.height * 0.35;
 
-const hearts = [];
+const targetX = pacCanvas.width - 80;
 
-for(let i=0;i<10;i++){
+let hearts = [];
+
+function createHearts(){
+
+hearts = [];
+
+for(let i=0;i<8;i++){
+
 hearts.push({
-x:150 + i*120,
-y:pacY
+x:120 + i*120,
+y:pacY,
+eaten:false
 });
+
 }
 
-function drawPacman(){
+}
+
+createHearts();
+
+function drawHeart(x,y){
+
+pacCtx.fillStyle="#ff3ec9";
+
+pacCtx.beginPath();
+
+pacCtx.moveTo(x,y);
+
+pacCtx.bezierCurveTo(x-6,y-6,x-12,y+4,x,y+12);
+pacCtx.bezierCurveTo(x+12,y+4,x+6,y-6,x,y);
+
+pacCtx.fill();
+
+}
+
+function drawMaze(){
+
+pacCtx.strokeStyle="#00ffff";
+pacCtx.lineWidth=2;
+
+for(let i=0;i<pacCanvas.width;i+=120){
+
+pacCtx.beginPath();
+pacCtx.moveTo(i,pacY-30);
+pacCtx.lineTo(i,pacY+30);
+pacCtx.stroke();
+
+}
+
+pacCtx.beginPath();
+pacCtx.moveTo(0,pacY+30);
+pacCtx.lineTo(pacCanvas.width,pacY+30);
+pacCtx.stroke();
+
+pacCtx.beginPath();
+pacCtx.moveTo(0,pacY-30);
+pacCtx.lineTo(pacCanvas.width,pacY-30);
+pacCtx.stroke();
+
+}
+
+function drawPacman(x,flip=false){
+
+pacCtx.fillStyle="yellow";
+
+pacCtx.beginPath();
+
+if(!flip){
+
+pacCtx.arc(x,pacY,18,0.25*Math.PI,1.75*Math.PI);
+
+}else{
+
+pacCtx.arc(x,pacY,18,1.25*Math.PI,0.75*Math.PI);
+
+}
+
+pacCtx.lineTo(x,pacY);
+
+pacCtx.fill();
+
+}
+
+function animatePacman(){
 
 pacCtx.clearRect(0,0,pacCanvas.width,pacCanvas.height);
 
-hearts.forEach((h)=>{
-if(h.x > pacX){
-pacCtx.fillStyle="#ff4da6";
-pacCtx.beginPath();
-pacCtx.arc(h.x,h.y,6,0,Math.PI*2);
-pacCtx.fill();
+drawMaze();
+
+hearts.forEach(h=>{
+
+if(!h.eaten){
+
+drawHeart(h.x,h.y);
+
+if(pacX > h.x-10){
+
+h.eaten=true;
+
 }
+
+}
+
 });
 
-pacCtx.fillStyle="yellow";
-pacCtx.beginPath();
-pacCtx.arc(pacX,pacY,18,0.25*Math.PI,1.75*Math.PI);
-pacCtx.lineTo(pacX,pacY);
-pacCtx.fill();
+drawPacman(pacX,false);
 
-pacX += 1.2;
-if(pacX > pacCanvas.width + 40){
+drawPacman(targetX,true);
+
+pacX += 1.4;
+
+if(pacX > targetX-30){
+
 pacX = -40;
+
+createHearts();
+
 }
 
-requestAnimationFrame(drawPacman);
+requestAnimationFrame(animatePacman);
+
 }
 
-drawPacman();
+animatePacman();
   
 /* STARFIELD */
 

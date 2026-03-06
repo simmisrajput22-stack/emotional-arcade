@@ -900,63 +900,66 @@ openedCount++;
 
 localStorage.setItem("vaultOpened", openedCount);
 
-secretUnlocked = true;
-localStorage.setItem("vaultSecret","true");
+if(openedCount === 5 && !secretUnlocked){
+
+    secretUnlocked = true;
+    localStorage.setItem("vaultSecret","true");
 
     setTimeout(()=>{
-    unlockSecretTile();
+        unlockSecretTile();
     },800);
 
 }
 
-    const overlay = document.getElementById("letterOverlay");
-    const content = document.getElementById("letterContent");
+const overlay = document.getElementById("letterOverlay");
+const content = document.getElementById("letterContent");
 
-    overlay.classList.add("active");
+overlay.classList.add("active");
 
-    content.innerHTML = `
-        <h2 style="color:${letter.color}">${letter.title}</h2>
-        <p id="typedText"></p>
-    `;
+content.innerHTML = `
+<h2 style="color:${letter.color}">${letter.title}</h2>
+<p id="typedText"></p>
+`;
 
-    const text = letter.text;
-    const typed = document.getElementById("typedText");
+const text = letter.text;
+const typed = document.getElementById("typedText");
 
-    if(typingTimer){
-        clearTimeout(typingTimer);
-        typingTimer = null;
-    }
+if(typingTimer){
+    clearTimeout(typingTimer);
+    typingTimer = null;
+}
 
-    typed.innerHTML = "";
+typed.innerHTML = "";
 
-    let i = 0;
+let i = 0;
 
-    function type(){
+function type(){
 
-        if(i < text.length){
+if(i < text.length){
 
-            typed.innerHTML =
-            text.substring(0,i+1) +
-            '<span class="cursor">_</span>';
+typed.innerHTML =
+text.substring(0,i+1) +
+'<span class="cursor">_</span>';
 
-            i++;
+i++;
 
-            typingTimer = setTimeout(type,25);
+typingTimer = setTimeout(type,25);
 
-        }else{
+}else{
 
-            typed.innerHTML =
-            text +
-            '<span class="cursor">_</span>';
-
-        }
-
-    }
-
-    type();
-    startGameEffect(letter.effect);
+typed.innerHTML =
+text +
+'<span class="cursor">_</span>';
 
 }
+
+}
+
+type();
+startGameEffect(letter.effect);
+
+}
+  
 /* CLOSE LETTER */
 
 function closeLetter(){

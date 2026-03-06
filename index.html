@@ -116,6 +116,14 @@ border:2px solid #00ff88;
 width:180px;
 }
 
+/* PASSWORD ERROR STYLE */
+
+input.error{
+border-color:#ff0033;
+box-shadow:0 0 10px #ff0033;
+color:#ff0033;
+}
+
 /* SHAKE */
 
 @keyframes shake{
@@ -521,8 +529,15 @@ setTimeout(()=>{
 showScreen("welcomeScreen");
 },500);
 }else{
+
 input.classList.add("shake");
-setTimeout(()=>input.classList.remove("shake"),300);
+input.classList.add("error");
+
+setTimeout(()=>{
+input.classList.remove("shake");
+input.classList.remove("error");
+},400);
+
 input.value="";
 }
 

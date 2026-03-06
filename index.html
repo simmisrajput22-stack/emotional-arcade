@@ -500,8 +500,8 @@ Some are dangerous.<br><br>
 let typingTimer = null;
 
 /* SECRET TILE COUNTER */
-let openedCount = 0;
-let secretUnlocked = false;
+let openedCount = parseInt(localStorage.getItem("vaultOpened")) || 0;
+let secretUnlocked = localStorage.getItem("vaultSecret") === "true";
   
 /* SCREEN SWITCH */
 
@@ -898,12 +898,13 @@ tile.classList.add("opened");
 
 openedCount++;
 
-if(openedCount === 5 && !secretUnlocked){
+localStorage.setItem("vaultOpened", openedCount);
 
-    secretUnlocked = true;
+secretUnlocked = true;
+localStorage.setItem("vaultSecret","true");
 
     setTimeout(()=>{
-        unlockSecretTile();
+    unlockSecretTile();
     },800);
 
 }

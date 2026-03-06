@@ -534,6 +534,8 @@ Some are dangerous.<br><br>
 
 let typingTimer = null;
 
+let welcomeHeartLoop = null;
+
 /* SECRET TILE COUNTER */
 let openedCount = parseInt(localStorage.getItem("vaultOpened")) || 0;
 let secretUnlocked = localStorage.getItem("vaultSecret") === "true";
@@ -666,11 +668,24 @@ setTimeout(()=>heart.remove(),2000);
 
 }
 
+/* STOP WELCOME HEARTS */
+
+function stopWelcomeHearts(){
+
+if(welcomeHeartLoop){
+clearInterval(welcomeHeartLoop);
+welcomeHeartLoop = null;
+}
+
+document.querySelectorAll(".burst-heart").forEach(h=>h.remove());
+
+}
+
 /* WELCOME HEART BURST */
 
 function startWelcomeHearts(){
 
-setInterval(()=>{
+welcomeHeartLoop = setInterval(()=>{
 
 const heart=document.createElement("div");
 heart.className="burst-heart";
@@ -1000,6 +1015,8 @@ letters.forEach((letter, index) => {
 /* ENTER ARCADE */
 
 function enterArcade(){
+
+stopWelcomeHearts();
 
 showScreen("arcadeScreen");
 

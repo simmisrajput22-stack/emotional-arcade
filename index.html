@@ -884,6 +884,14 @@ document.querySelectorAll(".tile").forEach((t,i)=>{
 setTimeout(()=>t.classList.add("show"),i*80);
 });
 
+/* show secret tile if already unlocked */
+
+if(secretUnlocked){
+setTimeout(()=>{
+unlockSecretTile();
+},400);
+}
+
 }
 
 /* OPEN LETTER */

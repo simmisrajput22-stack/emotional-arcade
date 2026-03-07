@@ -1946,7 +1946,9 @@ typed.appendChild(line);
 
 index++;
 
-typingTimer = setTimeout(showSentence,800);
+const delay = index===1 ? 200 : 1000;
+
+typingTimer = setTimeout(showSentence,delay);
 
 }
 

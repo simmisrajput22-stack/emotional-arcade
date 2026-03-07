@@ -1914,41 +1914,35 @@ content.innerHTML = `
 <p id="typedText"></p>
 `;
 
-const text = letter.text.replace(/\.\s*/g, ".<br><br>");
+const text = letter.text;
 const typed = document.getElementById("typedText");
 
-if(typingTimer){
-    clearTimeout(typingTimer);
-    typingTimer = null;
-}
+/* split sentences */
+
+const sentences = letter.text.split("\n");
 
 typed.innerHTML = "";
 
-let i = 0;
+let index = 0;
 
-function type(){
+function showSentence(){
 
-if(i < text.length){
+if(index < sentences.length){
 
-typed.innerHTML =
-text.substring(0,i+1) +
-'<span class="cursor">_</span>';
+const line = document.createElement("div");
+line.innerHTML = sentences[index];
 
-i++;
+typed.appendChild(line);
 
-typingTimer = setTimeout(type,45);
+index++;
 
-}else{
-
-typed.innerHTML =
-text +
-'<span class="cursor">_</span>';
+typingTimer = setTimeout(showSentence,800);
 
 }
 
 }
 
-type();
+showSentence();
 startGameEffect(letter.effect);
 
 }

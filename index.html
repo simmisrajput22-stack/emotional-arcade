@@ -1880,7 +1880,7 @@ content.innerHTML = `
 <p id="typedText"></p>
 `;
 
-const text = letter.text;
+const text = letter.text.replace(/\.\s*/g, ".<br><br>");
 const typed = document.getElementById("typedText");
 
 if(typingTimer){
@@ -1902,7 +1902,7 @@ text.substring(0,i+1) +
 
 i++;
 
-typingTimer = setTimeout(type,25);
+typingTimer = setTimeout(type,45);
 
 }else{
 

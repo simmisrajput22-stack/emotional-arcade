@@ -727,7 +727,7 @@ const container=document.getElementById("gameEffect");
 
 container.innerHTML="";
 
-for(let i=0;i<25;i++){
+for(let i=0;i<12;i++){
 
 const el=document.createElement("div");
 
@@ -735,6 +735,9 @@ el.className="game-icon";
 el.innerText=icon;
 
 el.style.left=Math.random()*100+"%";
+el.style.top=Math.random()*40+"%";
+el.style.opacity="0.6";
+  
 el.style.animationDuration=(4+Math.random()*4)+"s";
 el.style.fontSize=(20+Math.random()*20)+"px";
 

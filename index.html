@@ -581,12 +581,25 @@ unlockSparkles();
 setTimeout(()=>{
 showScreen("welcomeScreen");
 
+/* check if intro already shown */
+
+if(localStorage.getItem("vaultIntroSeen")){
+
+showWelcomeInstant();
+startWelcomeHearts();
+
+}else{
+
 setTimeout(()=>{
 typeWelcome();
 startWelcomeHearts();
+localStorage.setItem("vaultIntroSeen","true");
 },300);
 
+}
+
 },500);
+
 }else{
 
 input.classList.add("shake");
@@ -601,7 +614,6 @@ input.value="";
 }
 
 }
-
 /* WELCOME TYPING */
 
 function typeWelcome(){
@@ -659,6 +671,25 @@ btn.style.display = "inline-block";
 }
 
 typeTitle();
+
+}
+
+function showWelcomeInstant(){
+
+const titleEl = document.getElementById("welcomeTitle");
+const textEl = document.getElementById("welcomeText");
+const btn = document.getElementById("rulesBtn");
+
+titleEl.innerHTML = "WELCOME, MY FAVOURITE STARE";
+
+textEl.innerHTML = `If you're here, you found the vault.<br><br>
+Inside are small files for different moments.<br>
+Some are soft.<br>
+Some are playful.<br>
+Some unlock after dark.<br><br>
+Explore slowly.`;
+
+btn.style.display = "inline-block";
 
 }
 

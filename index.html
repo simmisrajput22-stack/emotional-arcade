@@ -1010,7 +1010,18 @@ Laugh loudly. Take up space. Be annoyingly joyful.
 
 Remember this feeling.
 Bottle it.
-Replay it on your bad days.`},
+Replay it on your bad days.`,
+
+attachment:`
+<div class="attachmentBox">
+
+FILE UNLOCKED
+
+<img src="happy.jpg" style="width:220px;border-radius:8px;">
+
+</div>
+`
+}
 
 {title:"LEVEL UP",effect:"🍄",sub:"when you're feeling sad",color:"#ffd500",text:`Tch… So the world decided to be dramatic again?
 
@@ -1036,7 +1047,18 @@ Even when you're quiet.
 Even when you're messy.
 Even when you’re being extra.
 
-Especially then.`},
+Especially then.`,
+
+attachment:`
+<div class="attachmentBox">
+
+FUNNY FILE
+
+<img src="funny.gif" style="width:220px;border-radius:8px;">
+
+</div>
+`
+}
 
 {title:"FIGHT MODE",effect:"🥊",sub:"when you're angry",color:"#ff6600",text:`Oh wow.
 Look at you being all stormy 🌩
@@ -1921,7 +1943,10 @@ overlay.classList.add("active");
 
 content.innerHTML = `
 <h2 style="color:${letter.color}">${letter.title}</h2>
-<p id="typedText"></p>
+
+<div id="typedText"></div>
+
+<div id="attachmentArea"></div>
 `;
 
 const text = letter.text;
@@ -1949,6 +1974,20 @@ index++;
 const delay = index===1 ? 200 : 1300;
 
 typingTimer = setTimeout(showSentence,delay);
+
+}
+
+else{
+
+setTimeout(()=>{
+
+const attach=document.getElementById("attachmentArea");
+
+if(letter.attachment){
+attach.innerHTML=letter.attachment;
+}
+
+},800);
 
 }
 

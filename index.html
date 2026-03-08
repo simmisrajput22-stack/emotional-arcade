@@ -96,11 +96,22 @@ line-height:1.6;
 }
 
 .playerTwo{
-color:#ff2a2a;
+animation:neonPulse 2s infinite alternate;
+}
+
+@keyframes neonPulse{
+from{
 text-shadow:
-0 0 5px #ff2a2a,
-0 0 10px #ff2a2a,
-0 0 20px #ff2a2a;
+0 0 6px #b44cff,
+0 0 12px #b44cff,
+0 0 20px #b44cff;
+}
+to{
+text-shadow:
+0 0 12px #b44cff,
+0 0 24px #b44cff,
+0 0 40px #b44cff;
+}
 }
 
 /* BUTTONS */

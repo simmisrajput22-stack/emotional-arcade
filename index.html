@@ -1789,6 +1789,10 @@ attachment:`
 
 <img src="birthday.gif" style="width:220px;border-radius:8px;">
 
+<audio id="birthdaySong" autoplay>
+<source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
 </div>
 `
 },
@@ -2175,6 +2179,13 @@ function closeLetter(){
     if(typingTimer){
         clearTimeout(typingTimer);
         typingTimer = null;
+    }
+  
+   const song = document.getElementById("birthdaySong");
+
+    if(song){
+        song.pause();
+        song.currentTime = 0;
     }
 
 }

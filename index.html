@@ -476,26 +476,22 @@ margin-bottom:4px;
 margin-top:20px;
 }
 
-/* CLOSE BUTTON FOOTER */
+/* LETTER CLOSE BUTTON */
 
-#letterFooter{
-padding:18px;
-text-align:center;
-background:rgba(0,0,0,0.85);
-}
+.letterClose{
+margin-top:30px;
+margin-bottom:40px;
 
-/* CLOSE BUTTON */
-
-#letterFooter button{
 background:transparent;
 color:white;
+
 border:2px solid white;
 padding:10px 26px;
+
 font-size:14px;
 letter-spacing:2px;
 cursor:pointer;
 }
-
 /* CURSOR BLINK */
 
 @keyframes blink{
@@ -2166,9 +2162,7 @@ content.innerHTML = `
 
 <div id="attachmentArea"></div>
 
-<div id="letterFooter">
-<button onclick="closeLetter()">CLOSE</button>
-</div>
+<button class="letterClose" onclick="closeLetter()">CLOSE</button>
 `;
 
 const text = letter.text;

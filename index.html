@@ -2079,6 +2079,14 @@ song.play();
 }
 }
 
+if(letter.title === "MIDNIGHT SERVER"){
+const sleep = document.getElementById("sleepSong");
+if(sleep){
+sleep.currentTime = 0;
+sleep.play();
+}
+}
+
 if(tile.classList.contains("opened")){
 return;
 }
@@ -2178,12 +2186,17 @@ function closeLetter(){
         typingTimer = null;
     }
   
-   const song = document.getElementById("birthdaySong");
+const birthday = document.getElementById("birthdaySong");
+if(birthday){
+birthday.pause();
+birthday.currentTime = 0;
+}
 
-    if(song){
-        song.pause();
-        song.currentTime = 0;
-    }
+const sleep = document.getElementById("sleepSong");
+if(sleep){
+sleep.pause();
+sleep.currentTime = 0;
+}
 
 }
 
@@ -2555,6 +2568,10 @@ animate();
 
 <audio id="birthdaySong">
 <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="sleepSong">
+<source src="sleep.mp3" type="audio/mpeg">
 </audio>
   
 </body>

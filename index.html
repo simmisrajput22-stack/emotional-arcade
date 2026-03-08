@@ -1746,15 +1746,13 @@ attachment:`
 
 {title:"ANNUAL EVENT",effect:"🎂",sub:"when it's your birthday",color:"#ffffff",text:`Well, well.
 
-Look who survived
-another year.
+Look who survived another year.
 
 Happy birthday, My Favorite Stare
 
 I wish I could say
 I planned something dramatic,
-like stealing you away
-for a celebration.
+like stealing you away for a celebration.
 
 But instead,
 I’m stuck miles away
@@ -1762,24 +1760,20 @@ sending you this message.
 
 Rude of geography, honestly.
 
-Still —
-I hope today treats you well.
+Still — I hope today treats you well.
 
 Eat something good. Laugh a lot.
 Accept unnecessary attention.
 
 You deserve it.
 
-And yes,
-I do wish I was there
+And yes, I do wish I was there
 to celebrate with you.
 
 But until that happens,
 
-consider this
-your official birthday wish
-from the person
-who probably knows
+consider this your official birthday wish
+from the person who probably knows
 how to annoy you best.
 
 Happy birthday.`,
@@ -1788,10 +1782,6 @@ attachment:`
 <div class="attachmentBox">
 
 <img src="birthday.gif" style="width:220px;border-radius:8px;">
-
-<audio id="birthdaySong" autoplay>
-<source src="birthday.mp3" type="audio/mpeg">
-</audio>
 
 </div>
 `
@@ -2080,6 +2070,14 @@ function openLetter(letter, tile){
 if(letter.title === "BONUS ROUND"){
 startHeartGame();
 return;
+}
+
+if(letter.title === "ANNUAL EVENT"){
+const song = document.getElementById("birthdaySong");
+if(song){
+song.currentTime = 0;
+song.play();
+}
 }
 
 if(tile.classList.contains("opened")){
@@ -2556,5 +2554,9 @@ animate();
 
 </script>
 
+<audio id="birthdaySong">
+<source src="birthday.mp3" type="audio/mpeg">
+</audio>
+  
 </body>
   </html>

@@ -2075,6 +2075,7 @@ if(letter.title === "ANNUAL EVENT"){
 const song = document.getElementById("birthdaySong");
 if(song){
 song.currentTime = 0;
+song.volume = 0.35;
 song.play();
 }
 }
@@ -2083,6 +2084,7 @@ if(letter.title === "MIDNIGHT SERVER"){
 const sleep = document.getElementById("sleepSong");
 if(sleep){
 sleep.currentTime = 0;
+song.volume = 0.35;
 sleep.play();
 }
 }
@@ -2577,11 +2579,11 @@ animate();
 
 </script>
 
-<audio id="birthdaySong">
+<audio id="birthdaySong" loop>
 <source src="birthday.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="sleepSong">
+<audio id="sleepSong" loop>
 <source src="sleep.mp3" type="audio/mpeg">
 </audio>
   

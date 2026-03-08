@@ -1009,11 +1009,21 @@ document.getElementById("letterOverlay").classList.add("active");
 const content=document.getElementById("letterContent");
 
 content.innerHTML = `
-<h2 id="secretTitle" style="color:#ff00ff"></h2>
-<p id="secretLine1"></p>
-<p id="secretLine2"></p>
-<p id="secretLine3"></p>
+<div class="letterBody">
+
+<h2 id="secretTitle"></h2>
+
+<div id="secretLine1"></div>
+<div id="secretLine2"></div>
+<div id="secretLine3"></div>
+
 <div id="secretPhotoArea"></div>
+
+</div>
+
+<div class="letterFooter">
+<button class="letterClose" onclick="closeLetter()">CLOSE</button>
+</div>
 `;
 
 const title = document.getElementById("secretTitle");
@@ -2293,6 +2303,8 @@ overlay.classList.add("active");
 
 content.innerHTML = `
 
+<div class="letterBody">
+
 <h2 style="color:#ffaa00">FIND THE HIDDEN HEART</h2>
 
 <div id="heartGameGrid" style="
@@ -2301,9 +2313,7 @@ grid-template-columns:repeat(3,70px);
 gap:12px;
 justify-content:center;
 margin:20px auto;
-">
-
-</div>
+"></div>
 
 <p id="gameMsg" style="
 margin-top:15px;
@@ -2314,6 +2324,13 @@ margin-left:auto;
 margin-right:auto;
 line-height:1.6;
 "></p>
+
+</div>
+
+<div class="letterFooter">
+<button class="letterClose" onclick="closeLetter()">CLOSE</button>
+</div>
+
 `;
 
 const grid = document.getElementById("heartGameGrid");

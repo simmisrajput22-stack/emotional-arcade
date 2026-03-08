@@ -1737,7 +1737,7 @@ and go to sleep already.`,
 attachment:`
 <div class="attachmentBox">
 
-<img src="Happy Pink GIF by Pokémon.gif" style="width:220px;border-radius:8px;">
+<img src="sleep.gif" style="width:220px;border-radius:8px;">
 
 </div>
 `
@@ -2223,7 +2223,7 @@ max-width:260px;
 
 </div>
 
-<p id="gameMsg" style="margin-top:20px;font-size:0.9rem;"></p>
+<p id="gameMsg" style="margin-top:20px;font-size:0.9rem;text-align:center;max-width:260px;margin-left:auto;margin-right:auto;"></p>
 `;
 
 const grid = document.getElementById("heartGameGrid");
@@ -2237,8 +2237,8 @@ for(let i=0;i<9;i++){
 
 const tile = document.createElement("div");
 
-tile.style.height="70px";
-tile.style.width="70px";
+tile.style.height="60px";
+tile.style.width="60px";
 tile.style.border="2px solid #ffaa00";
 tile.style.display="flex";
 tile.style.alignItems="center";
@@ -2261,7 +2261,7 @@ setTimeout(()=>tile.style.animation="",300);
 /* show gif first */
 
 msg.innerHTML = `
-<img src="laugh.gif" style="width:220px;border-radius:8px;margin-bottom:15px;">
+<img src="laugh.gif" style="width:150px;border-radius:8px;margin-bottom:15px;">
 `;
 
 /* reveal message after */

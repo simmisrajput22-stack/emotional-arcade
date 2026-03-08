@@ -2200,6 +2200,12 @@ sleep.pause();
 sleep.currentTime = 0;
 }
 
+const laugh = document.getElementById("laughSong");
+if(laugh){
+laugh.pause();
+laugh.currentTime = 0;
+}
+
 }
 
 function startHeartGame(){
@@ -2271,6 +2277,13 @@ setTimeout(()=>tile.style.animation="",300);
 msg.innerHTML = `
 <img src="laugh.gif" style="width:150px;border-radius:10px;display:block;margin:20px auto;">
 `;
+
+const laugh = document.getElementById("laughSong");
+if(laugh){
+laugh.currentTime = 0;
+laugh.volume = 0.35;
+laugh.play();
+}
 
 /* reveal message after */
 
@@ -2593,6 +2606,10 @@ animate();
 
 <audio id="sleepSong" loop>
 <source src="sleep.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="laughSong" loop>
+<source src="laugh.mp3" type="audio/mpeg">
 </audio>
   
 </body>

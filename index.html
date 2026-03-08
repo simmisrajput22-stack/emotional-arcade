@@ -435,14 +435,6 @@ background:rgba(0,0,0,0.85);
 
 display:flex;
 flex-direction:column;
-justify-content:flex-start;
-align-items:center;
-
-padding:40px 20px 140px;
-text-align:center;
-
-overflow-y:auto;
--webkit-overflow-scrolling: touch;
 
 opacity:0;
 pointer-events:none;
@@ -455,19 +447,19 @@ opacity:1;
 pointer-events:auto;
 }
 
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0;}
-100%{opacity:1;}
+/* SCROLLABLE LETTER CONTENT */
+
+#letterContent{
+flex:1;
+overflow-y:auto;
+
+padding:40px 20px;
+text-align:center;
+
+-webkit-overflow-scrolling:touch;
 }
 
-.cursor{
-display:inline-block;
-width:8px;
-animation:blink 1s infinite;
-}
-
-/* letter spacing improvement */
+/* TEXT AREA */
 
 #typedText{
 line-height:1.35;
@@ -478,24 +470,44 @@ padding:10px 20px;
 margin-bottom:4px;
 }
 
+/* ATTACHMENTS */
+
 #attachmentArea{
 margin-top:20px;
 }
 
-#letterOverlay #letterContent button{
-position:fixed;
-bottom:28px;
-left:50%;
-transform:translateX(-50%);
+/* CLOSE BUTTON FOOTER */
 
+#letterFooter{
+padding:18px;
+text-align:center;
+background:rgba(0,0,0,0.85);
+}
+
+/* CLOSE BUTTON */
+
+#letterFooter button{
 background:transparent;
 color:white;
 border:2px solid white;
 padding:10px 26px;
 font-size:14px;
 letter-spacing:2px;
+cursor:pointer;
+}
 
-z-index:999;
+/* CURSOR BLINK */
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0;}
+100%{opacity:1;}
+}
+
+.cursor{
+display:inline-block;
+width:8px;
+animation:blink 1s infinite;
 }
 
 </style>
@@ -2153,6 +2165,10 @@ content.innerHTML = `
 <div id="typedText"></div>
 
 <div id="attachmentArea"></div>
+
+<div id="letterFooter">
+<button onclick="closeLetter()">CLOSE</button>
+</div>
 `;
 
 const text = letter.text;
